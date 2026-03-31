@@ -1,0 +1,13 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Foundry specific (if you have them in the folder)
+node_modules/
+package-lock.json
+*.log
+

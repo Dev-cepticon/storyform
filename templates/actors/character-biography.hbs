@@ -1,26 +1,36 @@
 {{! templates/actors/character-biography.hbs }}
 
-<div class="tab biography {{tab.cssClass}}"
-     data-group="{{tab.group}}"
-     data-tab="{{tab.id}}">
+<div class="tab biography {{tab.cssClass}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
   <div class="biography-field">
     <label>{{localize "STORYFORM.DetailsPersonality"}}</label>
-    <input type="text"
-           name="system.details.personality"
-           value="{{system.details.personality}}"
-           placeholder="Personality trait..." />
+    <input type="text" name="system.details.personality" value="{{system.details.personality}}"
+      placeholder="Personality trait..." />
   </div>
+
+  {{!-- <div class="biography-field">
+    <label>{{localize "STORYFORM.DetailsBiography"}}</label>
+    <div class="prosemirror">
+      <prose-mirror name="system.details.biography" value="{{system.details.biography}}" toggled collaborative="false">
+      </prose-mirror>
+    </div>
+  </div> --}}
 
   <div class="biography-field">
     <label>{{localize "STORYFORM.DetailsBiography"}}</label>
-    <div class="prosemirror">
-      <prose-mirror
-        name="system.details.biography"
-        value="{{system.details.biography}}"
-        toggled
+
+    <div class="prosemirror-wrapper">
+      {{#if @root.editable}}
+      <prose-mirror name="system.details.biography" value="{{system.details.biography}}" toggled="true"
         collaborative="false">
+        {{{enrichedBiography}}}
       </prose-mirror>
+      {{else}}
+      {{!-- This state is for players who CANNOT edit the sheet at all --}}
+      <div class="enriched-content">
+        {{{enrichedBiography}}}
+      </div>
+      {{/if}}
     </div>
   </div>
 

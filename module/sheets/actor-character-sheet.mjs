@@ -105,6 +105,17 @@ export default class StoryformCharacterSheet
     context.tab.group = "primary";
     context.tab.id = partId;
 
+    if (partId === "details") {
+      context.enrichedBiography = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+        this.actor.system.details.biography ?? "",
+        {
+          secrets: this.actor.isOwner,
+          rollData: this.actor.getRollData(),
+          async: true
+        }
+      );
+    }
+
     return context;
   }
 
@@ -172,38 +183,6 @@ export default class StoryformCharacterSheet
       }
     ];
   }
-  // /** @override */
-  // async _onDrop(event) {
-  //   // Fix: Use JSON.parse to avoid the deprecated TextEditor call
-  //   const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-    
-  //   if (data.type === "Item") {
-  //     return this._onDropItem(event, data);
-  //   }
-    
-  //   return super._onDrop(event);
-  // }
-
-  // /**
-  //  * Handle dropping an Item on the sheet.
-  //  */
-  // async _onDropItem(event, data) {
-  //   if ( !this.actor.isOwner ) return false;
-
-  //   // Get the item from the UUID (this is an async operation)
-  //   const item = await Item.fromDropData(data);
-    
-  //   // Safety check: ensure the item exists
-  //   if ( !item ) return false;
-
-  //   const itemData = item.toObject();
-
-  //   // Remove the ID so Foundry generates a new one for this actor
-  //   delete itemData._id;
-
-  //   // Create the item on the actor
-  //   return this.actor.createEmbeddedDocuments("Item", [itemData]);
-  // }
 
   static async _onSkillRoll(event, target) {
     const skillKey = target.dataset.skill;

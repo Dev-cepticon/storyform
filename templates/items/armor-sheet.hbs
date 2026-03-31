@@ -4,17 +4,14 @@
 
   {{!-- Header --}}
   <header class="item-header">
-    <img class="item-img" src="{{item.img}}"
-         data-edit="img" title="{{item.name}}" />
+    <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
     <div class="item-header-fields">
-      <input class="item-name" type="text" name="name"
-             value="{{item.name}}" placeholder="Armor Name" />
+      <input class="item-name" type="text" name="name" value="{{item.name}}" placeholder="Armor Name" />
       <div class="item-subtitle">
         <span class="item-type-label">Tier</span>
         <select name="system.tier">
           {{#each (numRange 1 5) as |n|}}
-          <option value="{{n}}"
-            {{#if (eq n ../system.tier)}}selected{{/if}}>
+          <option value="{{n}}" {{#if (eq n ../system.tier)}}selected{{/if}}>
             {{n}}
           </option>
           {{/each}}
@@ -30,8 +27,7 @@
     <div class="form-group">
       <label>{{localize "STORYFORM.ArmorDR"}}</label>
       <div class="form-fields">
-        <input type="number" name="system.dr"
-               value="{{system.dr}}" min="0" max="10" />
+        <input type="number" name="system.dr" value="{{system.dr}}" min="0" max="10" />
         <span class="form-hint">
           Default for Tier {{system.tier}}: {{system.defaultDR}}
         </span>
@@ -44,17 +40,13 @@
       <div class="array-list">
         {{#each system.properties as |prop i|}}
         <div class="array-row">
-          <input type="text"
-                 name="system.properties.{{i}}"
-                 value="{{prop}}"
-                 placeholder="Property name or effect..." />
-          <a class="array-delete property-delete"
-             data-index="{{i}}" title="Remove">
+          <input type="text" name="system.properties.{{i}}" value="{{prop}}" placeholder="Property name or effect..." />
+          <a class="array-delete" data-action="deleteProperty" data-index="{{i}}" title="Remove">
             <i class="fas fa-trash"></i>
           </a>
         </div>
         {{/each}}
-        <button type="button" class="property-add array-add">
+        <button type="button" class="array-add" data-action="addProperty">
           <i class="fas fa-plus"></i> Add Property
         </button>
       </div>
@@ -64,8 +56,8 @@
     <div class="form-group">
       <label>Description</label>
       {{editor system.description
-               target="system.description"
-               button=true owner=owner editable=editable}}
+      target="system.description"
+      button=true owner=owner editable=editable}}
     </div>
 
   </section>
