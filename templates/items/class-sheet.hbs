@@ -1,0 +1,112 @@
+{{! templates/items/class-sheet.hbs }}
+
+<form class="storyform sheet item class" autocomplete="off">
+
+  {{!-- Header --}}
+  <header class="item-header">
+    <img class="item-img" src="{{item.img}}"
+         data-edit="img" title="{{item.name}}" />
+    <div class="item-header-fields">
+      <input class="item-name" type="text" name="name"
+             value="{{item.name}}" placeholder="Class Name" />
+      <input class="item-role" type="text" name="system.role"
+             value="{{system.role}}"
+             placeholder="Role description..." />
+    </div>
+  </header>
+
+  {{!-- Body --}}
+  <section class="item-body">
+
+    {{!-- HP Bonus --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.ClassHpBonus"}}</label>
+      <div class="form-fields">
+        <input type="number" name="system.hpBonus"
+               value="{{system.hpBonus}}" />
+        <span class="form-hint">Added to base HP of 15</span>
+      </div>
+    </div>
+
+    {{!-- Skill Bonuses --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.ClassSkillBonuses"}}</label>
+      <div class="array-list">
+        {{#each system.skillBonuses as |bonus i|}}
+        <div class="array-row">
+          <select name="system.skillBonuses.{{i}}.skill">
+            {{#each ../skillChoices as |choice|}}
+            <option value="{{choice.key}}"
+              {{#if (eq choice.key ../bonus.skill)}}selected{{/if}}>
+              {{choice.label}}
+            </option>
+            {{/each}}
+          </select>
+          <input type="number"
+                 name="system.skillBonuses.{{i}}.modifier"
+                 value="{{bonus.modifier}}" />
+          <a class="array-delete skill-bonus-delete"
+             data-index="{{i}}" title="Remove">
+            <i class="fas fa-trash"></i>
+          </a>
+        </div>
+        {{/each}}
+        <button type="button" class="skill-bonus-add array-add">
+          <i class="fas fa-plus"></i> Add Skill Bonus
+        </button>
+      </div>
+    </div>
+
+    {{!-- Once Per Turn --}}
+    <div class="form-group">
+      <label>Once Per Turn</label>
+      <div class="named-block">
+        <input type="text" name="system.oncePerturn.name"
+               value="{{system.oncePerturn.name}}"
+               placeholder="Ability name..." />
+        <textarea name="system.oncePerturn.description"
+                  placeholder="Description...">{{system.oncePerturn.description}}</textarea>
+      </div>
+    </div>
+
+    {{!-- Hero Dice Abilities --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.ClassHeroDiceAbilities"}}</label>
+      <div class="array-list">
+        {{#each system.heroDiceAbilities as |ability i|}}
+        <div class="array-row named-block">
+          <div class="named-block-header">
+            <input type="text"
+                   name="system.heroDiceAbilities.{{i}}.name"
+                   value="{{ability.name}}"
+                   placeholder="Ability name..." />
+            <label class="inline-label">Cost</label>
+            <input type="number"
+                   name="system.heroDiceAbilities.{{i}}.cost"
+                   value="{{ability.cost}}" min="1" />
+            <a class="array-delete hda-delete"
+               data-index="{{i}}" title="Remove">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+          <textarea name="system.heroDiceAbilities.{{i}}.description"
+                    placeholder="Description...">{{ability.description}}</textarea>
+        </div>
+        {{/each}}
+        <button type="button" class="hda-add array-add">
+          <i class="fas fa-plus"></i> Add Hero Dice Ability
+        </button>
+      </div>
+    </div>
+
+    {{!-- Description --}}
+    <div class="form-group">
+      <label>Description</label>
+      {{editor system.description
+               target="system.description"
+               button=true owner=owner editable=editable}}
+    </div>
+
+  </section>
+
+</form>

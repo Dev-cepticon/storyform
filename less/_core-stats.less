@@ -1,0 +1,70 @@
+//main: ./storyform.less
+
+.storyform .core-stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px 10px;
+  background: @color-stats-bar;
+  border-bottom: 2px solid @color-gold;
+  gap: 6px;
+  flex-shrink: 0;
+
+  .stat-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 60px;
+
+    label {
+      .label-uppercase();
+      font-size: 9px;
+      color: @color-accent;
+      white-space: nowrap;
+    }
+  }
+
+  .stat-value {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .stat-sep {
+    color: #aaa;
+    font-weight: normal;
+  }
+
+  .hero-dice-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    margin-top: 1px;
+
+    button {
+      width: 18px;
+      height: 18px;
+      border: 1px solid @color-gold;
+      border-radius: @border-radius-sm;
+      background: @color-card;
+      color: @color-accent;
+      font-size: 13px;
+      line-height: 1;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+
+      &:hover {
+        background: @color-accent;
+        color: @color-card;
+      }
+    }
+  }
+}

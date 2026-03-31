@@ -1,0 +1,84 @@
+{{! templates/actors/character-header.hbs }}
+{{!-- V2 requires each PART to output exactly one root element.
+      Both the header and core stats bar live inside this wrapper. --}}
+
+<div class="sheet-header-wrapper">
+
+  <header class="sheet-header">
+
+    <img class="profile-img" src="{{actor.img}}"
+         data-edit="img" title="{{actor.name}}" />
+
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}"
+               placeholder="Character Name" />
+      </h1>
+
+      <div class="identity-row">
+        <div class="identity-field">
+          <label>{{localize "STORYFORM.DetailsRace"}}</label>
+          <input type="text" name="system.details.race"
+                 value="{{system.details.race}}" />
+        </div>
+        <div class="identity-field">
+          <label>{{localize "STORYFORM.DetailsClass"}}</label>
+          <input type="text" name="system.details.class"
+                 value="{{system.details.class}}" />
+        </div>
+        <div class="identity-field">
+          <label>{{localize "STORYFORM.DetailsBackground"}}</label>
+          <input type="text" name="system.details.background"
+                 value="{{system.details.background}}" />
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  {{!-- Core Stats Bar --}}
+  <div class="core-stats">
+
+    <div class="stat-block">
+      <label>{{localize "STORYFORM.AttributeHp"}}</label>
+      <div class="stat-value">
+        <input type="number" name="system.attributes.hp.value"
+               value="{{system.attributes.hp.value}}" min="0" />
+        <span class="stat-sep">/</span>
+        <input type="number" name="system.attributes.hp.max"
+               value="{{system.attributes.hp.max}}" min="0" />
+      </div>
+    </div>
+
+    <div class="stat-block">
+      <label>{{localize "STORYFORM.AttributeHeroDice"}}</label>
+      <div class="stat-value">
+        <span class="hero-dice-current">{{system.attributes.herodice.value}}</span>
+        <span class="stat-sep">/</span>
+        <span class="hero-dice-max">{{system.attributes.herodice.max}}</span>
+      </div>
+      <div class="hero-dice-controls">
+        <button type="button" data-action="spendHeroDie" title="Spend Hero Die">−</button>
+        <button type="button" data-action="earnHeroDie"  title="Earn Hero Die">+</button>
+      </div>
+    </div>
+
+    <div class="stat-block">
+      <label>{{localize "STORYFORM.AttributeMovement"}}</label>
+      <div class="stat-value">
+        <input type="number" name="system.attributes.movement"
+               value="{{system.attributes.movement}}" min="0" />
+      </div>
+    </div>
+
+    <div class="stat-block">
+      <label>{{localize "STORYFORM.AttributeDefense"}}</label>
+      <div class="stat-value">
+        <input type="number" name="system.attributes.defense"
+               value="{{system.attributes.defense}}" min="0" />
+      </div>
+    </div>
+
+  </div>
+
+</div>{{!-- end .sheet-header-wrapper --}}

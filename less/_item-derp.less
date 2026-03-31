@@ -1,0 +1,100 @@
+//main: ./storyform.less
+
+// ── Derp Sheet ────────────────────────────────────────────
+
+.storyform.item.derp {
+
+  // Checkbox rows at the top — make them feel like toggles
+  .form-group .checkbox-label {
+    font-size: 13px;
+    color: @color-text-mid;
+    padding: 6px 8px;
+    background: @color-card;
+    border: 1px solid @color-mid-gold;
+    border-radius: @border-radius-sm;
+    transition: background 0.15s;
+
+    &:hover {
+      background: @color-hover;
+    }
+
+    input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: @color-accent;
+    }
+  }
+
+  // Earns Hero Die checkbox — highlight when checked
+  .earns-hero-die-label {
+    border-color: @color-gold;
+
+    &:has(input:checked) {
+      background: @color-stats-bar;
+      border-color: @color-accent;
+      color: @color-dark;
+      font-weight: bold;
+    }
+  }
+
+  // Has Bonus checkbox
+  .has-bonus-label {
+
+    &:has(input:checked) {
+      background: @color-stats-bar;
+      border-color: @color-accent;
+      color: @color-dark;
+      font-weight: bold;
+    }
+  }
+
+  // Bonus fields — visually grouped, indented
+  .bonus-fields {
+    margin-left: 8px;
+    border-left: 3px solid @color-accent;
+    border-radius: 0 @border-radius-lg @border-radius-lg 0;
+    padding: 10px 12px;
+    background: @color-card;
+    border-top: 1px solid @color-mid-gold;
+    border-right: 1px solid @color-mid-gold;
+    border-bottom: 1px solid @color-mid-gold;
+
+    .form-group {
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    // Bonus value — big number
+    input[type="number"] {
+      font-size: 20px;
+      font-weight: bold;
+      color: @color-accent;
+      width: 56px;
+      border-bottom-color: @color-gold;
+    }
+
+    // Condition — full width text
+    input[type="text"] {
+      font-size: 12px;
+      font-style: italic;
+      color: @color-text-mid;
+      border-bottom-color: @color-mid-gold;
+
+      &::placeholder {
+        color: @color-text-label;
+      }
+    }
+  }
+
+  // Description editor — derps are short by nature
+  .editor {
+    min-height: 120px;
+  }
+
+  .editor-content {
+    min-height: 120px;
+  }
+}

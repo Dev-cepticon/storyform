@@ -1,0 +1,107 @@
+{{! templates/items/background-sheet.hbs }}
+
+<form class="storyform sheet item background" autocomplete="off">
+
+  {{!-- Header --}}
+  <header class="item-header">
+    <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="item-header-fields">
+      <input class="item-name" type="text" name="name" value="{{item.name}}" placeholder="Background Name" />
+    </div>
+  </header>
+
+  {{!-- Body --}}
+  <section class="item-body">
+
+    {{!-- Skill Bonuses --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.BackgroundSkillBonuses"}}</label>
+      <div class="array-list">
+        {{#each system.skillBonuses as |bonus i|}}
+        <div class="array-row">
+          <select name="system.skillBonuses.{{i}}.skill">
+            {{#each ../skillChoices as |choice|}}
+            <option value="{{choice.key}}" {{#if (eq choice.key ../bonus.skill)}}selected{{/if}}>
+              {{choice.label}}
+            </option>
+            {{/each}}
+          </select>
+          <input type="number" name="system.skillBonuses.{{i}}.modifier" value="{{bonus.modifier}}" />
+          <select name="system.skillBonuses.{{i}}.type">
+            <option value="primary" {{#if (eq bonus.type "primary" )}}selected{{/if}}>
+              Primary
+            </option>
+            <option value="related" {{#if (eq bonus.type "related" )}}selected{{/if}}>
+              Related
+            </option>
+          </select>
+          <a class="array-delete skill-bonus-delete" data-index="{{i}}" title="Remove">
+            <i class="fas fa-trash"></i>
+          </a>
+        </div>
+        {{/each}}
+        <button type="button" class="skill-bonus-add array-add">
+          <i class="fas fa-plus"></i> Add Skill Bonus
+        </button>
+      </div>
+    </div>
+
+    {{!-- Optional once-per-turn ability --}}
+    <div class="form-group">
+      <label>Once Per Turn
+        <span class="form-hint">(optional)</span>
+      </label>
+      <div class="named-block">
+        <input type="text" name="system.oncePerturn.name" value="{{system.oncePerturn.name}}"
+          placeholder="Ability name..." />
+        <textarea name="system.oncePerturn.description"
+          placeholder="Leave blank if not applicable...">{{system.oncePerturn.description}}</textarea>
+      </div>
+    </div>
+
+    {{!-- Optional Hero Dice abilities --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.BackgroundHeroDiceAbilities"}}
+        <span class="form-hint">(optional)</span>
+      </label>
+      <div class="array-list">
+        {{#each system.heroDiceAbilities as |ability i|}}
+        <div class="array-row named-block">
+          <div class="named-block-header">
+            <input type="text" name="system.heroDiceAbilities.{{i}}.name" value="{{ability.name}}"
+              placeholder="Ability name..." />
+            <label class="inline-label">Cost</label>
+            <input type="number" name="system.heroDiceAbilities.{{i}}.cost" value="{{ability.cost}}" min="1" />
+            <a class="array-delete hda-delete" data-index="{{i}}" title="Remove">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+          <textarea name="system.heroDiceAbilities.{{i}}.description"
+            placeholder="Description...">{{ability.description}}</textarea>
+        </div>
+        {{/each}}
+        <button type="button" class="hda-add array-add">
+          <i class="fas fa-plus"></i> Add Hero Dice Ability
+        </button>
+      </div>
+    </div>
+
+
+    {{!-- Roleplay Flavor --}}
+    <div class="form-group">
+      <label>Roleplay Flavor</label>
+      <textarea name="system.roleplaying"
+        placeholder="Roleplay notes, contacts, instincts...">{{system.roleplaying}}</textarea>
+    </div>
+
+    {{!-- Description --}}
+    <div class="form-group">
+      <label>Description</label>
+      {{editor system.description
+      target="system.description"
+      button=true owner=owner editable=editable}}
+    </div>
+
+  </section>
+
+</form>

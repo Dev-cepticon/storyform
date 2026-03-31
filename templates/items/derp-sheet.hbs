@@ -1,0 +1,68 @@
+{{! templates/items/derp-sheet.hbs }}
+
+<form class="storyform sheet item derp" autocomplete="off">
+
+  {{!-- Header --}}
+  <header class="item-header">
+    <img class="item-img" src="{{item.img}}"
+         data-edit="img" title="{{item.name}}" />
+    <div class="item-header-fields">
+      <input class="item-name" type="text" name="name"
+             value="{{item.name}}" placeholder="Derp Name" />
+    </div>
+  </header>
+
+  {{!-- Body --}}
+  <section class="item-body">
+
+    {{!-- Earns Hero Die --}}
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox"
+               name="system.earnsHeroDie"
+               {{#if system.earnsHeroDie}}checked{{/if}} />
+        {{localize "STORYFORM.DerpEarnsHeroDie"}}
+      </label>
+    </div>
+
+    {{!-- Has Bonus --}}
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox"
+               name="system.hasBonus"
+               {{#if system.hasBonus}}checked{{/if}} />
+        {{localize "STORYFORM.DerpHasBonus"}}
+      </label>
+    </div>
+
+    {{!-- Bonus Fields — only shown when hasBonus is true --}}
+    {{#if system.hasBonus}}
+    <div class="bonus-fields">
+      <div class="form-group">
+        <label>{{localize "STORYFORM.DerpBonusValue"}}</label>
+        <div class="form-fields">
+          <input type="number" name="system.bonusValue"
+                 value="{{system.bonusValue}}" min="0" />
+          <span class="form-hint">Added to d20 rolls</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>{{localize "STORYFORM.DerpBonusCondition"}}</label>
+        <input type="text" name="system.bonusCondition"
+               value="{{system.bonusCondition}}"
+               placeholder="When does this bonus apply?" />
+      </div>
+    </div>
+    {{/if}}
+
+    {{!-- Description --}}
+    <div class="form-group">
+      <label>Description</label>
+      {{editor system.description
+               target="system.description"
+               button=true owner=owner editable=editable}}
+    </div>
+
+  </section>
+
+</form>

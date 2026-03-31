@@ -1,0 +1,126 @@
+{{! templates/items/race-sheet.hbs }}
+
+<form class="storyform sheet item race" autocomplete="off">
+
+  {{!-- Header --}}
+  <header class="item-header">
+    <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="item-header-fields">
+      <input class="item-name" type="text" name="name" value="{{item.name}}" placeholder="Race Name" />
+      <div class="item-subtitle">
+        <select name="system.size">
+          <option value="small" {{#if (eq system.size "small" )}}selected{{/if}}>
+            Small
+          </option>
+          <option value="medium" {{#if (eq system.size "medium" )}}selected{{/if}}>
+            Medium
+          </option>
+          <option value="large" {{#if (eq system.size "large" )}}selected{{/if}}>
+            Large
+          </option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  {{!-- Body --}}
+  <section class="item-body">
+
+    {{!-- Age --}}
+    <div class="form-group">
+      <label>Age</label>
+      <div class="form-fields inline-pair">
+        <label class="inline-label">Maturity</label>
+        <input type="number" name="system.age.maturity" value="{{system.age.maturity}}" />
+        <label class="inline-label">Max</label>
+        <input type="number" name="system.age.max" value="{{system.age.max}}" />
+      </div>
+    </div>
+
+    {{!-- Movement --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.AttributeMovement"}}</label>
+      <div class="form-fields">
+        <input type="number" name="system.movement" value="{{system.movement}}" min="1" />
+        <span class="form-hint">squares per turn</span>
+      </div>
+    </div>
+
+    {{!-- Ability Modifiers --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.RaceAbilityModifiers"}}</label>
+      <div class="array-list">
+        {{#each system.abilityModifiers as |mod i|}}
+        <div class="array-row">
+          <select name="system.abilityModifiers.{{i}}.ability">
+            {{#each ../abilityChoices as |choice|}}
+            <option value="{{choice.key}}" {{#if (eq choice.key ../mod.ability)}}selected{{/if}}>
+              {{choice.label}}
+            </option>
+            {{/each}}
+          </select>
+          <input type="number" name="system.abilityModifiers.{{i}}.modifier" value="{{mod.modifier}}" />
+          <a class="array-delete ability-mod-delete" data-index="{{i}}" title="Remove">
+            <i class="fas fa-trash"></i>
+          </a>
+        </div>
+        {{/each}}
+        <button type="button" class="ability-mod-add array-add">
+          <i class="fas fa-plus"></i> Add Ability Modifier
+        </button>
+      </div>
+    </div>
+
+    {{!-- Skill Modifiers --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.RaceSkillModifiers"}}</label>
+      <div class="array-list">
+        {{#each system.skillModifiers as |mod i|}}
+        <div class="array-row">
+          <select name="system.skillModifiers.{{i}}.skill">
+            {{#each ../skillChoices as |choice|}}
+            <option value="{{choice.key}}" {{#if (eq choice.key ../mod.skill)}}selected{{/if}}>
+              {{choice.label}}
+            </option>
+            {{/each}}
+          </select>
+          <input type="number" name="system.skillModifiers.{{i}}.modifier" value="{{mod.modifier}}" />
+          <a class="array-delete skill-mod-delete" data-index="{{i}}" title="Remove">
+            <i class="fas fa-trash"></i>
+          </a>
+        </div>
+        {{/each}}
+        <button type="button" class="skill-mod-add array-add">
+          <i class="fas fa-plus"></i> Add Skill Modifier
+        </button>
+      </div>
+    </div>
+
+    {{!-- Racial Trait --}}
+    <div class="form-group">
+      <label>Racial Trait</label>
+      <div class="named-block">
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.racialTrait.hasTrait" {{#if system.racialTrait.hasTrait}}checked{{/if}} />
+          Has Racial Trait
+        </label>
+        {{#if system.racialTrait.hasTrait}}
+        <input type="text" name="system.racialTrait.name" value="{{system.racialTrait.name}}"
+          placeholder="Trait name..." />
+        <textarea name="system.racialTrait.description"
+          placeholder="Trait description...">{{system.racialTrait.description}}</textarea>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- Description --}}
+    <div class="form-group">
+      <label>Description</label>
+      {{editor system.description
+      target="system.description"
+      button=true owner=owner editable=editable}}
+    </div>
+
+  </section>
+
+</form>

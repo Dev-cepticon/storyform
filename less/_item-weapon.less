@@ -1,0 +1,64 @@
+//main: ./storyform.less
+
+// ── Weapon Sheet ──────────────────────────────────────────
+
+.storyform.item.weapon {
+
+  // Category / tier subtitle in header
+  .item-subtitle {
+    select {
+      min-width: 70px;
+    }
+  }
+
+  // Damage row — formula input + hint side by side
+  .form-group .form-fields {
+
+    input[type="text"] {
+      max-width: 100px;
+      font-size: 15px;
+      font-weight: bold;
+      color: @color-accent;
+      text-align: center;
+      border-bottom-color: @color-gold;
+    }
+
+    .form-hint {
+      flex: 1;
+    }
+  }
+
+  // Property list — each row is a text input + delete
+  .array-list {
+
+    .array-row {
+      gap: 6px;
+
+      input[type="text"] {
+        flex: 1;
+        font-size: 12px;
+        font-style: italic;
+        color: @color-text-mid;
+        border-bottom-color: @color-mid-gold;
+
+        &::placeholder {
+          color: @color-text-label;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  // Tier badge shown next to damage hint
+  .tier-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    background: @color-stats-bar;
+    border: 1px solid @color-gold;
+    border-radius: @border-radius-sm;
+    font-size: 10px;
+    color: @color-text-mid;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}

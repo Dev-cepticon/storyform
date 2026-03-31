@@ -1,0 +1,188 @@
+//main: ./storyform.less
+
+.storyform .abilities-skills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.storyform .ability-group {
+  .card();
+  padding: 6px 8px;
+
+  .ability-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid @color-mid-gold;
+    gap: 6px;
+  }
+
+  .ability-name {
+    font-size: 12px;
+    font-weight: bold;
+    color: @color-dark;
+    margin: 0;
+    flex: 1;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+
+    h3 {
+      margin: 0;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+      transition: color 0.15s;
+    }
+
+    &:hover h3 {
+      color: @color-accent;
+    }
+  }
+
+  .ability-dc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+
+    label {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: @color-text-label;
+    }
+
+    input {
+      font-size: 14px;
+      font-weight: bold;
+      color: @color-accent;
+      width: 36px;
+      text-align: center;
+      border-bottom-color: @color-gold;
+    }
+  }
+
+  .skill-points-display {
+    font-size: 9px;
+    color: @color-text-muted;
+    text-align: right;
+    white-space: nowrap;
+
+    .points-spent {
+      font-weight: bold;
+      color: @color-text-mid;
+    }
+
+    .points-over {
+      color: @color-danger;
+      font-weight: bold;
+    }
+    .over-limit {
+    color: #ff4444 !important;
+    font-weight: bold !important;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+  }
+}
+
+.storyform .skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.storyform .skill-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 3px;
+  border-radius: @border-radius-sm;
+  transition: background 0.1s;
+
+  &:hover {
+    background: @color-hover;
+  }
+
+  .skill-roll {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    cursor: pointer;
+    color: @color-dark;
+
+    i {
+      font-size: 10px;
+      color: @color-gold;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+  }
+
+  &:hover .skill-roll i {
+    opacity: 1;
+  }
+
+  .skill-name {
+    font-size: 11px;
+  }
+
+  .skill-dc {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+
+    label {
+      font-size: 9px;
+      color: @color-text-label;
+      text-transform: uppercase;
+    }
+
+    input {
+      font-size: 12px;
+      font-weight: bold;
+      color: @color-text-mid;
+      width: 58px;
+
+      // Foundry base CSS resets number input appearance which hides spinners.
+      // Restore default appearance to make spinners always visible.
+      -webkit-appearance: auto !important;
+      -moz-appearance: auto !important;
+      appearance: auto !important;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: auto !important;
+        opacity: 1 !important;
+        cursor: pointer;
+      }
+    }
+  }
+}

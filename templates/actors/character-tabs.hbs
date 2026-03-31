@@ -1,0 +1,11 @@
+{{! templates/actors/character-tabs.hbs }}
+{{!-- V2 renders this as the tab navigation bar.
+data-group and data-tab are read by V2's built-in tab handler. --}}
+
+<nav class="sheet-tabs tabs" data-group="primary">
+  {{#each tabs as |tab|}}
+  <a class="item {{tab.cssClass}}" data-action="changeTab" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+    {{tab.label}}
+  </a>
+    {{/each}}
+</nav>

@@ -1,0 +1,27 @@
+{{! templates/actors/character-biography.hbs }}
+
+<div class="tab biography {{tab.cssClass}}"
+     data-group="{{tab.group}}"
+     data-tab="{{tab.id}}">
+
+  <div class="biography-field">
+    <label>{{localize "STORYFORM.DetailsPersonality"}}</label>
+    <input type="text"
+           name="system.details.personality"
+           value="{{system.details.personality}}"
+           placeholder="Personality trait..." />
+  </div>
+
+  <div class="biography-field">
+    <label>{{localize "STORYFORM.DetailsBiography"}}</label>
+    <div class="prosemirror">
+      <prose-mirror
+        name="system.details.biography"
+        value="{{system.details.biography}}"
+        toggled
+        collaborative="false">
+      </prose-mirror>
+    </div>
+  </div>
+
+</div>

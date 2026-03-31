@@ -1,0 +1,43 @@
+{
+  "id": "storyform",
+  "title": "Storyform",
+  "description": "A setting-agnostic storytelling RPG driven by imagination and d20 rolls.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Your Name Here"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "esmodules": ["storyform.mjs"],
+  "styles": ["storyform.css"],
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {}
+    },
+    "Item": {
+      "weapon":     {},
+      "armor":      {},
+      "class":      {},
+      "race":       {},
+      "background": {},
+      "derp":       {}
+    }
+  },
+  "grid": {
+    "distance": 1,
+    "units": "sq"
+  },
+  "primaryTokenAttribute": "attributes.hp",
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}

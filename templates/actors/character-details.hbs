@@ -1,0 +1,291 @@
+{{! templates/actors/character-details.hbs }}
+
+<div class="tab details {{tab.cssClass}}"
+     data-group="{{tab.group}}"
+     data-tab="{{tab.id}}">
+
+  <div class="abilities-skills">
+
+    {{!-- ── STRENGTH ─────────────────────────────────────── --}}
+    <div class="ability-group">
+      <div class="ability-header">
+        <a class="ability-name"
+           data-action="abilityRoll"
+           data-ability="str"
+           title="Roll Strength check">
+          <h3>{{localize "STORYFORM.AbilityStr"}}</h3>
+        </a>
+        <div class="ability-dc">
+          <label>{{localize "STORYFORM.AbilityDC"}}</label>
+          <input type="number" name="system.abilities.str.dc"
+                 value="{{system.abilities.str.dc}}" min="8" max="20" />
+        </div>
+        <div class="skill-points-display {{#if isStrOver}}over-limit{{/if}}">
+          <span>{{localize "STORYFORM.SkillPoints"}}:</span>
+          <span class="points-spent">
+            {{system.abilities.str.skillPointsSpent}}
+          </span>
+          / {{system.abilities.str.skillPoints}}
+        </div>
+      </div>
+      <ul class="skill-list">
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="brawling">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillBrawling"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.brawling.dc"
+                   value="{{system.skills.brawling.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="climb">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillClimb"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.climb.dc"
+                   value="{{system.skills.climb.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="intimidate">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillIntimidate"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.intimidate.dc"
+                   value="{{system.skills.intimidate.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="athletics">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillAthletics"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.athletics.dc"
+                   value="{{system.skills.athletics.dc}}" min="8" max="30" />
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    {{!-- ── DEXTERITY ────────────────────────────────────── --}}
+    <div class="ability-group">
+      <div class="ability-header">
+        <a class="ability-name"
+           data-action="abilityRoll"
+           data-ability="dex"
+           title="Roll Dexterity check">
+          <h3>{{localize "STORYFORM.AbilityDex"}}</h3>
+        </a>
+        <div class="ability-dc">
+          <label>{{localize "STORYFORM.AbilityDC"}}</label>
+          <input type="number" name="system.abilities.dex.dc"
+                 value="{{system.abilities.dex.dc}}" min="8" max="20" />
+        </div>
+        <div class="skill-points-display {{#if isDexOver}}over-limit{{/if}}">
+          <span>{{localize "STORYFORM.SkillPoints"}}:</span>
+          <span class="points-spent">
+            {{system.abilities.dex.skillPointsSpent}}
+          </span>
+          / {{system.abilities.dex.skillPoints}}
+        </div>
+      </div>
+      <ul class="skill-list">
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="melee">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillMelee"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.melee.dc"
+                   value="{{system.skills.melee.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="shooting">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillShooting"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.shooting.dc"
+                   value="{{system.skills.shooting.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="piloting">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillPiloting"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.piloting.dc"
+                   value="{{system.skills.piloting.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="stealth">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillStealth"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.stealth.dc"
+                   value="{{system.skills.stealth.dc}}" min="8" max="30" />
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    {{!-- ── INTELLIGENCE ─────────────────────────────────── --}}
+    <div class="ability-group">
+      <div class="ability-header">
+        <a class="ability-name"
+           data-action="abilityRoll"
+           data-ability="int"
+           title="Roll Intelligence check">
+          <h3>{{localize "STORYFORM.AbilityInt"}}</h3>
+        </a>
+        <div class="ability-dc">
+          <label>{{localize "STORYFORM.AbilityDC"}}</label>
+          <input type="number" name="system.abilities.int.dc"
+                 value="{{system.abilities.int.dc}}" min="8" max="20" />
+        </div>
+        <div class="skill-points-display {{#if isIntOver}}over-limit{{/if}}">
+          <span>{{localize "STORYFORM.SkillPoints"}}:</span>
+          <span class="points-spent">
+            {{system.abilities.int.skillPointsSpent}}
+          </span>
+          / {{system.abilities.int.skillPoints}}
+        </div>
+      </div>
+      <ul class="skill-list">
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="firstAid">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillFirstAid"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.firstAid.dc"
+                   value="{{system.skills.firstAid.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="repair">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillRepair"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.repair.dc"
+                   value="{{system.skills.repair.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="techArcana">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillTechArcana"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.techArcana.dc"
+                   value="{{system.skills.techArcana.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="perception">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillPerception"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.perception.dc"
+                   value="{{system.skills.perception.dc}}" min="8" max="30" />
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    {{!-- ── CHARISMA ─────────────────────────────────────── --}}
+    <div class="ability-group">
+      <div class="ability-header">
+        <a class="ability-name"
+           data-action="abilityRoll"
+           data-ability="cha"
+           title="Roll Charisma check">
+          <h3>{{localize "STORYFORM.AbilityCha"}}</h3>
+        </a>
+        <div class="ability-dc">
+          <label>{{localize "STORYFORM.AbilityDC"}}</label>
+          <input type="number" name="system.abilities.cha.dc"
+                 value="{{system.abilities.cha.dc}}" min="8" max="20" />
+        </div>
+        <div class="skill-points-display {{#if isChaOver}}over-limit{{/if}}">
+          <span>{{localize "STORYFORM.SkillPoints"}}:</span>
+          <span class="points-spent">
+            {{system.abilities.cha.skillPointsSpent}}
+          </span>
+          / {{system.abilities.cha.skillPoints}}
+        </div>
+      </div>
+      <ul class="skill-list">
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="charm">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillCharm"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.charm.dc"
+                   value="{{system.skills.charm.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="deception">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillDeception"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.deception.dc"
+                   value="{{system.skills.deception.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="gatherInfo">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillGatherInfo"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.gatherInfo.dc"
+                   value="{{system.skills.gatherInfo.dc}}" min="8" max="30" />
+          </div>
+        </li>
+        <li class="skill-row">
+          <a class="skill-roll" data-action="skillRoll" data-skill="haggle">
+            <i class="fas fa-dice-d20"></i>
+            <span class="skill-name">{{localize "STORYFORM.SkillHaggle"}}</span>
+          </a>
+          <div class="skill-dc">
+            <label>DC</label>
+            <input type="number" name="system.skills.haggle.dc"
+                   value="{{system.skills.haggle.dc}}" min="8" max="30" />
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

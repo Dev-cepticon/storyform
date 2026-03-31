@@ -1,0 +1,52 @@
+//main: ./storyform.less
+
+// ─── Colors ───────────────────────────────────────────────
+@color-dark:        #3b2108;   // header bg, headings
+@color-accent:      #7b3f00;   // active states, labels
+@color-gold:        #c8a97a;   // borders, dividers
+@color-mid-gold:    #d4b896;   // card borders
+@color-bg:          #f9f6f0;   // sheet background
+@color-card:        #fff8f0;   // card / input backgrounds
+@color-stats-bar:   #ede5d8;   // stats bar background
+@color-tabs-bar:    #e8ddd0;   // tab bar background
+@color-hover:       #f0e6d6;   // row hover state
+@color-text:        #1a1a1a;   // body text
+@color-text-mid:    #5a3a1a;   // secondary text
+@color-text-muted:  #888;      // muted / placeholder
+@color-text-label:  #999;      // small labels
+@color-danger:      #c0392b;   // delete, over-budget
+
+// Header-specific (light on dark background)
+@color-header-text:   #f5e6c8;
+@color-header-label:  #c8a97a;
+@color-header-border: #7b5a2a;
+
+// ─── Typography ───────────────────────────────────────────
+@font-serif:     "Georgia", serif;
+@font-base-size: 13px;
+
+// ─── Sizing ───────────────────────────────────────────────
+@border-radius-sm: 3px;
+@border-radius-md: 4px;
+@border-radius-lg: 5px;
+
+@profile-img-size: 72px;
+@stat-font-size:   18px;
+@ability-dc-size:  16px;
+
+// ─── Mixins ───────────────────────────────────────────────
+
+// Small uppercase label — used in many places
+.label-uppercase() {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+// Card container — parchment box with gold border
+.card() {
+  background: @color-card;
+  border: 1px solid @color-mid-gold;
+  border-radius: @border-radius-lg;
+  padding: 8px 10px;
+}
