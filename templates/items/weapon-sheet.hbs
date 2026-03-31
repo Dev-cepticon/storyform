@@ -1,64 +1,73 @@
-{{! templates/items/weapon-sheet.hbs }}
-<form class="storyform sheet item weapon" autocomplete="off">
-
-  {{!-- Header --}}
+{{!-- Header --}}
+<div>
   <header class="item-header">
     <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
     <div class="item-header-fields">
-      {{!-- Ensure name has a proper name attribute --}}
       <input class="item-name" type="text" name="name" value="{{item.name}}" placeholder="Weapon Name" />
-      
       <div class="item-subtitle">
         <select name="system.category">
-          <option value="melee" {{#if (eq system.category "melee" )}}selected{{/if}}>Melee</option>
-          <option value="gun" {{#if (eq system.category "gun" )}}selected{{/if}}>Gun</option>
+          <option value="melee" {{#if (eq system.category "melee" )}}selected{{/if}}>
+            Melee
+          </option>
+          <option value="gun" {{#if (eq system.category "gun" )}}selected{{/if}}>
+            Gun
+          </option>
         </select>
-
         <span class="item-type-label">— Tier</span>
         <select name="system.tier">
           {{#each (numRange 1 5) as |n|}}
-          <option value="{{n}}" {{#if (eq n ../system.tier)}}selected{{/if}}>{{n}}</option>
+          <option value="{{n}}" {{#if (eq n ../system.tier)}}selected{{/if}}>
+            {{n}}
+          </option>
           {{/each}}
         </select>
       </div>
     </div>
   </header>
-
   {{!-- Body --}}
   <section class="item-body">
-
+    {{!-- Damage --}}
     <div class="form-group">
       <label>{{localize "STORYFORM.WeaponDamage"}}</label>
       <div class="form-fields">
         <input type="text" name="system.damage" value="{{system.damage}}" placeholder="{{system.defaultDamage}}" />
+        <span class="form-hint">
+          Default for Tier {{system.tier}}: {{system.defaultDamage}}
+        </span>
       </div>
     </div>
-
+    {{!-- Properties — free text, open-ended --}}
     <div class="form-group">
       <label>{{localize "STORYFORM.WeaponProperties"}}</label>
       <div class="array-list">
         {{#each system.properties as |prop i|}}
         <div class="array-row">
-          <input type="text" name="system.properties.{{i}}" value="{{prop}}" />
-          <a class="array-delete" data-action="deleteProperty" data-index="{{i}}"><i class="fas fa-trash"></i></a>
+          <input type="text" name="system.properties.{{i}}" value="{{prop}}" placeholder="Property name or effect..." />
+          <a class="array-delete" data-action="deleteProperty" data-index="{{i}}" title="Remove">
+            <i class="fas fa-trash"></i>
+          </a>
         </div>
         {{/each}}
-        <button type="button" data-action="addProperty">Add Property</button>
+        <button type="button" class="property-add array-add" data-action="addProperty">
+          <i class="fas fa-plus"></i> Add Property
+        </button>
       </div>
     </div>
-
+    {{!-- Description --}}
     <div class="form-group">
       <label>Description</label>
       <div class="prosemirror-wrapper">
         {{#if @root.editable}}
-          <prose-mirror name="system.description" value="{{system.description}}" toggled="true">
-            {{{enrichedDescription}}}
-          </prose-mirror>
+        {{!-- Remove the inner div; let prose-mirror use the value attribute --}}
+        <prose-mirror name="system.description" value="{{system.description}}" toggled="true" collaborative="false">
+          {{{enrichedDescription}}}
+        </prose-mirror>
         {{else}}
-          <div class="enriched-content">{{{enrichedDescription}}}</div>
+        <div class="enriched-content editor-content">
+          {{{enrichedDescription}}}
+        </div>
         {{/if}}
       </div>
     </div>
-
-  </section> {{!-- END OF ITEM-BODY --}}
-</form> {{!-- END OF FORM --}}
+  </section>
+</div>

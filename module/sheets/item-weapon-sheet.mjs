@@ -9,6 +9,7 @@ export default class StoryformWeaponSheet
     template: "systems/storyform/templates/items/weapon-sheet.hbs",
     position: { width: 480, height: 500 },
     form: {
+      //handler: StoryformWeaponSheet._processFormData,
       submitOnChange: true,
       closeOnSubmit: false
     },
@@ -38,7 +39,6 @@ export default class StoryformWeaponSheet
         async: true
       }
     );
-    console.log(context.enrichedDescription);
     return context;
   }
 
@@ -57,32 +57,10 @@ export default class StoryformWeaponSheet
     await this.item.update({ "system.properties": props });
   }
   async _processFormData(event, form, formData) {
-    const data = foundry.utils.expandObject(formData.object);
-    console.log("V13 Process Form Data:", data);
-    return super._processFormData(event, form, formData);
-  }
+  const data = foundry.utils.expandObject(formData.object);
 
+  await this.item.update(data);
+  return super._processFormData(event, form, formData);
+}
 
-  // _onRender(context, options) {
-  //   super._onRender(context, options);
-
-  //   // Find the prosemirror element
-  //   const html = this.element;
-  //   const editor = html.querySelector("prose-mirror");
-
-  //   if (editor) {
-  //     // Force a form submission when the editor saves (checkmark click)
-  //     editor.addEventListener("save", () => {
-  //       this.submit();
-  //       console.log("Manual submission triggered via ProseMirror Save");
-  //     });
-  //   }
-  // }
-
-  // /** @override */
-  // async _updateObject(event, formData) {
-  //   // Debug: See what the sheet thinks 'system.description' is during save
-  //   console.log("Form Data being saved:", formData);
-  //   return this.item.update(formData);
-  // }
 }
