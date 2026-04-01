@@ -6,9 +6,13 @@ export default class StoryformArmorSheet
 
   static DEFAULT_OPTIONS = {
     classes: ["storyform", "sheet", "item", "armor"],
+    template: "systems/storyform/templates/items/armor-sheet.hbs",
     position: { width: 480, height: 460 },
+    form: {
+      submitOnChange: true
+    },
     actions: {
-      addProperty:    StoryformArmorSheet._onAddProperty,
+      addProperty: StoryformArmorSheet._onAddProperty,
       deleteProperty: StoryformArmorSheet._onDeleteProperty
     }
   };
@@ -21,9 +25,17 @@ export default class StoryformArmorSheet
   };
 
   async _prepareContext(options) {
-    const context  = await super._prepareContext(options);
-    context.item   = this.item;
+    const context = await super._prepareContext(options);
+    context.item = this.item;
     context.system = this.item.system;
+    context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.item.system.description ?? "",
+      {
+        secrets: this.item.isOwner,
+        rollData: this.item.getRollData(),
+        async: true
+      }
+    );
     return context;
   }
 
@@ -40,5 +52,12 @@ export default class StoryformArmorSheet
     const props = foundry.utils.deepClone(this.item.system.properties);
     props.splice(index, 1);
     await this.item.update({ "system.properties": props });
+  }
+
+  async _processFormData(event, form, formData) {
+    const data = foundry.utils.expandObject(formData.object);
+    //console.log("saving")
+    await this.item.update(data);
+    return super._processFormData(event, form, formData);
   }
 }

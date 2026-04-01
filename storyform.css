@@ -1030,7 +1030,7 @@
 }
 .storyform .sheet-body::-webkit-scrollbar,
 .storyform .item-body::-webkit-scrollbar {
-  width: 6px;
+  width: 30px;
 }
 .storyform .sheet-body::-webkit-scrollbar-track,
 .storyform .item-body::-webkit-scrollbar-track {

@@ -9,9 +9,7 @@ export default class StoryformWeaponSheet
     template: "systems/storyform/templates/items/weapon-sheet.hbs",
     position: { width: 480, height: 500 },
     form: {
-      //handler: StoryformWeaponSheet._processFormData,
-      submitOnChange: true,
-      closeOnSubmit: false
+      submitOnChange: true
     },
     actions: {
       addProperty: StoryformWeaponSheet._onAddProperty,
@@ -42,6 +40,10 @@ export default class StoryformWeaponSheet
     return context;
   }
 
+  async _onSubmitForm(formConfig, event) {
+    console.log("test")
+  }
+
   // ── Actions ───────────────────────────────────────────────
 
   static async _onAddProperty(event, target) {
@@ -56,9 +58,10 @@ export default class StoryformWeaponSheet
     props.splice(index, 1);
     await this.item.update({ "system.properties": props });
   }
+  
   async _processFormData(event, form, formData) {
   const data = foundry.utils.expandObject(formData.object);
-
+  //console.log("saving")
   await this.item.update(data);
   return super._processFormData(event, form, formData);
 }
