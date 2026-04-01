@@ -1,5 +1,6 @@
 export default class RaceData extends foundry.abstract.TypeDataModel {
 
+  /** @override */
   static defineSchema() {
     const {
       NumberField,
@@ -42,7 +43,9 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
             required: true, integer: true, initial: -1
           })
         }),
-        { label: "STORYFORM.RaceAbilityModifiers" }
+        { 
+          initial: [],
+          label: "STORYFORM.RaceAbilityModifiers" }
       ),
 
       // Skill DC modifiers
@@ -54,7 +57,9 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
             required: true, integer: true, initial: -1
           })
         }),
-        { label: "STORYFORM.RaceSkillModifiers" }
+        { 
+          initial: [],
+          label: "STORYFORM.RaceSkillModifiers" }
       ),
 
       // Optional racial trait — toggle to show/hide fields
@@ -64,7 +69,10 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
         description: new StringField({ initial: "" })
       }),
 
-      description: new HTMLField({ initial: "" })
+      description: new HTMLField({ 
+        required: true,
+        initial: "" ,
+        label: "STORYFORM.Description"})
     };
   }
 }

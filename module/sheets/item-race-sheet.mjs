@@ -4,12 +4,24 @@ const { HandlebarsApplicationMixin } = foundry.applications.api;
 export default class StoryformRaceSheet
   extends HandlebarsApplicationMixin(ItemSheetV2) {
 
+  /** @override */
   static DEFAULT_OPTIONS = {
     classes: ["storyform", "sheet", "item", "race"],
-    //template: "systems/storyform/templates/items/race-sheet.hbs",
-    //position: { width: 500, height: 700 },
+    window: {
+      resizable: true,
+      controls: [
+        {
+          icon: "fa-solid fa-gear",
+          label: "STORYFORM.ItemRace",
+          action: "showConfig"
+        }
+      ]
+    },
+    position: { width: 480, height: 540 },
     form: {
-      submitOnClose: true,
+      //handler: StoryformRaceSheet._processFormData,
+      submitOnChange: true,
+      closeOnSubmit: false
     },
     actions: {
       addAbilityMod: StoryformRaceSheet._onAddAbilityMod,
@@ -19,74 +31,86 @@ export default class StoryformRaceSheet
     }
   };
 
+  /** @override */
   static PARTS = {
     form: {
       template: "systems/storyform/templates/items/race-sheet.hbs",
       scrollable: [".item-body"]
     }
   };
-// ── Context ───────────────────────────────────────────────
+  // ── Context ───────────────────────────────────────────────
+  /** @override */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
+
+    // Provide direct access to the Item and its DataModel (system)
     context.item = this.item;
     context.system = this.item.system;
-    context.abilityChoices = [
+
+    // Prepare selection choices for the UI
+    context.abilityChoices = this._getAbilityChoices();
+    context.skillChoices = this._getSkillChoices();
+
+    // Enrich HTML for the description field (ProseMirror)
+
+    context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.item.system.description,
+      { async: true }
+    );
+
+
+    return context;
+  }
+
+  _getAbilityChoices() {
+    return [
       { key: "str", label: game.i18n.localize("STORYFORM.AbilityStr") },
       { key: "dex", label: game.i18n.localize("STORYFORM.AbilityDex") },
       { key: "int", label: game.i18n.localize("STORYFORM.AbilityInt") },
       { key: "cha", label: game.i18n.localize("STORYFORM.AbilityCha") }
     ];
-    context.skillChoices = this._getSkillChoices();
-    context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-      this.item.system.description ?? "",
-      {
-        secrets: this.item.isOwner,
-        rollData: this.item.getRollData(),
-        async: true
-      }
-    );
-    return context;
   }
 
   _getSkillChoices() {
-    // const skills = [
-    //   ["brawling", "SkillBrawling"], ["climb", "SkillClimb"],
-    //   ["intimidate", "SkillIntimidate"], ["athletics", "SkillAthletics"],
-    //   ["melee", "SkillMelee"], ["shooting", "SkillShooting"],
-    //   ["piloting", "SkillPiloting"], ["stealth", "SkillStealth"],
-    //   ["firstAid", "SkillFirstAid"], ["repair", "SkillRepair"],
-    //   ["techArcana", "SkillTechArcana"], ["perception", "SkillPerception"],
-    //   ["charm", "SkillCharm"], ["deception", "SkillDeception"],
-    //   ["gatherInfo", "SkillGatherInfo"], ["haggle", "SkillHaggle"]
-    // ];
-    // return skills.map(([key, loc]) => ({
-    //   key, label: game.i18n.localize(`STORYFORM.${loc}`)
-    // }));
+    ;
     return [
-      ["brawling",   "SkillBrawling"],
-      ["climb",      "SkillClimb"],
+      ["brawling", "SkillBrawling"],
+      ["climb", "SkillClimb"],
       ["intimidate", "SkillIntimidate"],
-      ["athletics",  "SkillAthletics"],
-      ["melee",      "SkillMelee"],
-      ["shooting",   "SkillShooting"],
-      ["piloting",   "SkillPiloting"],
-      ["stealth",    "SkillStealth"],
-      ["firstAid",   "SkillFirstAid"],
-      ["repair",     "SkillRepair"],
+      ["athletics", "SkillAthletics"],
+      ["melee", "SkillMelee"],
+      ["shooting", "SkillShooting"],
+      ["piloting", "SkillPiloting"],
+      ["stealth", "SkillStealth"],
+      ["firstAid", "SkillFirstAid"],
+      ["repair", "SkillRepair"],
       ["techArcana", "SkillTechArcana"],
       ["perception", "SkillPerception"],
-      ["charm",      "SkillCharm"],
-      ["deception",  "SkillDeception"],
+      ["charm", "SkillCharm"],
+      ["deception", "SkillDeception"],
       ["gatherInfo", "SkillGatherInfo"],
-      ["haggle",     "SkillHaggle"]
+      ["haggle", "SkillHaggle"]
     ].map(([key, loc]) => ({
       key,
       label: game.i18n.localize(`STORYFORM.${loc}`)
     }));
   }
 
-  _processFormData(){
-    console.log("TEST")
+  // ── Form Handling ───────────────────────────────────────────────
+  static async _processFormData(config, event, formData) {
+    //Expand the flat dot-notation keys into a nested object
+    const data = foundry.utils.expandObject(formData.object);
+
+    // 2. CRITICAL: expandObject turns indices into object keys (e.g., {"0": {..}})
+    // We must convert these back into true Arrays [] for the DataModel.
+    if (data.system?.abilityModifiers) {
+      data.system.abilityModifiers = Object.values(data.system.abilityModifiers);
+    }
+    if (data.system?.skillModifiers) {
+      data.system.skillModifiers = Object.values(data.system.skillModifiers);
+    }
+    console.log("Saving")
+    return data;
   }
 
   // ── Actions ───────────────────────────────────────────────
@@ -116,17 +140,4 @@ export default class StoryformRaceSheet
     mods.splice(index, 1);
     await this.item.update({ "system.skillModifiers": mods });
   }
-
-  // static async _processFormData(event, form, formData) {
-  // const data = foundry.utils.expandObject(formData.object);
-
-  // if (data.system?.abilityModifiers) {
-  //   data.system.abilityModifiers = Object.values(data.system.abilityModifiers);
-  // }
-  // if (data.system?.skillModifiers) {
-  //   data.system.skillModifiers = Object.values(data.system.skillModifiers);
-  // }
-  // console.log("Final Data for Save:", data);
-  // return data;
-  // }
 }

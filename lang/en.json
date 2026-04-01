@@ -1,15 +1,6 @@
 {
   "STORYFORM.SystemName": "Storyform",
 
-  "TYPES.Actor.character": "Character",
-  "TYPES.Actor.npc": "NPC",
-  "TYPES.Item.weapon": "Weapon",
-  "TYPES.Item.armor": "Armor",
-  "TYPES.Item.class": "Class",
-  "TYPES.Item.race": "Race",
-  "TYPES.Item.background": "Background",
-  "TYPES.Item.derp": "Derp",
-
   "STORYFORM.ActorCharacter": "Character",
   "STORYFORM.ActorNpc": "NPC",
 
@@ -91,6 +82,8 @@
   "STORYFORM.DerpBonusValue": "Bonus Value",
   "STORYFORM.DerpBonusCondition": "Bonus Condition",
 
+  "STORYFORM.Description": "Description",
+
   "STORYFORM.RollSkill": "Skill Check",
   "STORYFORM.RollAttack": "Attack Roll",
   "STORYFORM.RollSuccess": "Success",
@@ -106,5 +99,14 @@
   "STORYFORM.CombatMove": "Move",
   "STORYFORM.CombatAttack": "Attack",
   "STORYFORM.CombatInteract": "Interact",
-  "STORYFORM.CombatSpecial": "Special"
+  "STORYFORM.CombatSpecial": "Special",
+
+  "TYPES.Actor.character": "Character",
+  "TYPES.Actor.npc": "NPC",
+  "TYPES.Item.weapon": "Weapon",
+  "TYPES.Item.armor": "Armor",
+  "TYPES.Item.class": "Class",
+  "TYPES.Item.race": "Race",
+  "TYPES.Item.background": "Background",
+  "TYPES.Item.derp": "Derp"
 }
