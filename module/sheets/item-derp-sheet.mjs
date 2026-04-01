@@ -1,3 +1,5 @@
+import { log } from "../utility/utility.mjs";
+
 const { ItemSheetV2 } = foundry.applications.sheets;
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -7,11 +9,6 @@ export default class StoryformDerpSheet
   static DEFAULT_OPTIONS = {
     classes: ["storyform", "sheet", "item", "derp"],
     position: { width: 460, height: 420 },
-    // No dynamic array actions needed — all fields on the
-    // derp sheet save automatically via V2 form binding.
-    // The hasBonus toggle is handled by the template's
-    // conditional {{#if system.hasBonus}} block, which
-    // re-renders automatically when the value changes.
     actions: {}
   };
 
@@ -23,9 +20,15 @@ export default class StoryformDerpSheet
   };
 
   async _prepareContext(options) {
+
+    log(`Preparing context for derp item: ${this.item.name}`);
+
     const context  = await super._prepareContext(options);
     context.item   = this.item;
     context.system = this.item.system;
+
+    log(`Finished preparing context for ${this.item.name}. System data:`, context.system);
+
     return context;
   }
 }

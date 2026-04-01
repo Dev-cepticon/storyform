@@ -1,3 +1,4 @@
+import { log } from "../utility/utility.mjs";
 
 /**
  * Present the roll dialog and return the player's choices.
@@ -16,6 +17,8 @@ async function getRollOptions({ label, dc, heroDice, attackIndex = 0 }) {
     const { DialogV2 } = foundry.applications.api
     const attackPenalty = attackIndex * 2;
     const effectiveDC = dc + attackPenalty;
+
+    log(`Opening Roll Dialog for ${label} (Base DC: ${dc}, Penalty: ${attackPenalty})`);
 
     return await DialogV2.wait({
         window: {
@@ -106,6 +109,8 @@ export async function rollSkill(actor, skillKey, options = {}) {
     const labelKey = `STORYFORM.Skill${skillKey.charAt(0).toUpperCase()}${skillKey.slice(1)}`;
     const label = options.label ?? game.i18n.localize(labelKey) ?? skillKey;
 
+    log(`Rolling Skill: ${label} for ${actor.name}`);
+
     // Base DC + any situational modifier the GM has applied
     const baseDC = (options.dcOverride ?? skill.dc) + (options.dcModifier ?? 0);
     const attackIndex = options.attackIndex ?? 0;
@@ -115,7 +120,7 @@ export async function rollSkill(actor, skillKey, options = {}) {
     const currentHeroDice = actor.system.attributes.herodice.value;
 
     // ── Dialog ────────────────────────────────────────────
-
+    log(`Rolling Skill: ${label} for ${actor.name}`);
     let heroDiceSpend = 0;
     if (!options.skipDialog) {
         const result = await getRollOptions({
@@ -126,13 +131,17 @@ export async function rollSkill(actor, skillKey, options = {}) {
         });
 
         // Player cancelled
-        if (result === null) return;
+        if (result === null) {
+            log("Roll cancelled by user.");
+            return;
+        }
         console.log("result.heroDiceSpend " + result.heroDiceSpend)
         heroDiceSpend = result.heroDiceSpend;
         console.log("heroDiceSpend " + heroDiceSpend)
     } else {
         heroDiceSpend = options.heroDiceSpend ?? 0;
     }
+    log(`Hero Dice Spent: ${heroDiceSpend}`);
 
     // ── Build the dice formula ────────────────────────────
 
@@ -145,6 +154,8 @@ export async function rollSkill(actor, skillKey, options = {}) {
     const roll = await new Roll(formula).evaluate();
     const d20 = roll.dice[0].results[0].result;  // The d20 result specifically
     const total = roll.total;
+
+    log(`Formula: ${formula} | Total: ${total} (d20: ${d20}) vs DC: ${effectiveDC}`);
 
     // ── Determine result ──────────────────────────────────
 
@@ -167,6 +178,7 @@ export async function rollSkill(actor, skillKey, options = {}) {
             "system.attributes.herodice.value":
                 Math.max(0, currentHeroDice - heroDiceSpend)
         });
+        log(`Deducted ${heroDiceSpend} Hero Dice. New total: ${actor.system.attributes.herodice.value}`);
     }
 
     // ── Build chat flavor ─────────────────────────────────
@@ -225,9 +237,9 @@ export async function rollSkill(actor, skillKey, options = {}) {
  */
 export async function rollAttack(actor, weapon, options = {}) {
 
+    log(`Initiating Attack with ${weapon.name}`);
     // Determine which skill drives this attack
     const skillKey = options.skillKey ?? _getAttackSkill(weapon);
-
     const label = `Attack — ${weapon.name}`;
 
     // ── Attack roll ───────────────────────────────────────
@@ -261,6 +273,8 @@ export async function rollAttack(actor, weapon, options = {}) {
         const rawDamage = damageRoll.total;
         const finalDamage = Math.max(0, rawDamage - targetDR);
 
+        log(`Damage Formula: ${finalFormula} | Raw: ${damageRoll.total} | vs DR: ${targetDR} | Final: ${finalDamage}`);
+
         const drText = targetDR > 0
             ? ` <span class="dr-note">(${rawDamage} − ${targetDR} DR)</span>`
             : "";
@@ -291,7 +305,7 @@ export async function rollAttack(actor, weapon, options = {}) {
 
         return { attackResult, damageRoll, finalDamage };
     }
-
+    log("Attack Missed.");
     return { attackResult, damageRoll: null, finalDamage: 0 };
 }
 
@@ -318,7 +332,7 @@ function _getAttackSkill(weapon) {
  * @param {number} [dcModifier]  Situational modifier to apply on top
  */
 export async function rollAbilityCheck(actor, abilityKey, dcModifier = 0) {
-
+    log(`Rolling Ability Check: ${abilityKey}`);
     const ability = actor.system.abilities[abilityKey];
     if (!ability) {
         ui.notifications.warn(`Unknown ability: ${abilityKey}`);

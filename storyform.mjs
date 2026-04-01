@@ -25,16 +25,19 @@ import StoryformDerpSheet
 import { rollSkill, rollAttack, rollAbilityCheck }
   from "./module/rolls/skill-roll.mjs";
 
+import { log } from "./module/utility/utility.mjs";
+
+// ── Initialization Hook ────────────────────────────────────
 Hooks.once("init", () => {
-  console.log("Storyform | Initializing system");
+  log("Storyform | Initializing system");
 
   CONFIG.INIT = true;
-
+  log("Preloading templates and registering helpers...");
   preloadHandlebarsTemplates();
   registerHandlebarsHelpers();
 
   // ── Data Models ───────────────────────────────────────────
-
+  log("Registering Actor and Item Data Models...");
   CONFIG.Actor.dataModels = {
     character: CharacterData,
     npc: NpcData
@@ -50,8 +53,7 @@ Hooks.once("init", () => {
   };
 
   // ── Sheet Registration ────────────────────────────────────
-  // V2 sheets are registered the same way as V1 — Foundry
-  // detects which base class is used and handles accordingly.
+  log("Configuring Sheet Registrations...");
 
   const { Actors: ActorsCollection, Items: ItemsCollection } =
     foundry.documents.collections;
@@ -66,17 +68,19 @@ Hooks.once("init", () => {
     label: "Storyform Character Sheet"
   });
 
+  log("Actor sheets registered.");
+
   ItemsCollection.unregisterSheet("core", foundry.appv1.sheets.ItemSheet, {
     types: ["weapon", "armor", "class", "race", "background", "derp"]
   });
 
   const itemSheets = [
-    [StoryformWeaponSheet,     "weapon",     "Weapon"],
-    [StoryformArmorSheet,      "armor",      "Armor"],
-    [StoryformClassSheet,      "class",      "Class"],
-    [StoryformRaceSheet,       "race",       "Race"],
+    [StoryformWeaponSheet, "weapon", "Weapon"],
+    [StoryformArmorSheet, "armor", "Armor"],
+    [StoryformClassSheet, "class", "Class"],
+    [StoryformRaceSheet, "race", "Race"],
     [StoryformBackgroundSheet, "background", "Background"],
-    [StoryformDerpSheet,       "derp",       "Derp"]
+    [StoryformDerpSheet, "derp", "Derp"]
   ];
 
   for (const [sheet, type, label] of itemSheets) {
@@ -85,12 +89,14 @@ Hooks.once("init", () => {
       makeDefault: true,
       label: `Storyform ${label} Sheet`
     });
+    log(`Registered ${label} sheet for type: ${type}`);
   }
-
+  log("Initialization complete.");
 });
 
+// ── Ready Hook ─────────────────────────────────────────────
 Hooks.once("ready", async () => {
-  console.log("Storyform | System ready");
+  log("Storyform | System ready");
   CONFIG.INIT = false;
 
   // Expose roll functions globally so macros can call them.
@@ -100,14 +106,20 @@ Hooks.once("ready", async () => {
     rollAttack,
     rollAbilityCheck
   };
+  log("Global API exposed to game.storyform");
 
-  if (!game.user.isGM) return;
-  // GM-only setup goes here
+  if (!game.user.isGM) {
+    log("Performing GM-only setup routines...");
+    // GM-only setup goes here
+    return;
+  }
 });
 
 // ── Handlebars ────────────────────────────────────────────
 
 function preloadHandlebarsTemplates() {
+
+  log("Loading template partials...");
   const templatePaths = [
     // "systems/storyform/templates/partials/template.hbs",
   ];
@@ -115,6 +127,8 @@ function preloadHandlebarsTemplates() {
 }
 
 function registerHandlebarsHelpers() {
+
+  log("Registering system Handlebars helpers...");
 
   Handlebars.registerHelper("equals", function (v1, v2) {
     return v1 === v2;

@@ -19,7 +19,7 @@ export default class StoryformRaceSheet
     },
     position: { width: 480, height: 540 },
     form: {
-      //handler: StoryformRaceSheet._processFormData,
+      handler: StoryformRaceSheet._processFormData,
       submitOnChange: true,
       closeOnSubmit: false
     },
@@ -110,7 +110,7 @@ export default class StoryformRaceSheet
       data.system.skillModifiers = Object.values(data.system.skillModifiers);
     }
     console.log("Saving")
-    return data;
+    await this.item.update(data);
   }
 
   // ── Actions ───────────────────────────────────────────────

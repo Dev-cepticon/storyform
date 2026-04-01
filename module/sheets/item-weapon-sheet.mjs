@@ -40,10 +40,6 @@ export default class StoryformWeaponSheet
     return context;
   }
 
-  async _onSubmitForm(formConfig, event) {
-    console.log("test")
-  }
-
   // ── Actions ───────────────────────────────────────────────
 
   static async _onAddProperty(event, target) {
@@ -60,10 +56,10 @@ export default class StoryformWeaponSheet
   }
   
   async _processFormData(event, form, formData) {
+
   const data = foundry.utils.expandObject(formData.object);
-  //console.log("saving")
+  
   await this.item.update(data);
-  return super._processFormData(event, form, formData);
 }
 
 }

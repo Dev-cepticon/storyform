@@ -1,4 +1,5 @@
 import { rollSkill, rollAttack, rollAbilityCheck } from "../rolls/skill-roll.mjs";
+import { log } from "../utility/utility.mjs";
 
 const { ActorSheetV2 } = foundry.applications.sheets;
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -81,6 +82,9 @@ export default class StoryformCharacterSheet
   }
 
   async _prepareContext(options) {
+
+    log(`Preparing context for ${this.actor.name}`);
+
     const context = await super._prepareContext(options);
     context.actor = this.actor;
     context.system = this.actor.system;
@@ -95,10 +99,16 @@ export default class StoryformCharacterSheet
     context.isChaOver = a.cha.skillPointsSpent > a.cha.skillPoints;
 
     context.items = this.actor.items.map(i => i.toObject(false));
+
+    log(`Finished preparing context for ${this.actor.name}`);
+
     return context;
   }
 
   async _preparePartContext(partId, context) {
+
+    log(`Preparing part context for: ${partId}`);
+
     context.tab = context.tab || {};
     context.tab.active = this.tabGroups.primary === partId;
     context.tab.cssClass = context.tab.active ? "active" : "";
@@ -106,6 +116,7 @@ export default class StoryformCharacterSheet
     context.tab.id = partId;
 
     if (partId === "details") {
+      log("Enriching biography HTML...");
       context.enrichedBiography = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
         this.actor.system.details.biography ?? "",
         {
@@ -116,12 +127,16 @@ export default class StoryformCharacterSheet
       );
     }
 
+    
+
     return context;
   }
 
   static async _onChangeTab(event, target) {
     const group = target.dataset.group;
     const tabId = target.dataset.tab;
+
+    log(`Changing tab: Group=${group}, Tab=${tabId}`);
 
     this.tabGroups[group] = tabId;
 
@@ -185,30 +200,47 @@ export default class StoryformCharacterSheet
   }
 
   static async _onSkillRoll(event, target) {
+
     const skillKey = target.dataset.skill;
+
+    log(`UI Action: Skill Roll triggered for ${skillKey}`);
+
     await rollSkill(this.actor, skillKey);
   }
 
   static async _onAbilityRoll(event, target) {
+    
     const abilityKey = target.dataset.ability;
+    
+    log(`UI Action: Ability Roll triggered for ${abilityKey}`);
+
     await rollAbilityCheck(this.actor, abilityKey);
   }
 
   static async _onAttackRoll(event, target) {
     const itemId = target.closest("[data-item-id]").dataset.itemId;
     const weapon = this.actor.items.get(itemId);
+
+    log(`UI Action: Attack Roll triggered for weapon: ${weapon?.name ?? 'Unknown'}`);
+
     if (!weapon) return;
     await rollAttack(this.actor, weapon);
   }
 
   static async _onEarnHeroDie(event, target) {
     const { value, max } = this.actor.system.attributes.herodice;
+
+    log(`UI Action: Earn Hero Die. Current: ${value}/${max}`);
+
     if (value >= max) return ui.notifications.warn("Already at maximum Hero Dice.");
     await this.actor.update({ "system.attributes.herodice.value": value + 1 });
   }
 
   static async _onSpendHeroDie(event, target) {
     const current = this.actor.system.attributes.herodice.value;
+
+    log(`UI Action: Manual Spend Hero Die. Current: ${current}`);
+
     if (current <= 0) return ui.notifications.warn("No Hero Dice remaining.");
     await this.actor.update({ "system.attributes.herodice.value": current - 1 });
   }
