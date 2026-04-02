@@ -30,9 +30,6 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
         min: 1, initial: 3,
         label: "STORYFORM.AttributeMovement"
       }),
-
-      // Ability DC modifiers. Negative = beneficial (lowers DC).
-      // e.g. Shadow Elf: -2 Dexterity, -1 Intelligence
       abilityModifiers: new ArrayField(
         new SchemaField({
           ability:  new StringField({
@@ -48,8 +45,7 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
           label: "STORYFORM.RaceAbilityModifiers" }
       ),
 
-      // Skill DC modifiers
-      // e.g. Shadow Elf: +1 Melee, -1 Stealth
+
       skillModifiers: new ArrayField(
         new SchemaField({
           skill:    new StringField({ required: true }),
