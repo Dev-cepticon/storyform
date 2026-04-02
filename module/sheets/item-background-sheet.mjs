@@ -8,12 +8,26 @@ export default class StoryformBackgroundSheet
 
   static DEFAULT_OPTIONS = {
     classes: ["storyform", "sheet", "item", "background"],
+    window: {
+      resizable: true,
+      controls: [
+        {
+          icon: "fa-solid fa-gear",
+          label: "STORYFORM.ItemRace",
+          action: "showConfig"
+        }
+      ]
+    },
     position: { width: 480, height: 540 },
+    form: {
+      submitOnChange: true,
+      closeOnSubmit: false
+    },
     actions: {
-      addSkillBonus:    StoryformBackgroundSheet._onAddSkillBonus,
-      deleteSkillBonus: StoryformBackgroundSheet._onDeleteSkillBonus,
-      addHDA:           StoryformBackgroundSheet._onAddHDA,
-      deleteHDA:        StoryformBackgroundSheet._onDeleteHDA
+      addSkillMod: StoryformBackgroundSheet._onAddSkillMod,
+      deleteSkillMod: StoryformBackgroundSheet._onDeleteSkillMod,
+      addHDA: StoryformBackgroundSheet._onAddHDA,
+      deleteHDA: StoryformBackgroundSheet._onDeleteHDA
     }
   };
 
@@ -28,10 +42,21 @@ export default class StoryformBackgroundSheet
 
     log(`Preparing context for background item: ${this.item.name}`);
 
-    const context  = await super._prepareContext(options);
-    context.item   = this.item;
+    const context = await super._prepareContext(options);
+
+    // Provide direct access to the Item and its DataModel (system)
+    context.item = this.item;
     context.system = this.item.system;
+
+    // Prepare selection choices for the UI
     context.skillChoices = this._getSkillChoices();
+
+    // Enrich HTML for the description field (ProseMirror)
+    log("Enriching description HTML...");
+    context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.item.system.description,
+      { async: true }
+    );
 
     log(`Finished preparing context for ${this.item.name}`);
 
@@ -43,14 +68,14 @@ export default class StoryformBackgroundSheet
     log("Generating skill choices for background dropdowns...");
 
     const skills = [
-      ["brawling",   "SkillBrawling"],   ["climb",      "SkillClimb"],
-      ["intimidate", "SkillIntimidate"], ["athletics",  "SkillAthletics"],
-      ["melee",      "SkillMelee"],      ["shooting",   "SkillShooting"],
-      ["piloting",   "SkillPiloting"],   ["stealth",    "SkillStealth"],
-      ["firstAid",   "SkillFirstAid"],   ["repair",     "SkillRepair"],
+      ["brawling", "SkillBrawling"], ["climb", "SkillClimb"],
+      ["intimidate", "SkillIntimidate"], ["athletics", "SkillAthletics"],
+      ["melee", "SkillMelee"], ["shooting", "SkillShooting"],
+      ["piloting", "SkillPiloting"], ["stealth", "SkillStealth"],
+      ["firstAid", "SkillFirstAid"], ["repair", "SkillRepair"],
       ["techArcana", "SkillTechArcana"], ["perception", "SkillPerception"],
-      ["charm",      "SkillCharm"],      ["deception",  "SkillDeception"],
-      ["gatherInfo", "SkillGatherInfo"], ["haggle",     "SkillHaggle"]
+      ["charm", "SkillCharm"], ["deception", "SkillDeception"],
+      ["gatherInfo", "SkillGatherInfo"], ["haggle", "SkillHaggle"]
     ];
     return skills.map(([key, loc]) => ({
       key, label: game.i18n.localize(`STORYFORM.${loc}`)
@@ -61,30 +86,30 @@ export default class StoryformBackgroundSheet
   // Note: oncePerturn fields save automatically through V2's
   // form binding — no handler needed for those fields.
 
-  static async _onAddSkillBonus(event, target) {
+  static async _onAddSkillMod(event, target) {
 
     log(`UI Action: Adding skill bonus to ${this.item.name}`);
 
-    const bonuses = foundry.utils.deepClone(this.item.system.skillBonuses);
-    bonuses.push({ skill: "brawling", modifier: -1, type: "related" });
+    const mods = foundry.utils.deepClone(this.item.system.skillModifiers);
+    mods.push({ skill: "brawling", modifier: -1, type: "related" });
 
-    log(`Updating skill bonuses. New count: ${bonuses.length}`);
+    log(`Updating skill bonuses. New count: ${mods.length}`);
 
-    await this.item.update({ "system.skillBonuses": bonuses });
+    await this.item.update({ "system.skillModifiers": mods });
   }
 
-  static async _onDeleteSkillBonus(event, target) {
+  static async _onDeleteSkillMod(event, target) {
 
-    const index   = Number(target.dataset.index);
-    const bonuses = foundry.utils.deepClone(this.item.system.skillBonuses);
+    const index = Number(target.dataset.index);
+    const mods = foundry.utils.deepClone(this.item.system.skillModifiers);
 
     log(`UI Action: Deleting skill bonus at index ${index} from ${this.item.name}`);
 
-    bonuses.splice(index, 1);
+    mods.splice(index, 1);
 
-    log(`Updating skill bonuses. New count: ${bonuses.length}`);
+    log(`Updating skill modifiers. New count: ${mods.length}`);
 
-    await this.item.update({ "system.skillBonuses": bonuses });
+    await this.item.update({ "system.skillModifiers": mods });
   }
 
   static async _onAddHDA(event, target) {
@@ -102,7 +127,7 @@ export default class StoryformBackgroundSheet
   }
 
   static async _onDeleteHDA(event, target) {
-    const index     = Number(target.dataset.index);
+    const index = Number(target.dataset.index);
     const abilities = foundry.utils.deepClone(
       this.item.system.heroDiceAbilities
     );
@@ -112,7 +137,7 @@ export default class StoryformBackgroundSheet
     abilities.splice(index, 1);
 
     log(`Updating Hero Dice Abilities. New count: ${abilities.length}`);
-    
+
     await this.item.update({ "system.heroDiceAbilities": abilities });
   }
 }

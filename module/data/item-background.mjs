@@ -11,7 +11,7 @@ export default class BackgroundData extends foundry.abstract.TypeDataModel {
 
     return {
 
-      skillBonuses: new ArrayField(
+      skillModifiers: new ArrayField(
         new SchemaField({
           skill:    new StringField({ required: true }),
           modifier: new NumberField({
@@ -19,7 +19,7 @@ export default class BackgroundData extends foundry.abstract.TypeDataModel {
           }),
           type: new StringField({ initial: "related" })
         }),
-        { label: "STORYFORM.BackgroundSkillBonuses" }
+        { label: "STORYFORM.BackgroundSkillModifiers" }
       ),
 
       // Optional — not all backgrounds grant a once-per-turn ability
