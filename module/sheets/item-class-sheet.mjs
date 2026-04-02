@@ -6,17 +6,33 @@ const { HandlebarsApplicationMixin } = foundry.applications.api;
 export default class StoryformClassSheet
   extends HandlebarsApplicationMixin(ItemSheetV2) {
 
+  /** @override */
   static DEFAULT_OPTIONS = {
     classes: ["storyform", "sheet", "item", "class"],
+    window: {
+      resizable: true,
+      controls: [
+        {
+          icon: "fa-solid fa-gear",
+          label: "STORYFORM.ItemRace",
+          action: "showConfig"
+        }
+      ]
+    },
     position: { width: 520, height: 600 },
+    form: {
+      submitOnChange: true,
+      closeOnSubmit: false
+    },
     actions: {
-      addSkillBonus:    StoryformClassSheet._onAddSkillBonus,
-      deleteSkillBonus: StoryformClassSheet._onDeleteSkillBonus,
-      addHDA:           StoryformClassSheet._onAddHDA,
-      deleteHDA:        StoryformClassSheet._onDeleteHDA
+      addSkillMod: StoryformClassSheet._onAddSkillMod,       
+      deleteSkillMod: StoryformClassSheet._onDeleteSkillMod, 
+      addHDA: StoryformClassSheet._onAddHDA,
+      deleteHDA: StoryformClassSheet._onDeleteHDA
     }
   };
 
+  /** @override */
   static PARTS = {
     form: {
       template: "systems/storyform/templates/items/class-sheet.hbs",
@@ -24,17 +40,25 @@ export default class StoryformClassSheet
     }
   };
 
+  /** @override */
   async _prepareContext(options) {
 
     log(`Preparing context for class item: ${this.item.name}`);
 
-    const context  = await super._prepareContext(options);
-    context.item   = this.item;
+    const context = await super._prepareContext(options);
+
+    // Provide direct access to the Item and its DataModel (system)
+    context.item = this.item;
     context.system = this.item.system;
 
     log("Fetching skill choices for class configuration...");
-
     context.skillChoices = this._getSkillChoices();
+
+    log("Enriching description HTML...");
+    context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.item.system.description,
+      { async: true }
+    );
 
     log(`Finished preparing context for ${this.item.name}`);
 
@@ -42,51 +66,87 @@ export default class StoryformClassSheet
   }
 
   _getSkillChoices() {
+    ;
     return [
-      { key: "brawling",   label: game.i18n.localize("STORYFORM.SkillBrawling") },
-      { key: "climb",      label: game.i18n.localize("STORYFORM.SkillClimb") },
-      { key: "intimidate", label: game.i18n.localize("STORYFORM.SkillIntimidate") },
-      { key: "athletics",  label: game.i18n.localize("STORYFORM.SkillAthletics") },
-      { key: "melee",      label: game.i18n.localize("STORYFORM.SkillMelee") },
-      { key: "shooting",   label: game.i18n.localize("STORYFORM.SkillShooting") },
-      { key: "piloting",   label: game.i18n.localize("STORYFORM.SkillPiloting") },
-      { key: "stealth",    label: game.i18n.localize("STORYFORM.SkillStealth") },
-      { key: "firstAid",   label: game.i18n.localize("STORYFORM.SkillFirstAid") },
-      { key: "repair",     label: game.i18n.localize("STORYFORM.SkillRepair") },
-      { key: "techArcana", label: game.i18n.localize("STORYFORM.SkillTechArcana") },
-      { key: "perception", label: game.i18n.localize("STORYFORM.SkillPerception") },
-      { key: "charm",      label: game.i18n.localize("STORYFORM.SkillCharm") },
-      { key: "deception",  label: game.i18n.localize("STORYFORM.SkillDeception") },
-      { key: "gatherInfo", label: game.i18n.localize("STORYFORM.SkillGatherInfo") },
-      { key: "haggle",     label: game.i18n.localize("STORYFORM.SkillHaggle") }
-    ];
+      ["brawling", "SkillBrawling"],
+      ["climb", "SkillClimb"],
+      ["intimidate", "SkillIntimidate"],
+      ["athletics", "SkillAthletics"],
+      ["melee", "SkillMelee"],
+      ["shooting", "SkillShooting"],
+      ["piloting", "SkillPiloting"],
+      ["stealth", "SkillStealth"],
+      ["firstAid", "SkillFirstAid"],
+      ["repair", "SkillRepair"],
+      ["techArcana", "SkillTechArcana"],
+      ["perception", "SkillPerception"],
+      ["charm", "SkillCharm"],
+      ["deception", "SkillDeception"],
+      ["gatherInfo", "SkillGatherInfo"],
+      ["haggle", "SkillHaggle"]
+    ].map(([key, loc]) => ({
+      key,
+      label: game.i18n.localize(`STORYFORM.${loc}`)
+    }));
+  }
+
+  // ── Form Handling ───────────────────────────────────────────────
+  /** @override */
+  static async _processFormData(config, event, formData) {
+
+    log("Processing form data for persistence check...");
+
+    //Expand the flat dot-notation keys into a nested object
+    const data = foundry.utils.expandObject(formData.object);
+
+    log("Expanded Data Payload:", expandedData);
+
+    if (data.system?.skillModifiers) {
+      data.system.skillModifiers = Object.values(data.system.skillModifiers);
+    }
+    console.log("Saving")
+    await this.item.update(data);
+
+    return super._processFormData(event, form, formData);
   }
 
   // ── Actions ───────────────────────────────────────────────
 
-  static async _onAddSkillBonus(event, target) {
+  static async _onAddAbilityMod(event, target) {
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const mods = foundry.utils.deepClone(this.item.system.abilityModifiers);
+    mods.push({ ability: "str", modifier: -1 });
+    await this.item.update({ "system.abilityModifiers": mods });
+  }
+
+  // ── Actions ───────────────────────────────────────────────
+
+  static async _onAddSkillMod(event, target) {
 
     log(`UI Action: Adding skill bonus to class ${this.item.name}`);
 
-    const bonuses = foundry.utils.deepClone(this.item.system.skillBonuses);
-    bonuses.push({ skill: "brawling", modifier: -1 });
+    const mods = foundry.utils.deepClone(this.item.system.skillModifiers);
+    mods.push({ skill: "brawling", modifier: -1 });
 
-    log(`Updating class skill bonuses. New count: ${bonuses.length}`);
+    log(`Updating class skill bonuses. New count: ${mods.length}`);
 
-    await this.item.update({ "system.skillBonuses": bonuses });
+    await this.item.update({ "system.skillModifiers": mods });
   }
 
-  static async _onDeleteSkillBonus(event, target) {
-    const index   = Number(target.dataset.index);
-    const bonuses = foundry.utils.deepClone(this.item.system.skillBonuses);
+  static async _onDeleteSkillMod(event, target) {
+    const index = Number(target.dataset.index);
+    const mods = foundry.utils.deepClone(this.item.system.skillModifiers);
 
     log(`UI Action: Deleting skill bonus at index ${index} from class ${this.item.name}`);
 
-    bonuses.splice(index, 1);
+    mods.splice(index, 1);
 
-    log(`Updating class skill bonuses. New count: ${bonuses.length}`);
+    log(`Updating class skill bonuses. New count: ${mods.length}`);
 
-    await this.item.update({ "system.skillBonuses": bonuses });
+    await this.item.update({ "system.skillModifiers": mods });
   }
 
   static async _onAddHDA(event, target) {
@@ -102,7 +162,7 @@ export default class StoryformClassSheet
   }
 
   static async _onDeleteHDA(event, target) {
-    const index     = Number(target.dataset.index);
+    const index = Number(target.dataset.index);
     const abilities = foundry.utils.deepClone(this.item.system.heroDiceAbilities);
 
     log(`UI Action: Deleting Hero Dice Ability (HDA) at index ${index} from class ${this.item.name}`);
@@ -110,7 +170,7 @@ export default class StoryformClassSheet
     abilities.splice(index, 1);
 
     log(`Updating class HDAs. New count: ${abilities.length}`);
-    
+
     await this.item.update({ "system.heroDiceAbilities": abilities });
   }
 }

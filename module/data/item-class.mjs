@@ -22,7 +22,7 @@ export default class ClassData extends foundry.abstract.TypeDataModel {
 
       // Skill DC bonuses granted by the class.
       // Rules: one at -2, two at -1.
-      skillBonuses: new ArrayField(
+      skillModifiers: new ArrayField(
         new SchemaField({
           skill:    new StringField({ required: true }),
           modifier: new NumberField({
