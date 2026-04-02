@@ -1,6 +1,6 @@
 {{! templates/items/derp-sheet.hbs }}
 
-<form class="storyform sheet item derp" autocomplete="off">
+<div class="storyform sheet item derp">
 
   {{!-- Header --}}
   <header class="item-header">
@@ -58,11 +58,19 @@
     {{!-- Description --}}
     <div class="form-group">
       <label>Description</label>
-      {{editor system.description
-               target="system.description"
-               button=true owner=owner editable=editable}}
+      <div class="prosemirror-wrapper">
+        {{#if @root.editable}}
+        {{!-- Remove the inner div; let prose-mirror use the value attribute --}}
+        <prose-mirror name="system.description" value="{{system.description}}" toggled="true" collaborative="false"">
+          {{{enrichedDescription}}}
+        </prose-mirror>
+        {{else}}
+        <div class=" enriched-content editor-content">
+          {{{enrichedDescription}}}
+      </div>
+      {{/if}}
     </div>
 
   </section>
 
-</form>
+</div>

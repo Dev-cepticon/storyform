@@ -9,6 +9,20 @@ export default class StoryformDerpSheet
   static DEFAULT_OPTIONS = {
     classes: ["storyform", "sheet", "item", "derp"],
     position: { width: 460, height: 420 },
+    window: {
+      resizable: true,
+      controls: [
+        {
+          icon: "fa-solid fa-gear",
+          label: "STORYFORM.ItemRace",
+          action: "showConfig"
+        }
+      ]
+    },
+    form: {
+      submitOnChange: true,
+      closeOnSubmit: false
+    },
     actions: {}
   };
 
@@ -23,12 +37,39 @@ export default class StoryformDerpSheet
 
     log(`Preparing context for derp item: ${this.item.name}`);
 
-    const context  = await super._prepareContext(options);
-    context.item   = this.item;
+    const context = await super._prepareContext(options);
+
+    context.item = this.item;
     context.system = this.item.system;
+
+    log("Enriching description HTML...");
+    context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.item.system.description,
+      { async: true }
+    );
 
     log(`Finished preparing context for ${this.item.name}. System data:`, context.system);
 
     return context;
   }
+
+  // ── Form Handling ───────────────────────────────────────────────
+  /** @override */
+  static async _processFormData(config, event, formData) {
+
+    log("Processing form data for persistence check...");
+
+    //Expand the flat dot-notation keys into a nested object
+    const data = foundry.utils.expandObject(formData.object);
+
+    log("Expanded Data Payload:", expandedData);
+
+    console.log("Saving")
+    await this.item.update(data);
+
+    return super._processFormData(event, form, formData);
+  }
+
+
+
 }
