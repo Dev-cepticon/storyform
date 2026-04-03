@@ -27,7 +27,9 @@ export default class StoryformCharacterSheet
       earnHeroDie: StoryformCharacterSheet._onEarnHeroDie,
       spendHeroDie: StoryformCharacterSheet._onSpendHeroDie,
 
-      changeTab: StoryformCharacterSheet._onChangeTab
+      changeTab: StoryformCharacterSheet._onChangeTab,
+
+      toggleEquip: StoryformCharacterSheet._onToggleEquip
     },
 
   };
@@ -127,20 +129,9 @@ export default class StoryformCharacterSheet
       );
     }
 
-    
+
 
     return context;
-  }
-
-  static async _onChangeTab(event, target) {
-    const group = target.dataset.group;
-    const tabId = target.dataset.tab;
-
-    log(`Changing tab: Group=${group}, Tab=${tabId}`);
-
-    this.tabGroups[group] = tabId;
-
-    this.render();
   }
 
   _getAbilityGroups() {
@@ -199,6 +190,17 @@ export default class StoryformCharacterSheet
     ];
   }
 
+  static async _onChangeTab(event, target) {
+    const group = target.dataset.group;
+    const tabId = target.dataset.tab;
+
+    log(`Changing tab: Group=${group}, Tab=${tabId}`);
+
+    this.tabGroups[group] = tabId;
+
+    this.render();
+  }
+
   static async _onSkillRoll(event, target) {
 
     const skillKey = target.dataset.skill;
@@ -209,9 +211,9 @@ export default class StoryformCharacterSheet
   }
 
   static async _onAbilityRoll(event, target) {
-    
+
     const abilityKey = target.dataset.ability;
-    
+
     log(`UI Action: Ability Roll triggered for ${abilityKey}`);
 
     await rollAbilityCheck(this.actor, abilityKey);
@@ -243,5 +245,25 @@ export default class StoryformCharacterSheet
 
     if (current <= 0) return ui.notifications.warn("No Hero Dice remaining.");
     await this.actor.update({ "system.attributes.herodice.value": current - 1 });
+  }
+
+  static async _onToggleEquip(event, target) {
+
+    const itemElement = target.closest("[data-item-id]");
+   
+    const itemId = target.closest("[data-item-id]").dataset.itemId;
+    const item = this.actor.items.get(itemId);
+
+    log("equiping armor: ", item.name)
+
+    if (!item) return;
+
+    const isEquipped = item.system.equipped ?? false;
+
+    log(isEquipped)
+
+    await item.update({ "system.equipped": !isEquipped });
+
+    log(`UI Action: Toggled equipment status for ${item.name} to ${!isEquipped}`);
   }
 }

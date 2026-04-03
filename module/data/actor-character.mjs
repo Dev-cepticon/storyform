@@ -1,3 +1,5 @@
+import { log } from "../utility/utility.mjs";
+
 export default class CharacterData extends foundry.abstract.TypeDataModel {
 
   static defineSchema() {
@@ -9,7 +11,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     } = foundry.data.fields;
 
     return {
-
       // ── ABILITIES ──────────────────────────────────────────
       // Each is a DC (Difficulty Class). Lower = more capable.
       // Range: roughly 8 (elite) to 20 (untrained).
@@ -43,7 +44,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
           })
         })
       }),
-
       // ── SKILLS ────────────────────────────────────────────
       // Each skill is also a DC. Players roll d20 and need to
       // roll ABOVE the DC to succeed.
@@ -73,7 +73,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         gatherInfo: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
         haggle: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) })
       }),
-
       // ── CORE STATS ────────────────────────────────────────
       attributes: new SchemaField({
         hp: new SchemaField({
@@ -85,9 +84,9 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
           max: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 5 })
         }),
         movement: new NumberField({ required: true, integer: true, min: 0, initial: 3 }),
-        defense: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
-      }),
+        dr: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
 
+      }),
       // ── IDENTITY / BIOGRAPHY ──────────────────────────────
       details: new SchemaField({
         race: new StringField({ initial: "" }),
@@ -103,10 +102,13 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
   // ── Derived Data ──────────────────────────────────────────
 
   prepareDerivedData() {
+    log("preparing character derived data")
+    super.prepareDerivedData();
 
     // For each ability, calculate how many skill points
     // the player had to spend, based on the rule:
     // (20 - Ability DC) × 3 = Skill Points for that group
+    log("getting abilities and skill points");
     const abilities = this.abilities;
 
     this.abilities.str.skillPoints = (20 - abilities.str.dc) * 3;
@@ -134,6 +136,22 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     this.abilities.cha.skillPointsSpent =
       (20 - s.charm.dc) + (20 - s.deception.dc) +
       (20 - s.gatherInfo.dc) + (20 - s.haggle.dc);
+
+    //Calculte characters damage resistance based on equiped armor
+    // Find all items of type 'armor' that are marked as equipped
+    log("calculating damage resistance")
+    const equippedArmor = this.parent.items.filter(i => 
+        i.type === "armor" && i.system.equipped === true
+    );
+    // If exactly one armor is equipped, use its DR. 
+    // If 0 or >1, DR resets to 0.
+    if (equippedArmor.length === 1) {
+        this.attributes.dr = equippedArmor[0].system.dr || 0;
+    } else {
+        this.attributes.dr = 0;
+        // Optional: If length > 1, we could log a warning to the console
+    }
+    log("derived data finished");
   }
 
   async _preUpdate(changed, options, user) {

@@ -1,8 +1,6 @@
 {{! templates/actors/character-gear.hbs }}
 
-<div class="tab gear {{tab.cssClass}}"
-     data-group="{{tab.group}}"
-     data-tab="{{tab.id}}">
+<div class="tab gear {{tab.cssClass}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
   <div class="gear-section">
     <h3>Weapons</h3>
@@ -16,8 +14,7 @@
         <a data-action="attackRoll" title="Roll Attack">
           <i class="fas fa-dice-d20"></i>
         </a>
-        <a class="item-control item-delete"
-           data-action="delete" title="Delete">
+        <a class="item-control item-delete" data-action="delete" title="Delete">
           <i class="fas fa-trash"></i>
         </a>
       </li>
@@ -31,13 +28,15 @@
     <ul class="item-list">
       {{#each items as |item|}}
       {{#if (equals item.type "armor")}}
-      <li class="item gear-item" data-item-id="{{item._id}}">
+      <li class="item gear-item {{#if item.system.equipped}}equipped{{/if}}" data-item-id="{{item._id}}">
         <img src="{{item.img}}" class="item-img" />
         <span class="item-name">{{item.name}}</span>
         <span class="item-detail">DR +{{item.system.dr}}</span>
-        <a class="item-control item-delete"
-           data-action="delete" title="Delete">
-          <i class="fas fa-trash"></i>
+        <a class="item-control" data-action="toggleEquip"
+          title="{{#if item.system.equipped}}Unequip{{else}}Equip{{/if}}">
+          <i class="fas {{#if item.system.equipped}}fa-shield-halved{{else}}fa-shield{{/if}}"></i>
+        </a <a class="item-control item-delete" data-action="delete" title="Delete">
+        <i class="fas fa-trash"></i>
         </a>
       </li>
       {{/if}}

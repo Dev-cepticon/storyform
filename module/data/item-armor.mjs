@@ -5,7 +5,8 @@ export default class ArmorData extends foundry.abstract.TypeDataModel {
       NumberField,
       StringField,
       HTMLField,
-      ArrayField
+      ArrayField,
+      BooleanField
     } = foundry.data.fields;
 
     return {
@@ -17,7 +18,6 @@ export default class ArmorData extends foundry.abstract.TypeDataModel {
       }),
 
       // DR directly reduces incoming damage.
-      // Default: tier = DR, but can be overridden.
       dr: new NumberField({
         required: true, integer: true,
         min: 0, max: 10, initial: 1,
@@ -30,13 +30,17 @@ export default class ArmorData extends foundry.abstract.TypeDataModel {
         { label: "STORYFORM.ArmorProperties" }
       ),
 
-      description: new HTMLField({ initial: "" })
+      description: new HTMLField({ initial: "" }),
+      equipped: new BooleanField({ initial: false }),
     };
   }
 
   // ── Derived Data ──────────────────────────────────────────
 
   prepareDerivedData() {
+
+    super.prepareDerivedData();
+
     // Default DR matches tier unless manually overridden.
     this.defaultDR = this.tier;
   }
