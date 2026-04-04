@@ -65,11 +65,11 @@
   "STORYFORM.ArmorTier": "Tier",
   "STORYFORM.ArmorProperties": "Properties",
 
-  "STORYFORM.ClassHpBonus": "HP Bonus",
   "STORYFORM.ClassSkillBonuses": "Skill Bonuses",
   "STORYFORM.ClassHeroDiceAbilities": "Hero Dice Abilities",
 
   "STORYFORM.RaceSize": "Size",
+  "STORYFORM.RaceHpBonus": "HP Bonus",
   "STORYFORM.RaceAbilityModifiers": "Ability Modifiers",
   "STORYFORM.RaceSkillModifiers": "Skill Modifiers",
 

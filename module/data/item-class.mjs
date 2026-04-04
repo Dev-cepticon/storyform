@@ -14,12 +14,6 @@ export default class ClassData extends foundry.abstract.TypeDataModel {
       // Class role description shown on the sheet
       role: new StringField({ initial: "" }),
 
-      // HP bonus added to the base HP of 15
-      hpBonus: new NumberField({
-        required: true, integer: true, initial: 0,
-        label: "STORYFORM.ClassHpBonus"
-      }),
-
       // Skill DC bonuses granted by the class.
       // Rules: one at -2, two at -1.
       skillModifiers: new ArrayField(

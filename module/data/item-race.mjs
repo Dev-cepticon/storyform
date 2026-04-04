@@ -12,6 +12,10 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
     } = foundry.data.fields;
 
     return {
+      hpBonus: new NumberField({
+        required: true, integer: true, initial: 0,
+        label: "STORYFORM.RaceHpBonus"
+      }),
 
       size: new StringField({
         initial: "medium",
@@ -21,7 +25,7 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
 
       age: new SchemaField({
         maturity: new NumberField({ integer: true, initial: 18 }),
-        max:      new NumberField({ integer: true, initial: 100 })
+        max: new NumberField({ integer: true, initial: 100 })
       }),
 
       // Movement speed in squares
@@ -32,7 +36,7 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
       }),
       abilityModifiers: new ArrayField(
         new SchemaField({
-          ability:  new StringField({
+          ability: new StringField({
             required: true,
             choices: ["str", "dex", "int", "cha"]
           }),
@@ -40,35 +44,38 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
             required: true, integer: true, initial: -1
           })
         }),
-        { 
+        {
           initial: [],
-          label: "STORYFORM.RaceAbilityModifiers" }
+          label: "STORYFORM.RaceAbilityModifiers"
+        }
       ),
 
 
       skillModifiers: new ArrayField(
         new SchemaField({
-          skill:    new StringField({ required: true }),
+          skill: new StringField({ required: true }),
           modifier: new NumberField({
             required: true, integer: true, initial: -1
           })
         }),
-        { 
+        {
           initial: [],
-          label: "STORYFORM.RaceSkillModifiers" }
+          label: "STORYFORM.RaceSkillModifiers"
+        }
       ),
 
       // Optional racial trait — toggle to show/hide fields
       racialTrait: new SchemaField({
-        hasTrait:    new BooleanField({ initial: false }),
-        name:        new StringField({ initial: "" }),
+        hasTrait: new BooleanField({ initial: false }),
+        name: new StringField({ initial: "" }),
         description: new StringField({ initial: "" })
       }),
 
-      description: new HTMLField({ 
+      description: new HTMLField({
         required: true,
-        initial: "" ,
-        label: "STORYFORM.Description"})
+        initial: "",
+        label: "STORYFORM.Description"
+      })
     };
   }
 }

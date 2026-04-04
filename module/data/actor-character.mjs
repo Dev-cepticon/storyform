@@ -170,6 +170,9 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     // Race Modifiers
     if (raceItem) {
       if (!raceItem) return;
+      this.attributes.hp.max += raceItem.system.hpBonus;
+      //log("this.abilities.movement", this.abilities.movement);
+      this.attributes.movement = raceItem.system.movement;
       raceItem.system.abilityModifiers?.forEach(m => mods.abilities[m.ability] += m.modifier);
       raceItem.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
     }
@@ -179,12 +182,11 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       if (!item) return;
       count += 1;
       item.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
-      log("item.system.skillModifiers", item.system.skillModifiers);
+      
     });
 
     // Apply "Floor of 8" Logic
     // Logic: DC = Math.max(8, BaseDC) + Modifiers
-
     // Process Abilities
     for (let [id, ability] of Object.entries(this.abilities)) {
 

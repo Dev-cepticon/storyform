@@ -30,6 +30,14 @@
         <input type="number" name="system.age.max" value="{{system.age.max}}" min="1" />
       </div>
     </div>
+        {{!-- HP Bonus --}}
+    <div class="form-group">
+      <label>{{localize "STORYFORM.RaceHpBonus"}}</label>
+      <div class="form-fields">
+        <input type="number" name="system.hpBonus" value="{{system.hpBonus}}" />
+        <span class="form-hint">Added to base HP of 15</span>
+      </div>
+    </div>
 
     {{!-- Movement --}}
     <div class="form-group">
