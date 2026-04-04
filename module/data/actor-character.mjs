@@ -100,13 +100,12 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
   }
 
   // ── Derived Data ──────────────────────────────────────────
-
+  /** @override */
   prepareDerivedData() {
     log("preparing character derived data")
     super.prepareDerivedData();
 
-    // For each ability, calculate how many skill points
-    // the player had to spend, based on the rule:
+    // For each ability, calculate how many skill points the player had to spend, based on the rule:
     // (20 - Ability DC) × 3 = Skill Points for that group
     log("getting abilities and skill points");
     const abilities = this.abilities;
@@ -116,8 +115,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     this.abilities.int.skillPoints = (20 - abilities.int.dc) * 3;
     this.abilities.cha.skillPoints = (20 - abilities.cha.dc) * 3;
 
-    // Calculate how many points have been SPENT by summing
-    // all skill DC reductions from their base of 20.
+    // Calculate how many points have been SPENT by summingall skill DC reductions from their base of 20.
     // Lets the sheet show a running total.
     const s = this.skills;
 
@@ -140,19 +138,93 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     //Calculte characters damage resistance based on equiped armor
     // Find all items of type 'armor' that are marked as equipped
     log("calculating damage resistance")
-    const equippedArmor = this.parent.items.filter(i => 
-        i.type === "armor" && i.system.equipped === true
+    const equippedArmor = this.parent.items.filter(i =>
+      i.type === "armor" && i.system.equipped === true
     );
     // If exactly one armor is equipped, use its DR. 
     // If 0 or >1, DR resets to 0.
     if (equippedArmor.length === 1) {
-        this.attributes.dr = equippedArmor[0].system.dr || 0;
+      this.attributes.dr = equippedArmor[0].system.dr || 0;
     } else {
-        this.attributes.dr = 0;
-        // Optional: If length > 1, we could log a warning to the console
+      this.attributes.dr = 0;
+      // Optional: If length > 1, we could log a warning to the console
     }
+    //log("***********",race);
+    const actor = this.parent;
+    //Map embedded items to identify the active Origins
+    const raceItem = actor.itemTypes.race?.[0];
+    const classItem = actor.itemTypes.class?.[0];
+    const backgroundItem = actor.itemTypes.background?.[0];
+
+    //Sync Item Names to the Schema Fields (system.details)
+    this.details.race = raceItem?.name ?? "";
+    this.details.class = classItem?.name ?? "";
+    this.details.background = backgroundItem?.name ?? "";
+
+    //Aggregate Modifiers
+    const mods = {
+      abilities: { str: 0, dex: 0, int: 0, cha: 0 },
+      skills: {}
+    };
+
+    // Race Modifiers
+    if (raceItem) {
+      if (!raceItem) return;
+      raceItem.system.abilityModifiers?.forEach(m => mods.abilities[m.ability] += m.modifier);
+      raceItem.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
+    }
+    // Class/Background Modifiers
+    let count = 0;
+    [classItem, backgroundItem].forEach(item => {
+      if (!item) return;
+      count += 1;
+      item.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
+      log("item.system.skillModifiers", item.system.skillModifiers);
+    });
+
+    // Apply "Floor of 8" Logic
+    // Logic: DC = Math.max(8, BaseDC) + Modifiers
+
+    // Process Abilities
+    for (let [id, ability] of Object.entries(this.abilities)) {
+
+      const base = Math.max(8, ability.dc);
+      ability.total = base + (mods.abilities[id] || 0);
+      ability.skillPoints = (20 - base) * 3;
+      ability.dc = base// + (mods.abilities[id] || 0);
+      ability.skillPoints = (20 - base) * 3;
+    }
+
+    // Process Skills
+    for (let [id, skill] of Object.entries(this.skills)) {
+      const base = Math.max(8, skill.dc);
+
+      skill.total = base + (mods.skills[id] || 0);
+      const cost = 20 - base;
+
+      const mapping = this._getSkillAbilityMapping(id);
+
+      if (this.abilities[mapping]) {
+        this.abilities[mapping].skillPointsSpent += cost;
+      }
+
+      skill.dc = base
+    }
+
     log("derived data finished");
   }
+  _getSkillAbilityMapping(skillId) {
+  const groups = {
+    str: ["brawling", "climb", "intimidate", "athletics"],
+    dex: ["melee", "shooting", "piloting", "stealth"],
+    int: ["firstAid", "repair", "techArcana", "perception"],
+    cha: ["charm", "deception", "gatherInfo", "haggle"]
+  };
+  for (let [abl, skills] of Object.entries(groups)) {
+    if (skills.includes(skillId)) return abl;
+  }
+  return null;
+}
 
   async _preUpdate(changed, options, user) {
     const result = await super._preUpdate(changed, options, user);

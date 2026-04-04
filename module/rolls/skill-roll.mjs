@@ -112,7 +112,7 @@ export async function rollSkill(actor, skillKey, options = {}) {
     log(`Rolling Skill: ${label} for ${actor.name}`);
 
     // Base DC + any situational modifier the GM has applied
-    const baseDC = (options.dcOverride ?? skill.dc) + (options.dcModifier ?? 0);
+    const baseDC = (options.dcOverride ?? skill.total) + (options.dcModifier ?? 0);
     const attackIndex = options.attackIndex ?? 0;
     const attackPenalty = attackIndex * 2;
     const effectiveDC = baseDC + attackPenalty;
@@ -351,7 +351,7 @@ export async function rollAbilityCheck(actor, abilityKey, dcModifier = 0) {
     return rollSkill(actor, representativeSkill, {
         label,
         dcModifier,
-        dcOverride: ability.dc  // ← uses the ability DC, not the skill DC
+        dcOverride: ability.total  // ← uses the ability DC, not the skill DC
     });
 }
 

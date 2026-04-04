@@ -128,9 +128,6 @@ export default class StoryformCharacterSheet
         }
       );
     }
-
-
-
     return context;
   }
 
@@ -190,6 +187,26 @@ export default class StoryformCharacterSheet
     ];
   }
 
+  /** @override */
+  async _onDropItem(event, data) {
+    const item = await Item.fromDropData(data);
+    if (!item) return;
+
+    // List of types that act as unique "Origins"
+    const originTypes = ["race", "class", "background"];
+
+    if (originTypes.includes(item.type)) {
+      // Find any existing item of this type on the actor
+      const existing = this.actor.itemTypes[item.type];
+      if (existing.length > 0) {
+        // Remove the previous origin item before adding the new one
+        await this.actor.deleteEmbeddedDocuments("Item", existing.map(i => i.id));
+      }
+    }
+
+    return super._onDropItem(event, data);
+  }
+
   static async _onChangeTab(event, target) {
     const group = target.dataset.group;
     const tabId = target.dataset.tab;
@@ -204,6 +221,7 @@ export default class StoryformCharacterSheet
   static async _onSkillRoll(event, target) {
 
     const skillKey = target.dataset.skill;
+    log("target", target.dataset.skill);
 
     log(`UI Action: Skill Roll triggered for ${skillKey}`);
 
@@ -250,7 +268,7 @@ export default class StoryformCharacterSheet
   static async _onToggleEquip(event, target) {
 
     const itemElement = target.closest("[data-item-id]");
-   
+
     const itemId = target.closest("[data-item-id]").dataset.itemId;
     const item = this.actor.items.get(itemId);
 
@@ -259,8 +277,6 @@ export default class StoryformCharacterSheet
     if (!item) return;
 
     const isEquipped = item.system.equipped ?? false;
-
-    log(isEquipped)
 
     await item.update({ "system.equipped": !isEquipped });
 
