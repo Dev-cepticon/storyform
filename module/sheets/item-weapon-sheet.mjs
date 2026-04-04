@@ -43,8 +43,11 @@ export default class StoryformWeaponSheet
   // ── Actions ───────────────────────────────────────────────
 
   static async _onAddProperty(event, target) {
+
     const props = foundry.utils.deepClone(this.item.system.properties);
-    props.push("");
+
+    props.push({name: "", description: ""});
+
     await this.item.update({ "system.properties": props });
   }
 
@@ -58,6 +61,10 @@ export default class StoryformWeaponSheet
   async _processFormData(event, form, formData) {
 
   const data = foundry.utils.expandObject(formData.object);
+
+  if(data.system?.properties){
+    data.system.properties = Object.values(data.system.properties);
+  }
   
   await this.item.update(data);
 }

@@ -3,6 +3,7 @@ export default class ArmorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     const {
       NumberField,
+      SchemaField,
       StringField,
       HTMLField,
       ArrayField,
@@ -26,7 +27,10 @@ export default class ArmorData extends foundry.abstract.TypeDataModel {
 
       // Free-text properties — open-ended like weapons.
       properties: new ArrayField(
-        new StringField({ blank: false }),
+        new SchemaField({
+          name: new StringField({initial: "" }),
+          description: new StringField({initial: ""})
+        }),
         { label: "STORYFORM.ArmorProperties" }
       ),
 

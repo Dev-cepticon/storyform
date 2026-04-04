@@ -57,10 +57,10 @@ export default class StoryformArmorSheet
     log(`UI Action: Adding property to ${this.item.name}`);
 
     const props = foundry.utils.deepClone(this.item.system.properties);
-    props.push("");
+    props.push({ name: "", description: "" });
 
     log(`Updating item properties. New count: ${props.length}`);
-    
+
     await this.item.update({ "system.properties": props });
   }
 
@@ -81,7 +81,11 @@ export default class StoryformArmorSheet
   async _processFormData(event, form, formData) {
 
     const data = foundry.utils.expandObject(formData.object);
-    
+
+    if (data.system?.properties) {
+      data.system.properties = Object.values(data.system.properties);
+    }
+
     log(`Processing form data for ${this.item.name}. Saving updates...`);
 
     await this.item.update(data);

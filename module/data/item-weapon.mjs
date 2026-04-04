@@ -38,10 +38,12 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
       // Properties are free-text — the rules treat them
       // as open-ended examples, not a fixed list.
       properties: new ArrayField(
-        new StringField({ blank: false }),
-        { label: "STORYFORM.WeaponProperties" }
+        new SchemaField({
+          name: new StringField({initial: ""}),
+          description: new StringField({initial: ""})
+        }),
+        {label: "STORYFORM.WeaponProperties"}
       ),
-
       description: new HTMLField({ initial: "" })
     };
   }

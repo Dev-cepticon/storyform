@@ -42,10 +42,15 @@
       <div class="array-list">
         {{#each system.properties as |prop i|}}
         <div class="array-row">
-          <input type="text" name="system.properties.{{i}}" value="{{prop}}" placeholder="Property name or effect..." />
+          <div class="named-block-header">
+            <input type="text" name="system.properties.{{i}}.name" value="{{prop.name}}"
+              placeholder="Property name..." />
+            
+          </div>
+          <textarea name="system.properties.{{i}}.description" placeholder="Description or effect...">{{prop.description}}</textarea>
           <a class="array-delete" data-action="deleteProperty" data-index="{{i}}" title="Remove">
-            <i class="fas fa-trash"></i>
-          </a>
+              <i class="fas fa-trash"></i>
+            </a>
         </div>
         {{/each}}
         <button type="button" class="property-add array-add" data-action="addProperty">
