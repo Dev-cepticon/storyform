@@ -29,7 +29,8 @@ export default class StoryformCharacterSheet
 
       changeTab: StoryformCharacterSheet._onChangeTab,
 
-      toggleEquip: StoryformCharacterSheet._onToggleEquip
+      toggleEquip: StoryformCharacterSheet._onToggleEquip,
+      delete: StoryformCharacterSheet._onDeleteItem
     },
 
   };
@@ -281,5 +282,23 @@ export default class StoryformCharacterSheet
     await item.update({ "system.equipped": !isEquipped });
 
     log(`UI Action: Toggled equipment status for ${item.name} to ${!isEquipped}`);
+  }
+  static async _onDeleteItem(event, target) {
+    event.preventDefault();
+    
+    // Find the item ID from the closest parent list item
+    const li = target.closest("[data-item-id]");
+    const itemId = li?.dataset.itemId;
+    const item = this.actor.items.get(itemId);
+
+    if ( !item ) {
+      log(`Delete failed: Item ID ${itemId} not found on Actor ${this.actor.name}`, "warn");
+      return;
+    }
+
+    log(`UI Action: Deleting item "${item.name}" from ${this.actor.name}`);
+
+    // Perform the deletion
+    return item.delete();
   }
 }
