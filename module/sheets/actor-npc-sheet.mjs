@@ -163,25 +163,6 @@ export default class StoryformNpcSheet
     //     return context;
     // }
 
-    static async _onSubmitHelper(event, form, formData) {
-        const submitData = foundry.utils.expandObject(formData.object);
-
-        // Disable the form briefly to prevent multiple clicks/changes during save
-        form.querySelectorAll("select, input").forEach(i => i.disabled = true);
-
-        try {
-            await this.document.update(submitData);
-        } finally {
-            // Re-enabling is handled by the natural re-render of the sheet
-        }
-    }
-
-    async _onDropItem(event, data) {
-        const item = await Item.fromDropData(data);
-        if (!item) return;
-
-        return super._onDropItem(event, data);
-    }
     /** ---------------------------------------- */
     /** Actions                                  */
     /** ---------------------------------------- */

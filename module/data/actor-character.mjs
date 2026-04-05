@@ -78,7 +78,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         hp: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
           max: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
-          tempMax: new NumberField({required: false, integer: true, min:0, initial: 0})
+          tempMax: new NumberField({ required: false, integer: true, min: 0, initial: 0 })
         }),
         herodice: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 5 }),
@@ -86,7 +86,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         movement: new NumberField({ required: true, integer: true, min: 0, initial: 3 }),
         dr: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        actions: new NumberField({reqiured: true, integer: true, min: 0, initial: 3})
+        actions: new NumberField({ reqiured: true, integer: true, min: 0, initial: 3 })
 
       }),
       // ── IDENTITY / BIOGRAPHY ──────────────────────────────
@@ -121,21 +121,21 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     // Lets the sheet show a running total.
     const s = this.skills;
 
-    this.abilities.str.skillPointsSpent =
-      (20 - s.brawling.dc) + (20 - s.climb.dc) +
-      (20 - s.intimidate.dc) + (20 - s.athletics.dc);
+    this.abilities.str.skillPointsSpent = 0;
+    //   (20 - s.brawling.dc) + (20 - s.climb.dc) +
+    //   (20 - s.intimidate.dc) + (20 - s.athletics.dc);
 
-    this.abilities.dex.skillPointsSpent =
-      (20 - s.melee.dc) + (20 - s.shooting.dc) +
-      (20 - s.piloting.dc) + (20 - s.stealth.dc);
+    this.abilities.dex.skillPointsSpent = 0;
+    //   (20 - s.melee.dc) + (20 - s.shooting.dc) +
+    //   (20 - s.piloting.dc) + (20 - s.stealth.dc);
 
-    this.abilities.int.skillPointsSpent =
-      (20 - s.firstAid.dc) + (20 - s.repair.dc) +
-      (20 - s.techArcana.dc) + (20 - s.perception.dc);
+    this.abilities.int.skillPointsSpent = 0;
+    //   (20 - s.firstAid.dc) + (20 - s.repair.dc) +
+    //   (20 - s.techArcana.dc) + (20 - s.perception.dc);
 
-    this.abilities.cha.skillPointsSpent =
-      (20 - s.charm.dc) + (20 - s.deception.dc) +
-      (20 - s.gatherInfo.dc) + (20 - s.haggle.dc);
+    this.abilities.cha.skillPointsSpent = 0;
+    //   (20 - s.charm.dc) + (20 - s.deception.dc) +
+    //   (20 - s.gatherInfo.dc) + (20 - s.haggle.dc);
 
     //Calculte characters damage resistance based on equiped armor
     // Find all items of type 'armor' that are marked as equipped
@@ -170,6 +170,8 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     };
 
     this.attributes.hp.tempMax = this.attributes.hp.max;
+    log("this.attributes.hp.tempMax", this.attributes.hp.tempMax);
+    log("this.attributes.hp.max", this.attributes.hp.max)
     // Race Modifiers
     if (raceItem) {
       if (!raceItem) return;
@@ -185,7 +187,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       if (!item) return;
       count += 1;
       item.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
-      
+
     });
 
     // Apply "Floor of 8" Logic
@@ -219,17 +221,17 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     log("derived data finished");
   }
   _getSkillAbilityMapping(skillId) {
-  const groups = {
-    str: ["brawling", "climb", "intimidate", "athletics"],
-    dex: ["melee", "shooting", "piloting", "stealth"],
-    int: ["firstAid", "repair", "techArcana", "perception"],
-    cha: ["charm", "deception", "gatherInfo", "haggle"]
-  };
-  for (let [abl, skills] of Object.entries(groups)) {
-    if (skills.includes(skillId)) return abl;
+    const groups = {
+      str: ["brawling", "climb", "intimidate", "athletics"],
+      dex: ["melee", "shooting", "piloting", "stealth"],
+      int: ["firstAid", "repair", "techArcana", "perception"],
+      cha: ["charm", "deception", "gatherInfo", "haggle"]
+    };
+    for (let [abl, skills] of Object.entries(groups)) {
+      if (skills.includes(skillId)) return abl;
+    }
+    return null;
   }
-  return null;
-}
 
   async _preUpdate(changed, options, user) {
     const result = await super._preUpdate(changed, options, user);

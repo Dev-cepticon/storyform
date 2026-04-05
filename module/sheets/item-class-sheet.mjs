@@ -105,22 +105,10 @@ export default class StoryformClassSheet
       data.system.skillModifiers = Object.values(data.system.skillModifiers);
     }
     console.log("Saving")
-    //await this.item.update(data);
     foundry.utils.mergeObject(formData.object, foundry.utils.flattenObject(data));
     return super._processFormData(config, event, formData);
   }
 
-  // ── Actions ───────────────────────────────────────────────
-
-  static async _onAddAbilityMod(event, target) {
-
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    const mods = foundry.utils.deepClone(this.item.system.abilityModifiers);
-    mods.push({ ability: "str", modifier: -1 });
-    await this.item.update({ "system.abilityModifiers": mods });
-  }
 
   // ── Actions ───────────────────────────────────────────────
 
