@@ -101,6 +101,17 @@
   "STORYFORM.CombatInteract": "Interact",
   "STORYFORM.CombatSpecial": "Special",
 
+  "STORYFORM.SizeTiny": "Tiny",
+  "STORYFORM.SizeSmall": "Small",
+  "STORYFORM.SizeMedium": "Medium",
+  "STORYFORM.SizeLarge": "Large",
+  "STORYFORM.SizeHuge": "Huge",
+
+  "STORYFORM.StanceFriendly":"Friendly",
+  "STORYFORM.StanceNeutral":"Neutral",
+  "STORYFORM.StanceHostile":"Hostile",
+ 
+
   "TYPES.Actor.character": "Character",
   "TYPES.Actor.npc": "NPC",
   "TYPES.Item.weapon": "Weapon",

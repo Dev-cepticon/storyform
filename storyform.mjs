@@ -9,6 +9,8 @@ import DerpData from "./module/data/item-derp.mjs";
 
 import StoryformCharacterSheet
   from "./module/sheets/actor-character-sheet.mjs";
+import StoryformNpcSheet
+  from "./module/sheets/actor-npc-sheet.mjs";
 import StoryformWeaponSheet
   from "./module/sheets/item-weapon-sheet.mjs";
 import StoryformArmorSheet
@@ -58,15 +60,22 @@ Hooks.once("init", () => {
   const { Actors: ActorsCollection, Items: ItemsCollection } =
     foundry.documents.collections;
 
+  const actorSheets = [
+    [StoryformCharacterSheet, "character", "Character"],
+    [StoryformNpcSheet, "npc", "NPC"],
+  ];
+
   ActorsCollection.unregisterSheet("core", foundry.appv1.sheets.ActorSheet, {
-    types: ["character"]
+    types: ["character", "npc"]
   });
 
-  ActorsCollection.registerSheet("storyform", StoryformCharacterSheet, {
-    types: ["character"],
-    makeDefault: true,
-    label: "Storyform Character Sheet"
-  });
+  for (const [sheet, type, label] of actorSheets) {
+    ActorsCollection.registerSheet("storyform", sheet, {
+      types: [type],
+      makeDefault: true,
+      label: `Storyform ${label} Sheet`
+    });
+  }
 
   log("Actor sheets registered.");
 
@@ -188,6 +197,10 @@ function registerHandlebarsHelpers() {
       result.push(i);
     }
     return result;
+  });
+  Handlebars.registerHelper('capitalize', function (string) {
+    if (!string || typeof string !== "string") return "";
+    return string.charAt(0).toUpperCase() + string.slice(1);
   });
 
 }

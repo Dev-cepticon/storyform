@@ -1,0 +1,91 @@
+<div class="{{cssClass}}">
+
+  <header class="npc-header flexrow">
+
+    <div class="npc-portrait">
+      <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    </div>
+
+    <div class="npc-header-fields flexcol">
+      <input type="text" name="name" value="{{actor.name}}" placeholder="NPC Name" />
+
+      <div class="flexrow">
+        <select name="system.details.size">
+          {{selectOptions config.actorSizes selected=system.details.size localize=true}}
+        </select>
+
+        <select name="system.stance">
+          {{selectOptions config.stances selected=system.stance localize=true}}
+        </select>
+
+        <input type="number" name="system.details.challenge" value="{{system.details.challenge}}" placeholder="CR"
+          title="Challenge Rating" />
+      </div>
+    </div>
+  </header>
+
+  <section class="npc-stats flexrow">
+
+    <div class="npc-stat">
+      <label>HP</label>
+      <div class="flexrow">
+        <input type="number" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" />
+        <span>/</span>
+        <input type="number" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" />
+      </div>
+    </div>
+
+    <div class="npc-stat">
+      <label>DR</label>
+      <input type="number" name="system.attributes.dr" value="{{system.attributes.dr}}" />
+    </div>
+
+    <div class="npc-stat">
+      <label>MV</label>
+      <input type="number" name="system.attributes.movement" value="{{system.attributes.movement}}" />
+    </div>
+
+    <div class="npc-stat">
+      <label>AP</label>
+      <input type="number" name="system.attributes.actions" value="{{system.attributes.actions}}" />
+    </div>
+
+  </section>
+
+  <section class="npc-abilities flexrow">
+    {{#each system.abilities as |ability key|}}
+    <div class="ability flexcol">
+      {{!-- CHANGE: Use the pre-localized map from the context root (@root) --}}
+      <label>{{lookup @root.abilityLabels key}}</label>
+
+      <input type="number" name="system.abilities.{{key}}.dc" value="{{ability.dc}}" min="8" max="30" />
+    </div>
+    {{/each}}
+  </section>
+
+  <section class="npc-skills flexcol">
+    <h3>Skills</h3>
+    {{#each system.skills as |skill key|}}
+    <div class="flexrow skill-row">
+      <label>{{key}}</label>
+      <input type="number" name="system.skills.{{key}}.dc" value="{{skill.dc}}" />
+    </div>
+    {{/each}}
+  </section>
+
+  <section class="prosemirror-wrapper">
+    {{#if @root.editable}}
+    <prose-mirror name="system.details.biography" value="{{system.details.biography}}" toggled="true"
+      collaborative="false">
+      {{{enrichedBiography}}}
+    </prose-mirror>
+    {{else}}
+    {{!-- This state is for players who CANNOT edit the sheet at all --}}
+    <div class="enriched-content">
+      {{{enrichedBiography}}}
+    </div>
+    {{/if}}
+</div>
+</section>
+
+</div>

@@ -77,7 +77,8 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       attributes: new SchemaField({
         hp: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
-          max: new NumberField({ required: true, integer: true, min: 0, initial: 15 })
+          max: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
+          tempMax: new NumberField({required: false, integer: true, min:0, initial: 0})
         }),
         herodice: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 5 }),
@@ -85,6 +86,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         movement: new NumberField({ required: true, integer: true, min: 0, initial: 3 }),
         dr: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        actions: new NumberField({reqiured: true, integer: true, min: 0, initial: 3})
 
       }),
       // ── IDENTITY / BIOGRAPHY ──────────────────────────────
@@ -167,12 +169,13 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       skills: {}
     };
 
+    this.attributes.hp.tempMax = this.attributes.hp.max;
     // Race Modifiers
     if (raceItem) {
       if (!raceItem) return;
-      this.attributes.hp.max += raceItem.system.hpBonus;
+      this.attributes.hp.tempMax = this.attributes.hp.max + (raceItem.system.hpBonus || 0);
       //log("this.abilities.movement", this.abilities.movement);
-      this.attributes.movement = raceItem.system.movement;
+      this.attributes.movement = raceItem.system.movement || this.attributes.movement;
       raceItem.system.abilityModifiers?.forEach(m => mods.abilities[m.ability] += m.modifier);
       raceItem.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
     }

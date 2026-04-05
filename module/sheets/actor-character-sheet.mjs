@@ -37,23 +37,23 @@ export default class StoryformCharacterSheet
 
   static PARTS = {
     header: {
-      template: "systems/storyform/templates/actors/character-header.hbs"
+      template: "systems/storyform/templates/actors/parts/character/character-header.hbs"
     },
     tabs: {
-      template: "systems/storyform/templates/actors/character-tabs.hbs"
+      template: "systems/storyform/templates/actors/parts/character/character-tabs.hbs"
     },
     details: {
-      template: "systems/storyform/templates/actors/character-details.hbs",
+      template: "systems/storyform/templates/actors/parts/character/character-details.hbs",
       scrollable: [""],
       tab: { group: "primary", id: "details" }
     },
     gear: {
-      template: "systems/storyform/templates/actors/character-gear.hbs",
+      template: "systems/storyform/templates/actors/parts/character/character-gear.hbs",
       scrollable: [""],
       tab: { group: "primary", id: "gear" }
     },
     biography: {
-      template: "systems/storyform/templates/actors/character-biography.hbs",
+      template: "systems/storyform/templates/actors/parts/character/character-biography.hbs",
       scrollable: [""],
       tab: { group: "primary", id: "biography" }
     }
@@ -89,6 +89,7 @@ export default class StoryformCharacterSheet
     log(`Preparing context for ${this.actor.name}`);
 
     const context = await super._prepareContext(options);
+    
     context.actor = this.actor;
     context.system = this.actor.system;
     context.flags = this.actor.flags;
@@ -198,10 +199,10 @@ export default class StoryformCharacterSheet
 
     if (originTypes.includes(item.type)) {
       // Find any existing item of this type on the actor
-      const existing = this.actor.itemTypes[item.type];
+      const existing = this.actor.itemTypes[item.type].map(i => i.id);
       if (existing.length > 0) {
         // Remove the previous origin item before adding the new one
-        await this.actor.deleteEmbeddedDocuments("Item", existing.map(i => i.id));
+        await this.actor.deleteEmbeddedDocuments("Item", existing);
       }
     }
 
