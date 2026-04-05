@@ -105,9 +105,9 @@ export default class StoryformClassSheet
       data.system.skillModifiers = Object.values(data.system.skillModifiers);
     }
     console.log("Saving")
-    await this.item.update(data);
-
-    return super._processFormData(event, form, formData);
+    //await this.item.update(data);
+    foundry.utils.mergeObject(formData.object, foundry.utils.flattenObject(data));
+    return super._processFormData(config, event, formData);
   }
 
   // ── Actions ───────────────────────────────────────────────
