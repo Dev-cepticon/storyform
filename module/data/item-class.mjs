@@ -18,20 +18,10 @@ export default class ClassData extends foundry.abstract.TypeDataModel {
       role: new StringField({ initial: "" }),
       description: new HTMLField({ initial: "" }),
       ...buildOriginSchema({ 
-        abilities: false, 
         skills: true, 
         actions: true, 
         heroDice: true 
       })
-      
-
-      // The once-per-turn ability
-      // oncePerturn: new SchemaField({
-      //   name:        new StringField({ initial: "" }),
-      //   description: new StringField({ initial: "" })
-      // }),
-
-      // Hero Dice abilities — classes get two
     };
   }
 }

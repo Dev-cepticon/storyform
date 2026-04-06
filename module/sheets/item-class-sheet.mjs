@@ -14,7 +14,7 @@ export default class StoryformClassSheet
       controls: [
         {
           icon: "fa-solid fa-gear",
-          label: "STORYFORM.ItemRace",
+          label: "STORYFORM.ItemClass",
           action: "showConfig"
         }
       ]
@@ -76,7 +76,7 @@ export default class StoryformClassSheet
     //Expand the flat dot-notation keys into a nested object
     const data = foundry.utils.expandObject(formData.object);
 
-    log("Expanded Data Payload:", expandedData);
+    log("Expanded Data Payload:", data);
 
     if (data.system?.skillModifiers) {
       data.system.skillModifiers = Object.values(data.system.skillModifiers);

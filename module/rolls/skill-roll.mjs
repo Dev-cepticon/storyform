@@ -120,7 +120,6 @@ export async function rollSkill(actor, skillKey, options = {}) {
     const currentHeroDice = actor.system.attributes.herodice.value;
 
     // ── Dialog ────────────────────────────────────────────
-    log(`Rolling Skill: ${label} for ${actor.name}`);
     let heroDiceSpend = 0;
     if (!options.skipDialog) {
         const result = await getRollOptions({
@@ -135,9 +134,9 @@ export async function rollSkill(actor, skillKey, options = {}) {
             log("Roll cancelled by user.");
             return;
         }
-        console.log("result.heroDiceSpend " + result.heroDiceSpend)
+        log("result.heroDiceSpend " + result.heroDiceSpend)
         heroDiceSpend = result.heroDiceSpend;
-        console.log("heroDiceSpend " + heroDiceSpend)
+        log("heroDiceSpend " + heroDiceSpend)
     } else {
         heroDiceSpend = options.heroDiceSpend ?? 0;
     }
@@ -360,11 +359,5 @@ export async function rollAbilityCheck(actor, abilityKey, dcModifier = 0) {
  * Used when a GM calls for a raw ability check.
  */
 function _abilityToSkill(abilityKey) {
-    const map = {
-        str: "athletics",
-        dex: "stealth",
-        int: "perception",
-        cha: "charm"
-    };
-    return map[abilityKey] ?? "athletics";
+    return CONFIG.STORYFORM.skillsByAbility[abilityKey]?.[0]?.key ?? "athletics";
 }

@@ -78,7 +78,7 @@ export default class StoryformArmorSheet
     await this.item.update({ "system.properties": props });
   }
 
-  async _processFormData(event, form, formData) {
+  async _processFormData(config, event, formData) {
 
     const data = foundry.utils.expandObject(formData.object);
 

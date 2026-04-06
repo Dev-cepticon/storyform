@@ -84,10 +84,6 @@ export default class StoryformCharacterSheet
     context.CONFIG = CONFIG.STORYFORM;
 
     const a = this.actor.system.abilities;
-    context.isStrOver = a.str.skillPointsSpent > a.str.skillPoints;
-    context.isDexOver = a.dex.skillPointsSpent > a.dex.skillPoints;
-    context.isIntOver = a.int.skillPointsSpent > a.int.skillPoints;
-    context.isChaOver = a.cha.skillPointsSpent > a.cha.skillPoints;
 
     context.items = this.actor.items.map(i => i.toObject(false));
 
@@ -106,8 +102,8 @@ export default class StoryformCharacterSheet
     const allTabs = context.tabs ? Object.values(context.tabs).flat() : [];
     context.tab = allTabs.find(t => t.id === partId) || {
       id: partId,
-      active: isActive,
-      cssClass: isActive ? "active" : ""
+      active: this.tabGroups.primary === partId,
+      cssClass: this.tabGroups.primary === partId ? "active" : ""
     };
 
     // 2. Specialized Logic
@@ -143,7 +139,6 @@ export default class StoryformCharacterSheet
       skills: CONFIG.STORYFORM.skillsByAbility[abilityKey].map(({ key: skillKey, label }) => ({
         key: skillKey,
         labelKey: `STORYFORM.Skill${skillKey.charAt(0).toUpperCase()}${skillKey.slice(1)}`,
-        label,
         dc: s[skillKey].dc
       }))
     }));

@@ -62,7 +62,7 @@ export default class StoryformDerpSheet
     //Expand the flat dot-notation keys into a nested object
     const data = foundry.utils.expandObject(formData.object);
 
-    log("Expanded Data Payload:", expandedData);
+    log("Expanded Data Payload:", data);
 
     console.log("Saving")
     await this.item.update(data);

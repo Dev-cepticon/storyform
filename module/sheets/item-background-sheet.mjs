@@ -13,7 +13,7 @@ export default class StoryformBackgroundSheet
       controls: [
         {
           icon: "fa-solid fa-gear",
-          label: "STORYFORM.ItemRace",
+          label: "STORYFORM.ItemBackground",
           action: "showConfig"
         }
       ]

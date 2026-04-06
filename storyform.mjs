@@ -39,12 +39,9 @@ Hooks.once("i18nInit", () => {
 Hooks.once("init", () => {
   log("Storyform | Initializing system");
 
-  CONFIG.INIT = true;
-
-  log("System config registered.");
-
   log("Preloading templates and registering helpers...");
-  preloadHandlebarsTemplates();
+  //enable when partial need to be loaded
+  //preloadHandlebarsTemplates();
   registerHandlebarsHelpers();
 
   // ── Data Models ───────────────────────────────────────────
@@ -115,7 +112,6 @@ Hooks.once("init", () => {
 // ── Ready Hook ─────────────────────────────────────────────
 Hooks.once("ready", async () => {
   log("Storyform | System ready");
-  CONFIG.INIT = false;
 
   // Expose roll functions globally so macros can call them.
   // e.g. game.storyform.rollSkill(actor, "stealth")
@@ -126,11 +122,10 @@ Hooks.once("ready", async () => {
   };
   log("Global API exposed to game.storyform");
 
-  if (!game.user.isGM) {
-    log("Performing GM-only setup routines...");
-    // GM-only setup goes here
-    return;
-  }
+  if (!game.user.isGM) return;
+  log("Performing GM-only setup routines...");
+  // GM-only setup goes here
+
 });
 
 // ── Handlebars ────────────────────────────────────────────

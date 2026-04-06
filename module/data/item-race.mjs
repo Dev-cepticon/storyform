@@ -48,9 +48,7 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
       }),
       ...buildOriginSchema({ 
         abilities: true, 
-        skills: true, 
-        actions: false, 
-        heroDice: false 
+        skills: true
       }),
 
     };
