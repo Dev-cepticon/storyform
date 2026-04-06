@@ -1,3 +1,4 @@
+import { buildAttributesSchema , buildAbilitiesSchema, buildSkillsSchema } from "./shared-schema.mjs";
 import { log } from "../utility/utility.mjs";
 
 export default class CharacterData extends foundry.abstract.TypeDataModel {
@@ -11,83 +12,12 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     } = foundry.data.fields;
 
     return {
-      // ── ABILITIES ──────────────────────────────────────────
-      // Each is a DC (Difficulty Class). Lower = more capable.
-      // Range: roughly 8 (elite) to 20 (untrained).
-      abilities: new SchemaField({
-        str: new SchemaField({
-          dc: new NumberField({
-            required: true, integer: true,
-            min: 8, max: 30, initial: 20,
-            label: "STORYFORM.AbilityStr"
-          })
-        }),
-        dex: new SchemaField({
-          dc: new NumberField({
-            required: true, integer: true,
-            min: 8, max: 30, initial: 20,
-            label: "STORYFORM.AbilityDex"
-          })
-        }),
-        int: new SchemaField({
-          dc: new NumberField({
-            required: true, integer: true,
-            min: 8, max: 30, initial: 20,
-            label: "STORYFORM.AbilityInt"
-          })
-        }),
-        cha: new SchemaField({
-          dc: new NumberField({
-            required: true, integer: true,
-            min: 8, max: 30, initial: 20,
-            label: "STORYFORM.AbilityCha"
-          })
-        })
-      }),
-      // ── SKILLS ────────────────────────────────────────────
-      // Each skill is also a DC. Players roll d20 and need to
-      // roll ABOVE the DC to succeed.
-      skills: new SchemaField({
-
-        // Strength skills
-        brawling: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        climb: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        intimidate: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        athletics: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-
-        // Dexterity skills
-        melee: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        shooting: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        piloting: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        stealth: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-
-        // Intelligence skills
-        firstAid: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        repair: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        techArcana: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        perception: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-
-        // Charisma skills
-        charm: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        deception: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        gatherInfo: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) }),
-        haggle: new SchemaField({ dc: new NumberField({ required: true, integer: true, min: 8, max: 30, initial: 20 }) })
-      }),
       // ── CORE STATS ────────────────────────────────────────
-      attributes: new SchemaField({
-        hp: new SchemaField({
-          value: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
-          max: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
-        }),
-        herodice: new SchemaField({
-          value: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 5 }),
-          max: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 5 })
-        }),
-        movement: new NumberField({ required: true, integer: true, min: 0, initial: 3 }),
-        dr: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        actions: new NumberField({ required: true, integer: true, min: 0, initial: 3 })
-
-      }),
+      attributes: buildAttributesSchema(foundry.data.fields, { isCharacter: true }),
+      // ── ABILITIES ──────────────────────────────────────────
+      abilities: buildAbilitiesSchema(foundry.data.fields),
+      // ── SKILLS ────────────────────────────────────────────
+      skills: buildSkillsSchema(foundry.data.fields),
       // ── IDENTITY / BIOGRAPHY ──────────────────────────────
       details: new SchemaField({
         personality: new StringField({ initial: "" }),

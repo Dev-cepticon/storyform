@@ -1,4 +1,4 @@
-import { rollSkill, rollAttack, rollAbilityCheck } from "../rolls/skill-roll.mjs";
+import { rollSkill, rollAttack, rollAbilityCheck } from "../rolls/skill-roll.mjs"; //TODO: Add rolls to npc sheet
 import { log } from "../utility/utility.mjs";
 
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -38,6 +38,7 @@ export default class StoryformNpcSheet
 
     };
 
+    //TODO implement parts
     static PARTS = {
         form: {
             template: "systems/storyform/templates/actors/actor-npc.hbs"
@@ -69,7 +70,7 @@ export default class StoryformNpcSheet
         // }
     };
 
-
+    //TODO implement Tabs
     /** Tabs                                     */
     // tabGroups = foundry.utils.deepClone(this.options.tabGroups);
     // _getTabs() {
@@ -121,11 +122,6 @@ export default class StoryformNpcSheet
             }
         };
 
-
-        // Ensure attacks always exists (prevents HBS crash)
-        context.system.combat = context.system.combat || {};
-        context.system.combat.attacks = context.system.combat.attacks || [];
-
         context.abilityLabels = Object.fromEntries(
           CONFIG.STORYFORM.abilities.map(a => [a.key, a.label])
         );
@@ -135,7 +131,7 @@ export default class StoryformNpcSheet
         return context;
     }
 
-
+    //TODO: For tabs once implemented
     // async _preparePartContext(partId, context) {
 
     //     log(`Preparing NPC part: ${partId}`);
