@@ -63,28 +63,8 @@ export default class StoryformBackgroundSheet
     return context;
   }
 
-  _getSkillChoices() {
-
-    log("Generating skill choices for background dropdowns...");
-
-    const skills = [
-      ["brawling", "SkillBrawling"], ["climb", "SkillClimb"],
-      ["intimidate", "SkillIntimidate"], ["athletics", "SkillAthletics"],
-      ["melee", "SkillMelee"], ["shooting", "SkillShooting"],
-      ["piloting", "SkillPiloting"], ["stealth", "SkillStealth"],
-      ["firstAid", "SkillFirstAid"], ["repair", "SkillRepair"],
-      ["techArcana", "SkillTechArcana"], ["perception", "SkillPerception"],
-      ["charm", "SkillCharm"], ["deception", "SkillDeception"],
-      ["gatherInfo", "SkillGatherInfo"], ["haggle", "SkillHaggle"]
-    ];
-    return skills.map(([key, loc]) => ({
-      key, label: game.i18n.localize(`STORYFORM.${loc}`)
-    }));
-  }
 
   // ── Actions ───────────────────────────────────────────────
-  // Note: oncePerturn fields save automatically through V2's
-  // form binding — no handler needed for those fields.
 
   static async _onAddSkillMod(event, target) {
 

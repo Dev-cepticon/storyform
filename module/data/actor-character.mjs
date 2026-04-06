@@ -78,7 +78,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         hp: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
           max: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
-          tempMax: new NumberField({ required: false, integer: true, min: 0, initial: 0 })
         }),
         herodice: new SchemaField({
           value: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 5 }),
@@ -86,14 +85,11 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         movement: new NumberField({ required: true, integer: true, min: 0, initial: 3 }),
         dr: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        actions: new NumberField({ reqiured: true, integer: true, min: 0, initial: 3 })
+        actions: new NumberField({ required: true, integer: true, min: 0, initial: 3 })
 
       }),
       // ── IDENTITY / BIOGRAPHY ──────────────────────────────
       details: new SchemaField({
-        race: new StringField({ initial: "" }),
-        class: new StringField({ initial: "" }),
-        background: new StringField({ initial: "" }),
         personality: new StringField({ initial: "" }),
         biography: new HTMLField({ initial: "" })
       })
@@ -112,12 +108,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     log("getting abilities and skill points");
     const abilities = this.abilities;
 
-    this.abilities.str.skillPoints = (20 - abilities.str.dc) * 3;
-    this.abilities.dex.skillPoints = (20 - abilities.dex.dc) * 3;
-    this.abilities.int.skillPoints = (20 - abilities.int.dc) * 3;
-    this.abilities.cha.skillPoints = (20 - abilities.cha.dc) * 3;
-
-
     //Calculte characters damage resistance based on equiped armor
     // Find all items of type 'armor' that are marked as equipped
     log("calculating damage resistance")
@@ -127,7 +117,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     // If exactly one armor is equipped, use its DR. 
     // If 0 or >1, DR resets to 0.
     if (equippedArmor.length === 1) {
-      this.attributes.dr = equippedArmor[0].system.dr || 0;
+      this.attributes.dr = equippedArmor[0].system.dr ?? 0;
     } else {
       this.attributes.dr = 0;
       // Optional: If length > 1, we could log a warning to the console
@@ -154,28 +144,21 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     this.abilities.int.skillPointsSpent = 0;
     this.abilities.cha.skillPointsSpent = 0;
 
-    this.attributes.hp.tempMax = this.attributes.hp.max;
-    log("this.attributes.hp.tempMax", this.attributes.hp.tempMax);
-    log("this.attributes.hp.max", this.attributes.hp.max)
     // Race Modifiers
     if (raceItem) {
-      if (!raceItem) return;
-      this.attributes.hp.tempMax = this.attributes.hp.max + (raceItem.system.hpBonus || 0);
-      //log("this.abilities.movement", this.abilities.movement);
-      this.attributes.movement = raceItem.system.movement || this.attributes.movement;
+      log("this.attributes.hp.tempMax", this.attributes.hp.tempMax);
+      this.attributes.movement = raceItem.system.movement ?? this.attributes.movement;
       raceItem.system.abilityModifiers?.forEach(m => mods.abilities[m.ability] += m.modifier);
       raceItem.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
     }
-    // Class/Background Modifiers
-    let count = 0;
+    this.attributes.hp.tempMax = this.attributes.hp.max + (raceItem?.system.hpBonus ?? 0);
+    // Class/Background Modifiers    
     [classItem, backgroundItem].forEach(item => {
       if (!item) return;
-      count += 1;
       item.system.skillModifiers?.forEach(m => mods.skills[m.skill] = (mods.skills[m.skill] || 0) + m.modifier);
 
     });
 
-    // Apply "Floor of 8" Logic
     // Logic: DC = Math.max(8, BaseDC) + Modifiers
     // Process Abilities
     for (let [id, ability] of Object.entries(this.abilities)) {
@@ -184,7 +167,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       ability.total = base + (mods.abilities[id] || 0);
       ability.skillPoints = (20 - base) * 3;
       ability.dc = base// + (mods.abilities[id] || 0);
-      ability.skillPoints = (20 - base) * 3;
     }
 
     // Process Skills
@@ -194,7 +176,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       skill.total = base + (mods.skills[id] || 0);
       const cost = 20 - base;
 
-      const mapping = this._getSkillAbilityMapping(id);
+      const mapping = CONFIG.STORYFORM.skillAbilityMap[id] ?? null;
 
       if (this.abilities[mapping]) {
         this.abilities[mapping].skillPointsSpent += cost;
@@ -204,9 +186,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     }
 
     log("derived data finished");
-  }
-  _getSkillAbilityMapping(skillId) {
-    return CONFIG.STORYFORM.skillAbilityMap[skillId] ?? null;
   }
 
   async _preUpdate(changed, options, user) {
@@ -220,38 +199,15 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     const abilities = foundry.utils.mergeObject(this.abilities, changed.system?.abilities || {}, { inplace: false });
     const skills = foundry.utils.mergeObject(this.skills, changed.system?.skills || {}, { inplace: false });
 
-    // 1. Strength Validation
-    const strLimit = (20 - abilities.str.dc) * 3;
-    const strSpent = (20 - skills.brawling.dc) + (20 - skills.climb.dc) +
-      (20 - skills.intimidate.dc) + (20 - skills.athletics.dc);
-    if (strSpent > strLimit) {
-      ui.notifications.warn(`Warning: Strength Skill Points exceeded! (${strSpent}/${strLimit})`);
+    for (const { key: abilityKey } of CONFIG.STORYFORM.abilities) {
+      const limit = (20 - abilities[abilityKey].dc) * 3;
+      const spent = CONFIG.STORYFORM.skillsByAbility[abilityKey]
+        .reduce((sum, { key }) => sum + (20 - skills[key].dc), 0);
+      if (spent > limit) {
+        const label = game.i18n.localize(`STORYFORM.Ability${abilityKey.capitalize()}`);
+        ui.notifications.warn(`Warning: ${label} Skill Points exceeded! (${spent}/${limit})`);
+      }
     }
-
-    // 2. Dexterity Validation
-    const dexLimit = (20 - abilities.dex.dc) * 3;
-    const dexSpent = (20 - skills.melee.dc) + (20 - skills.shooting.dc) +
-      (20 - skills.piloting.dc) + (20 - skills.stealth.dc);
-    if (dexSpent > dexLimit) {
-      ui.notifications.warn(`Warning: Dexterity Skill Points exceeded! (${dexSpent}/${dexLimit})`);
-    }
-
-    // 3. Intelligence Validation
-    const intLimit = (20 - abilities.int.dc) * 3;
-    const intSpent = (20 - skills.firstAid.dc) + (20 - skills.repair.dc) +
-      (20 - skills.techArcana.dc) + (20 - skills.perception.dc);
-    if (intSpent > intLimit) {
-      ui.notifications.warn(`Warning: Intelligence Skill Points exceeded! (${intSpent}/${intLimit})`);
-    }
-
-    // 4. Charisma Validation
-    const chaLimit = (20 - abilities.cha.dc) * 3;
-    const chaSpent = (20 - skills.charm.dc) + (20 - skills.deception.dc) +
-      (20 - skills.gatherInfo.dc) + (20 - skills.haggle.dc);
-    if (chaSpent > chaLimit) {
-      ui.notifications.warn(`Warning: Charisma Skill Points exceeded! (${chaSpent}/${chaLimit})`);
-    }
-
     return true;
   }
 
