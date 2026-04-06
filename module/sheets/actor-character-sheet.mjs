@@ -188,7 +188,6 @@ export default class StoryformCharacterSheet
   static async _onSkillRoll(event, target) {
 
     const skillKey = target.dataset.skill;
-    log("target", target.dataset.skill);
 
     log(`UI Action: Skill Roll triggered for ${skillKey}`);
 
@@ -233,8 +232,6 @@ export default class StoryformCharacterSheet
   }
 
   static async _onToggleEquip(event, target) {
-
-    const itemElement = target.closest("[data-item-id]");
 
     const itemId = target.closest("[data-item-id]").dataset.itemId;
     const item = this.actor.items.get(itemId);
