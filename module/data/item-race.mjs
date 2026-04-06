@@ -1,3 +1,7 @@
+import { buildOriginSchema } from "./shared-schema.mjs";
+//import { log } from "../utility/utility.mjs";
+
+
 export default class RaceData extends foundry.abstract.TypeDataModel {
 
   /** @override */
@@ -16,66 +20,39 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
         required: true, integer: true, initial: 0,
         label: "STORYFORM.RaceHpBonus"
       }),
-
       size: new StringField({
         initial: "medium",
-        choices: ["small", "medium", "large"],
+        choices: ["tiny", "small", "medium", "large", "huge"],
         label: "STORYFORM.RaceSize"
       }),
-
       age: new SchemaField({
         maturity: new NumberField({ integer: true, initial: 18 }),
         max: new NumberField({ integer: true, initial: 100 })
       }),
-
       // Movement speed in squares
       movement: new NumberField({
         required: true, integer: true,
         min: 1, initial: 3,
         label: "STORYFORM.AttributeMovement"
       }),
-      abilityModifiers: new ArrayField(
-        new SchemaField({
-          ability: new StringField({
-            required: true,
-            choices: ["str", "dex", "int", "cha"]
-          }),
-          modifier: new NumberField({
-            required: true, integer: true, initial: -1
-          })
-        }),
-        {
-          initial: [],
-          label: "STORYFORM.RaceAbilityModifiers"
-        }
-      ),
-
-
-      skillModifiers: new ArrayField(
-        new SchemaField({
-          skill: new StringField({ required: true }),
-          modifier: new NumberField({
-            required: true, integer: true, initial: -1
-          })
-        }),
-        {
-          initial: [],
-          label: "STORYFORM.RaceSkillModifiers"
-        }
-      ),
-
-      // Optional racial trait — toggle to show/hide fields
+      //Optional racial trait — toggle to show/hide fields
       racialTrait: new SchemaField({
         hasTrait: new BooleanField({ initial: false }),
         name: new StringField({ initial: "" }),
         description: new StringField({ initial: "" })
       }),
-
       description: new HTMLField({
         required: true,
         initial: "",
         label: "STORYFORM.Description"
-      })
+      }),
+      ...buildOriginSchema({ 
+        abilities: true, 
+        skills: true, 
+        actions: false, 
+        heroDice: false 
+      }),
+
     };
   }
 }

@@ -16,6 +16,7 @@ export default class NpcData extends foundry.abstract.TypeDataModel {
       attributes: buildAttributesSchema(foundry.data.fields, { isCharacter: false }),
       abilities: buildAbilitiesSchema(foundry.data.fields),
       skills: buildSkillsSchema(foundry.data.fields),
+      movement: new NumberField({ required: true, integer: true, min: 0, initial: 3 }),
       details: new SchemaField({
         biography: new HTMLField({ initial: "" }),
         size: new StringField({ required: false, initial: "medium" }),

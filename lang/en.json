@@ -65,7 +65,7 @@
   "STORYFORM.ArmorTier": "Tier",
   "STORYFORM.ArmorProperties": "Properties",
 
-  "STORYFORM.ClassSkillBonuses": "Skill Bonuses",
+  "STORYFORM.ClassSkillBonuses": "Skill Modifier",
   "STORYFORM.ClassHeroDiceAbilities": "Hero Dice Abilities",
 
   "STORYFORM.RaceSize": "Size",
@@ -73,7 +73,7 @@
   "STORYFORM.RaceAbilityModifiers": "Ability Modifiers",
   "STORYFORM.RaceSkillModifiers": "Skill Modifiers",
 
-  "STORYFORM.BackgroundSkillBonuses": "Skill Bonuses",
+  "STORYFORM.BackgroundSkillModifier": "Skill Modifier",
   "STORYFORM.BackgroundHeroDiceAbilities": "Hero Dice Abilities",
   "STORYFORM.BackgroundOncePerturn": "Once Per Turn",
 
