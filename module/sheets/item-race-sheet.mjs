@@ -66,40 +66,6 @@ export default class StoryformRaceSheet
     return context;
   }
 
-  // _getAbilityChoices() {
-  //   return [
-  //     { key: "str", label: game.i18n.localize("STORYFORM.AbilityStr") },
-  //     { key: "dex", label: game.i18n.localize("STORYFORM.AbilityDex") },
-  //     { key: "int", label: game.i18n.localize("STORYFORM.AbilityInt") },
-  //     { key: "cha", label: game.i18n.localize("STORYFORM.AbilityCha") }
-  //   ];
-  // }
-
-  // _getSkillChoices() {
-  //   ;
-  //   return [
-  //     ["brawling", "SkillBrawling"],
-  //     ["climb", "SkillClimb"],
-  //     ["intimidate", "SkillIntimidate"],
-  //     ["athletics", "SkillAthletics"],
-  //     ["melee", "SkillMelee"],
-  //     ["shooting", "SkillShooting"],
-  //     ["piloting", "SkillPiloting"],
-  //     ["stealth", "SkillStealth"],
-  //     ["firstAid", "SkillFirstAid"],
-  //     ["repair", "SkillRepair"],
-  //     ["techArcana", "SkillTechArcana"],
-  //     ["perception", "SkillPerception"],
-  //     ["charm", "SkillCharm"],
-  //     ["deception", "SkillDeception"],
-  //     ["gatherInfo", "SkillGatherInfo"],
-  //     ["haggle", "SkillHaggle"]
-  //   ].map(([key, loc]) => ({
-  //     key,
-  //     label: game.i18n.localize(`STORYFORM.${loc}`)
-  //   }));
-  // }
-
   // ── Form Handling ───────────────────────────────────────────────
   /** @override */
   static async _processFormData(config, event, formData) {
@@ -126,8 +92,8 @@ export default class StoryformRaceSheet
 
   static async _onAddAbilityMod(event, target) {
 
-    event.preventDefault();
-    event.stopImmediatePropagation();
+    //event.preventDefault();
+    //event.stopImmediatePropagation();
 
     const mods = foundry.utils.deepClone(this.item.system.abilityModifiers);
     mods.push({ ability: "str", modifier: -1 });
