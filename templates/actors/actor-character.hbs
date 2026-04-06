@@ -1,14 +1,12 @@
 <form class="{{cssClass}}" autocomplete="off">
-
   {{!-- Header --}}
-  {{> "systems/storyform/templates/actors/character-header.hbs"}}
-
-  {{!-- Tabs Navigation --}}
-  {{> "systems/storyform/templates/actors/character-tabs.hbs"}}
-
-  {{!-- REQUIRED for tabs to work --}}
+  {{{parts.header.content}}}
+  {{!-- Nav --}}
+  {{{parts.tabs.content}}}
+  {{!-- Body --}}
   <section class="sheet-body">
-    {{!-- V2 PARTS (details, gear, biography) render here automatically --}}
+    {{{parts.details.content}}}
+    {{{parts.gear.content}}}
+    {{{parts.biography.content}}}
   </section>
-
 </form>

@@ -61,27 +61,13 @@ export default class StoryformCharacterSheet
 
   tabGroups = foundry.utils.deepClone(this.options.tabGroups);
 
+  /** @override */
   _getTabs() {
-    return {
-      details: {
-        id: "details", group: "primary",
-        label: game.i18n.localize("STORYFORM.TabDetails"),
-        //active: this.tabGroups.primary === "details",
-        cssClass: this.tabGroups.primary === "details" ? "active" : ""
-      },
-      gear: {
-        id: "gear", group: "primary",
-        label: game.i18n.localize("STORYFORM.TabGear"),
-        //active: this.tabGroups.primary === "gear",
-        cssClass: this.tabGroups.primary === "gear" ? "active" : ""
-      },
-      biography: {
-        id: "biography", group: "primary",
-        label: game.i18n.localize("STORYFORM.TabBiography"),
-        //active: this.tabGroups.primary === "biography",
-        cssClass: this.tabGroups.primary === "biography" ? "active" : ""
-      }
-    };
+    return [
+      { id: "details", group: "primary", label: game.i18n.localize("STORYFORM.TabDetails"), icon: "fa-solid fa-address-card" },
+      { id: "gear", group: "primary", label: game.i18n.localize("STORYFORM.TabGear"), icon: "fa-solid fa-backpack" },
+      { id: "biography", group: "primary", label: game.i18n.localize("STORYFORM.TabBiography"), icon: "fa-solid fa-sparkles" }
+    ];
   }
 
   async _prepareContext(options) {
@@ -89,12 +75,13 @@ export default class StoryformCharacterSheet
     log(`Preparing context for ${this.actor.name}`);
 
     const context = await super._prepareContext(options);
-    
+
     context.actor = this.actor;
     context.system = this.actor.system;
     context.flags = this.actor.flags;
-    context.tabs = this._getTabs();
+    context.navTabs = this._getTabs();
     context.abilityGroups = this._getAbilityGroups();
+    context.CONFIG = CONFIG.STORYFORM;
 
     const a = this.actor.system.abilities;
     context.isStrOver = a.str.skillPointsSpent > a.str.skillPoints;
@@ -109,18 +96,22 @@ export default class StoryformCharacterSheet
     return context;
   }
 
+ /** @override */
   async _preparePartContext(partId, context) {
+    const activeTabId = this.tabGroups.primary;
+    const isActive = activeTabId === partId;
 
-    log(`Preparing part context for: ${partId}`);
+    // 1. Link Tab State
+    // We flatten the framework's tab groups to find the metadata for this specific part
+    const allTabs = context.tabs ? Object.values(context.tabs).flat() : [];
+    context.tab = allTabs.find(t => t.id === partId) || {
+      id: partId,
+      active: isActive,
+      cssClass: isActive ? "active" : ""
+    };
 
-    context.tab = context.tab || {};
-    context.tab.active = this.tabGroups.primary === partId;
-    context.tab.cssClass = context.tab.active ? "active" : "";
-    context.tab.group = "primary";
-    context.tab.id = partId;
-
+    // 2. Specialized Logic
     if (partId === "details") {
-      log("Enriching biography HTML...");
       context.enrichedBiography = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
         this.actor.system.details.biography ?? "",
         {
@@ -130,6 +121,10 @@ export default class StoryformCharacterSheet
         }
       );
     }
+
+    // 3. Flow Tracking
+    log(`Flow: Render Part [${partId}] | Active: ${isActive}`);
+
     return context;
   }
 
@@ -140,16 +135,16 @@ export default class StoryformCharacterSheet
     // Structure is driven by CONFIG.STORYFORM.skillsByAbility — skills are
     // never hardcoded here. Adding a skill to config.mjs propagates automatically.
     return CONFIG.STORYFORM.abilities.map(({ key: abilityKey }) => ({
-      key:         abilityKey,
-      labelKey:    `STORYFORM.Ability${abilityKey.charAt(0).toUpperCase()}${abilityKey.slice(1)}`,
-      dc:          a[abilityKey].dc,
+      key: abilityKey,
+      labelKey: `STORYFORM.Ability${abilityKey.charAt(0).toUpperCase()}${abilityKey.slice(1)}`,
+      dc: a[abilityKey].dc,
       skillPoints: a[abilityKey].skillPoints,
-      spent:       a[abilityKey].skillPointsSpent,
+      spent: a[abilityKey].skillPointsSpent,
       skills: CONFIG.STORYFORM.skillsByAbility[abilityKey].map(({ key: skillKey, label }) => ({
-        key:      skillKey,
+        key: skillKey,
         labelKey: `STORYFORM.Skill${skillKey.charAt(0).toUpperCase()}${skillKey.slice(1)}`,
         label,
-        dc:       s[skillKey].dc
+        dc: s[skillKey].dc
       }))
     }));
   }
@@ -248,13 +243,13 @@ export default class StoryformCharacterSheet
   }
   static async _onDeleteItem(event, target) {
     event.preventDefault();
-    
+
     // Find the item ID from the closest parent list item
     const li = target.closest("[data-item-id]");
     const itemId = li?.dataset.itemId;
     const item = this.actor.items.get(itemId);
 
-    if ( !item ) {
+    if (!item) {
       log(`Delete failed: Item ID ${itemId} not found on Actor ${this.actor.name}`, "warn");
       return;
     }

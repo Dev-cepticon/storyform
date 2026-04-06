@@ -92,18 +92,12 @@ export default class StoryformRaceSheet
 
   static async _onAddAbilityMod(event, target) {
 
-    //event.preventDefault();
-    //event.stopImmediatePropagation();
-
     const mods = foundry.utils.deepClone(this.item.system.abilityModifiers);
     mods.push({ ability: "str", modifier: -1 });
     await this.item.update({ "system.abilityModifiers": mods });
   }
 
   static async _onDeleteAbilityMod(event, target) {
-
-    event.preventDefault();
-    event.stopImmediatePropagation();
 
     const index = Number(target.dataset.index);
     const mods = foundry.utils.deepClone(this.item.system.abilityModifiers);
