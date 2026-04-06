@@ -49,7 +49,7 @@ export default class StoryformBackgroundSheet
     context.system = this.item.system;
 
     // Prepare selection choices for the UI
-    context.skillChoices = this._getSkillChoices();
+    context.skillChoices = CONFIG.STORYFORM.skills;
 
     // Enrich HTML for the description field (ProseMirror)
     log("Enriching description HTML...");

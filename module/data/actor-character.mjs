@@ -117,25 +117,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     this.abilities.int.skillPoints = (20 - abilities.int.dc) * 3;
     this.abilities.cha.skillPoints = (20 - abilities.cha.dc) * 3;
 
-    // Calculate how many points have been SPENT by summingall skill DC reductions from their base of 20.
-    // Lets the sheet show a running total.
-    const s = this.skills;
-
-    this.abilities.str.skillPointsSpent = 0;
-    //   (20 - s.brawling.dc) + (20 - s.climb.dc) +
-    //   (20 - s.intimidate.dc) + (20 - s.athletics.dc);
-
-    this.abilities.dex.skillPointsSpent = 0;
-    //   (20 - s.melee.dc) + (20 - s.shooting.dc) +
-    //   (20 - s.piloting.dc) + (20 - s.stealth.dc);
-
-    this.abilities.int.skillPointsSpent = 0;
-    //   (20 - s.firstAid.dc) + (20 - s.repair.dc) +
-    //   (20 - s.techArcana.dc) + (20 - s.perception.dc);
-
-    this.abilities.cha.skillPointsSpent = 0;
-    //   (20 - s.charm.dc) + (20 - s.deception.dc) +
-    //   (20 - s.gatherInfo.dc) + (20 - s.haggle.dc);
 
     //Calculte characters damage resistance based on equiped armor
     // Find all items of type 'armor' that are marked as equipped
@@ -168,6 +149,10 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       abilities: { str: 0, dex: 0, int: 0, cha: 0 },
       skills: {}
     };
+    this.abilities.str.skillPointsSpent = 0;
+    this.abilities.dex.skillPointsSpent = 0;
+    this.abilities.int.skillPointsSpent = 0;
+    this.abilities.cha.skillPointsSpent = 0;
 
     this.attributes.hp.tempMax = this.attributes.hp.max;
     log("this.attributes.hp.tempMax", this.attributes.hp.tempMax);
@@ -221,16 +206,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     log("derived data finished");
   }
   _getSkillAbilityMapping(skillId) {
-    const groups = {
-      str: ["brawling", "climb", "intimidate", "athletics"],
-      dex: ["melee", "shooting", "piloting", "stealth"],
-      int: ["firstAid", "repair", "techArcana", "perception"],
-      cha: ["charm", "deception", "gatherInfo", "haggle"]
-    };
-    for (let [abl, skills] of Object.entries(groups)) {
-      if (skills.includes(skillId)) return abl;
-    }
-    return null;
+    return CONFIG.STORYFORM.skillAbilityMap[skillId] ?? null;
   }
 
   async _preUpdate(changed, options, user) {

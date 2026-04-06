@@ -52,7 +52,7 @@ export default class StoryformClassSheet
     context.system = this.item.system;
 
     log("Fetching skill choices for class configuration...");
-    context.skillChoices = this._getSkillChoices();
+    context.skillChoices = CONFIG.STORYFORM.skills;
 
     log("Enriching description HTML...");
     context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
@@ -65,30 +65,7 @@ export default class StoryformClassSheet
     return context;
   }
 
-  _getSkillChoices() {
-    ;
-    return [
-      ["brawling", "SkillBrawling"],
-      ["climb", "SkillClimb"],
-      ["intimidate", "SkillIntimidate"],
-      ["athletics", "SkillAthletics"],
-      ["melee", "SkillMelee"],
-      ["shooting", "SkillShooting"],
-      ["piloting", "SkillPiloting"],
-      ["stealth", "SkillStealth"],
-      ["firstAid", "SkillFirstAid"],
-      ["repair", "SkillRepair"],
-      ["techArcana", "SkillTechArcana"],
-      ["perception", "SkillPerception"],
-      ["charm", "SkillCharm"],
-      ["deception", "SkillDeception"],
-      ["gatherInfo", "SkillGatherInfo"],
-      ["haggle", "SkillHaggle"]
-    ].map(([key, loc]) => ({
-      key,
-      label: game.i18n.localize(`STORYFORM.${loc}`)
-    }));
-  }
+
 
   // ── Form Handling ───────────────────────────────────────────────
   /** @override */

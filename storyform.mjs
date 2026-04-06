@@ -28,12 +28,21 @@ import { rollSkill, rollAttack, rollAbilityCheck }
   from "./module/rolls/skill-roll.mjs";
 
 import { log } from "./module/utility/utility.mjs";
+import { registerSystemConfig } from "./module/utility/config.mjs";
+
+Hooks.once("i18nInit", () => {
+  registerSystemConfig();
+  log("Storyform | System config registered (i18nInit).");
+});
 
 // ── Initialization Hook ────────────────────────────────────
 Hooks.once("init", () => {
   log("Storyform | Initializing system");
 
   CONFIG.INIT = true;
+
+  log("System config registered.");
+
   log("Preloading templates and registering helpers...");
   preloadHandlebarsTemplates();
   registerHandlebarsHelpers();

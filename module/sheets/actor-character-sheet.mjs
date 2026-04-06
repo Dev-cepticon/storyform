@@ -137,56 +137,21 @@ export default class StoryformCharacterSheet
     const s = this.actor.system.skills;
     const a = this.actor.system.abilities;
 
-    return [
-      {
-        key: "str",
-        labelKey: "STORYFORM.AbilityStr",
-        dc: a.str.dc,
-        skillPoints: a.str.skillPoints,
-        spent: a.str.skillPointsSpent,
-        skills: [
-          { key: "brawling", labelKey: "STORYFORM.SkillBrawling", dc: s.brawling.dc },
-          { key: "climb", labelKey: "STORYFORM.SkillClimb", dc: s.climb.dc },
-          { key: "intimidate", labelKey: "STORYFORM.SkillIntimidate", dc: s.intimidate.dc },
-          { key: "athletics", labelKey: "STORYFORM.SkillAthletics", dc: s.athletics.dc }
-        ]
-      },
-      {
-        key: "dex",
-        labelKey: "STORYFORM.AbilityDex",
-        dc: a.dex.dc,
-        skillPoints: a.dex.skillPoints,
-        spent: a.dex.skillPointsSpent,
-        skills: [
-          { key: "melee", labelKey: "STORYFORM.SkillMelee", dc: s.melee.dc },
-          { key: "shooting", labelKey: "STORYFORM.SkillShooting", dc: s.shooting.dc },
-          { key: "piloting", labelKey: "STORYFORM.SkillPiloting", dc: s.piloting.dc },
-          { key: "stealth", labelKey: "STORYFORM.SkillStealth", dc: s.stealth.dc }
-        ]
-      },
-      {
-        key: "int", labelKey: "STORYFORM.AbilityInt",
-        dc: a.int.dc, skillPoints: a.int.skillPoints,
-        spent: a.int.skillPointsSpent,
-        skills: [
-          { key: "firstAid", labelKey: "STORYFORM.SkillFirstAid", dc: s.firstAid.dc },
-          { key: "repair", labelKey: "STORYFORM.SkillRepair", dc: s.repair.dc },
-          { key: "techArcana", labelKey: "STORYFORM.SkillTechArcana", dc: s.techArcana.dc },
-          { key: "perception", labelKey: "STORYFORM.SkillPerception", dc: s.perception.dc }
-        ]
-      },
-      {
-        key: "cha", labelKey: "STORYFORM.AbilityCha",
-        dc: a.cha.dc, skillPoints: a.cha.skillPoints,
-        spent: a.cha.skillPointsSpent,
-        skills: [
-          { key: "charm", labelKey: "STORYFORM.SkillCharm", dc: s.charm.dc },
-          { key: "deception", labelKey: "STORYFORM.SkillDeception", dc: s.deception.dc },
-          { key: "gatherInfo", labelKey: "STORYFORM.SkillGatherInfo", dc: s.gatherInfo.dc },
-          { key: "haggle", labelKey: "STORYFORM.SkillHaggle", dc: s.haggle.dc }
-        ]
-      }
-    ];
+    // Structure is driven by CONFIG.STORYFORM.skillsByAbility — skills are
+    // never hardcoded here. Adding a skill to config.mjs propagates automatically.
+    return CONFIG.STORYFORM.abilities.map(({ key: abilityKey }) => ({
+      key:         abilityKey,
+      labelKey:    `STORYFORM.Ability${abilityKey.charAt(0).toUpperCase()}${abilityKey.slice(1)}`,
+      dc:          a[abilityKey].dc,
+      skillPoints: a[abilityKey].skillPoints,
+      spent:       a[abilityKey].skillPointsSpent,
+      skills: CONFIG.STORYFORM.skillsByAbility[abilityKey].map(({ key: skillKey, label }) => ({
+        key:      skillKey,
+        labelKey: `STORYFORM.Skill${skillKey.charAt(0).toUpperCase()}${skillKey.slice(1)}`,
+        label,
+        dc:       s[skillKey].dc
+      }))
+    }));
   }
 
   /** @override */

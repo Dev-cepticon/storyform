@@ -126,11 +126,9 @@ export default class StoryformNpcSheet
         context.system.combat = context.system.combat || {};
         context.system.combat.attacks = context.system.combat.attacks || [];
 
-        context.abilityLabels = Object.keys(this.actor.system.abilities).reduce((acc, key) => {
-            // Uses Foundry's built-in .capitalize() string extension
-            acc[key] = game.i18n.localize(`STORYFORM.Ability${key.capitalize()}`);
-            return acc;
-        }, {});
+        context.abilityLabels = Object.fromEntries(
+          CONFIG.STORYFORM.abilities.map(a => [a.key, a.label])
+        );
 
         log(`Finished NPC context for ${this.actor.name}`);
 

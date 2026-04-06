@@ -52,8 +52,8 @@ export default class StoryformRaceSheet
     context.system = this.item.system;
 
     // Prepare selection choices for the UI
-    context.abilityChoices = this._getAbilityChoices();
-    context.skillChoices = this._getSkillChoices();
+    context.abilityChoices = CONFIG.STORYFORM.abilities;
+    context.skillChoices = CONFIG.STORYFORM.skills;
 
     // Enrich HTML for the description field (ProseMirror)
     log("Enriching description HTML...");
@@ -66,39 +66,39 @@ export default class StoryformRaceSheet
     return context;
   }
 
-  _getAbilityChoices() {
-    return [
-      { key: "str", label: game.i18n.localize("STORYFORM.AbilityStr") },
-      { key: "dex", label: game.i18n.localize("STORYFORM.AbilityDex") },
-      { key: "int", label: game.i18n.localize("STORYFORM.AbilityInt") },
-      { key: "cha", label: game.i18n.localize("STORYFORM.AbilityCha") }
-    ];
-  }
+  // _getAbilityChoices() {
+  //   return [
+  //     { key: "str", label: game.i18n.localize("STORYFORM.AbilityStr") },
+  //     { key: "dex", label: game.i18n.localize("STORYFORM.AbilityDex") },
+  //     { key: "int", label: game.i18n.localize("STORYFORM.AbilityInt") },
+  //     { key: "cha", label: game.i18n.localize("STORYFORM.AbilityCha") }
+  //   ];
+  // }
 
-  _getSkillChoices() {
-    ;
-    return [
-      ["brawling", "SkillBrawling"],
-      ["climb", "SkillClimb"],
-      ["intimidate", "SkillIntimidate"],
-      ["athletics", "SkillAthletics"],
-      ["melee", "SkillMelee"],
-      ["shooting", "SkillShooting"],
-      ["piloting", "SkillPiloting"],
-      ["stealth", "SkillStealth"],
-      ["firstAid", "SkillFirstAid"],
-      ["repair", "SkillRepair"],
-      ["techArcana", "SkillTechArcana"],
-      ["perception", "SkillPerception"],
-      ["charm", "SkillCharm"],
-      ["deception", "SkillDeception"],
-      ["gatherInfo", "SkillGatherInfo"],
-      ["haggle", "SkillHaggle"]
-    ].map(([key, loc]) => ({
-      key,
-      label: game.i18n.localize(`STORYFORM.${loc}`)
-    }));
-  }
+  // _getSkillChoices() {
+  //   ;
+  //   return [
+  //     ["brawling", "SkillBrawling"],
+  //     ["climb", "SkillClimb"],
+  //     ["intimidate", "SkillIntimidate"],
+  //     ["athletics", "SkillAthletics"],
+  //     ["melee", "SkillMelee"],
+  //     ["shooting", "SkillShooting"],
+  //     ["piloting", "SkillPiloting"],
+  //     ["stealth", "SkillStealth"],
+  //     ["firstAid", "SkillFirstAid"],
+  //     ["repair", "SkillRepair"],
+  //     ["techArcana", "SkillTechArcana"],
+  //     ["perception", "SkillPerception"],
+  //     ["charm", "SkillCharm"],
+  //     ["deception", "SkillDeception"],
+  //     ["gatherInfo", "SkillGatherInfo"],
+  //     ["haggle", "SkillHaggle"]
+  //   ].map(([key, loc]) => ({
+  //     key,
+  //     label: game.i18n.localize(`STORYFORM.${loc}`)
+  //   }));
+  // }
 
   // ── Form Handling ───────────────────────────────────────────────
   /** @override */
