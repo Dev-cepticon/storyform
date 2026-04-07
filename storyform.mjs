@@ -40,8 +40,7 @@ Hooks.once("init", () => {
   log("Storyform | Initializing system");
 
   log("Preloading templates and registering helpers...");
-  //enable when partial need to be loaded
-  //preloadHandlebarsTemplates();
+  preloadHandlebarsTemplates();
   registerHandlebarsHelpers();
 
   // ── Data Models ───────────────────────────────────────────
@@ -134,7 +133,9 @@ function preloadHandlebarsTemplates() {
 
   log("Loading template partials...");
   const templatePaths = [
-    // "systems/storyform/templates/partials/template.hbs",
+    "systems/storyform/templates/items/parts/origins/origin-modifiers.hbs",
+    "systems/storyform/templates/items/parts/origins/origin-herodice.hbs",
+    "systems/storyform/templates/items/parts/origins/origin-actions.hbs"
   ];
   return foundry.applications.handlebars.loadTemplates(templatePaths);
 }

@@ -25,10 +25,15 @@ export default class StoryformRaceSheet
       closeOnSubmit: false
     },
     actions: {
-      addAbilityMod: StoryformRaceSheet._onAddAbilityMod,
-      deleteAbilityMod: StoryformRaceSheet._onDeleteAbilityMod,
-      addSkillMod: StoryformRaceSheet._onAddSkillMod,
-      deleteSkillMod: StoryformRaceSheet._onDeleteSkillMod
+      // Modifiers (Abilities/Skills)
+      addModifier: this._onAddModifier,
+      deleteModifier: this._onDeleteModifier,
+      // Once Per Turn Actions
+      addAction: this._onAddAction,
+      deleteAction: this._onDeleteAction,
+      // Hero Dice
+      addHDA: this._onAddHDA,
+      deleteHDA: this._onDeleteHDA,
     }
   };
 
@@ -50,10 +55,12 @@ export default class StoryformRaceSheet
     // Provide direct access to the Item and its DataModel (system)
     context.item = this.item;
     context.system = this.item.system;
-
-    // Prepare selection choices for the UI
     context.abilityChoices = CONFIG.STORYFORM.abilities;
     context.skillChoices = CONFIG.STORYFORM.skills;
+
+    log("STORYFORM | Ability Choices:", context.abilityChoices);
+    log("STORYFORM | Skill Choices:", context.skillChoices);
+
 
     // Enrich HTML for the description field (ProseMirror)
     log("Enriching description HTML...");
@@ -69,52 +76,74 @@ export default class StoryformRaceSheet
   // ── Form Handling ───────────────────────────────────────────────
   /** @override */
   static async _processFormData(config, event, formData) {
-
-    log("Processing form data for persistence check...");
-
-    //Expand the flat dot-notation keys into a nested object
     const data = foundry.utils.expandObject(formData.object);
 
-    log("Expanded Data Payload:", data);
+    // Uniformly convert all potential array-objects back to arrays
+    const arrayPaths = [
+      "system.abilityModifiers",
+      "system.skillModifiers",
+      "system.oncePerturn",
+      "system.heroDiceAbilities"
+    ];
 
-    if (data.system?.abilityModifiers) {
-      data.system.abilityModifiers = Object.values(data.system.abilityModifiers);
+    for (const path of arrayPaths) {
+      const val = foundry.utils.getProperty(data, path);
+      if (val && typeof val === "object") {
+        foundry.utils.setProperty(data, path, Object.values(val));
+      }
     }
-    if (data.system?.skillModifiers) {
-      data.system.skillModifiers = Object.values(data.system.skillModifiers);
-    }
-    console.log("Saving")
+
     foundry.utils.mergeObject(formData.object, foundry.utils.flattenObject(data));
     return super._processFormData(config, event, formData);
   }
+  // ── Array Manipulation Helpers ─────────────────────────────────
 
-  // ── Actions ───────────────────────────────────────────────
-
-  static async _onAddAbilityMod(event, target) {
-
-    const mods = foundry.utils.deepClone(this.item.system.abilityModifiers);
-    mods.push({ ability: "str", modifier: -1 });
-    await this.item.update({ "system.abilityModifiers": mods });
+  async _updateArray(path, updateFn) {
+    const current = foundry.utils.getProperty(this.document, path) || [];
+    const newArray = foundry.utils.deepClone(current);
+    console.log("newArray", newArray);
+    updateFn(newArray);
+    return this.document.update({ [path]: newArray });
   }
 
-  static async _onDeleteAbilityMod(event, target) {
+  // ACTIONS
+  static async _onAddModifier(event, target) {
+    const { path, typeKey } = target.dataset;
+    const defaultVal = typeKey === "ability" ? "str" : "athletics";
+    return this._updateArray(path, arr => arr.push({ [typeKey]: defaultVal, modifier: 0 }));
+  }
 
+  /**
+   * Handle deleting an entry from a modifiers array.
+   * @param {PointerEvent} event      The initiating click event
+   * @param {HTMLElement} target      The element that matched the [data-action]
+   */
+  static async _onDeleteModifier(event, target) {
+    const { path, index } = target.dataset;
+    return this._updateArray(path, arr => arr.splice(Number(index), 1));
+  }
+
+  static async _onAddAction(event, target) {
+    // 'this' in an action handler is the Sheet instance
+    console.log("ADDING");
+    return this._updateArray("system.oncePerturn", arr =>
+      arr.push({ name: "New Ability", description: "" }));
+  }
+
+  static async _onDeleteAction(event, target) {
+    console.log("DELETEING");
     const index = Number(target.dataset.index);
-    const mods = foundry.utils.deepClone(this.item.system.abilityModifiers);
-    mods.splice(index, 1);
-    await this.item.update({ "system.abilityModifiers": mods });
+    return this._updateArray("system.oncePerturn", arr => arr.splice(index, 1));
   }
 
-  static async _onAddSkillMod(event, target) {
-    const mods = foundry.utils.deepClone(this.item.system.skillModifiers);
-    mods.push({ skill: "brawling", modifier: -1 });
-    await this.item.update({ "system.skillModifiers": mods });
+  static async _onAddHDA(event, target) {
+    return this._updateArray("system.heroDiceAbilities", arr =>
+      arr.push({ name: "New Ability", cost: 1, description: "" }));
   }
 
-  static async _onDeleteSkillMod(event, target) {
+  static async _onDeleteHDA(event, target) {
     const index = Number(target.dataset.index);
-    const mods = foundry.utils.deepClone(this.item.system.skillModifiers);
-    mods.splice(index, 1);
-    await this.item.update({ "system.skillModifiers": mods });
+    return this._updateArray("system.heroDiceAbilities", arr => arr.splice(index, 1));
   }
+
 }

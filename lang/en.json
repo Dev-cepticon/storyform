@@ -72,6 +72,8 @@
   "STORYFORM.RaceHpBonus": "HP Bonus",
   "STORYFORM.RaceAbilityModifiers": "Ability Modifiers",
   "STORYFORM.RaceSkillModifiers": "Skill Modifiers",
+  "STORYFORM.RaceOncePerturn": "Once Per Turn",
+  "STORYFORM.RaceHeroDiceAbilities": "Hero Dice Abilities",
 
   "STORYFORM.BackgroundSkillModifier": "Skill Modifier",
   "STORYFORM.BackgroundHeroDiceAbilities": "Hero Dice Abilities",

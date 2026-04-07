@@ -1,0 +1,36 @@
+{{!--
+Params:
+@modList: system.skillModifiers or system.abilityModifiers
+@choices: @root.skillChoices or @root.abilityChoices
+@path: "system.skillModifiers"
+@add: "addSkillMod"
+@delete: "deleteSkillMod"
+--}}
+<div class="form-group">
+  <label>{{label}}</label>
+  <div class="array-list">
+    {{#each modList as |mod i|}}
+    <div class="array-row">
+      {{!-- Force the path to exist for this index --}}
+      <select name="{{../path}}.{{i}}.{{../typeKey}}">
+        {{#each ../choices as |c|}}
+        {{!-- Use c.key for the 'value' (what saves to the DB) --}}
+        {{!-- Use c.label for the 'text' (what the user sees) --}}
+        <option value="{{c.key}}" {{#if (eq c.key (lookup mod ../../typeKey))}}selected{{/if}}>
+          {{c.label}}
+        </option>
+        {{/each}}
+      </select>
+
+      <input type="number" name="{{../path}}.{{i}}.modifier" value="{{mod.modifier}}" step="1" />
+
+      <a class="array-delete" data-action="deleteModifier" data-path="{{../path}}" data-index="{{i}}">
+        <i class="fas fa-trash"></i>
+      </a>
+    </div>
+    {{/each}}
+    <button type="button" class="array-add" data-action="addModifier" data-path="{{path}}" data-type-key="{{typeKey}}">
+      <i class="fas fa-plus"></i> Add
+    </button>
+  </div>
+</div>

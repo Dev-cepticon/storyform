@@ -9,9 +9,11 @@
       <input class="item-name" type="text" name="name" value="{{item.name}}" placeholder="Race Name" />
       <div class="item-subtitle">
         <select name="system.size">
+          <option value="tiny" {{#if (eq system.size "tiny" )}}selected{{/if}}>Tiny</option>
           <option value="small" {{#if (eq system.size "small" )}}selected{{/if}}>Small</option>
           <option value="medium" {{#if (eq system.size "medium" )}}selected{{/if}}>Medium</option>
           <option value="large" {{#if (eq system.size "large" )}}selected{{/if}}>Large</option>
+          <option value="huge" {{#if (eq system.size "huge" )}}selected{{/if}}>Huge</option>
         </select>
       </div>
     </div>
@@ -30,7 +32,7 @@
         <input type="number" name="system.age.max" value="{{system.age.max}}" min="1" />
       </div>
     </div>
-        {{!-- HP Bonus --}}
+    {{!-- HP Bonus --}}
     <div class="form-group">
       <label>{{localize "STORYFORM.RaceHpBonus"}}</label>
       <div class="form-fields">
@@ -47,57 +49,6 @@
         <span class="form-hint">squares per turn</span>
       </div>
     </div>
-
-    {{!-- Ability Modifiers --}}
-    <div class="form-group">
-      <label>{{localize "STORYFORM.RaceAbilityModifiers"}}</label>
-      <div class="array-list">
-        {{#each system.abilityModifiers as |mod i|}}
-        <div class="array-row">
-          <select 
-            name="system.abilityModifiers.{{i}}.ability">
-            {{selectOptions @root.abilityChoices selected=mod.ability 
-        valueAttr="key" labelAttr="label"}}
-          </select>
-          <input type="number" name="system.abilityModifiers.{{i}}.modifier" value="{{mod.modifier}}" />
-          <a class="array-delete" data-action="deleteAbilityMod" data-index="{{i}}" title="Remove">
-            <i class="fas fa-trash"></i>
-          </a>
-        </div>
-        {{/each}}
-        <button type="button" class="array-add" data-action="addAbilityMod">
-          <i class="fas fa-plus"></i> Add Ability Modifier
-        </button>
-      </div>
-    </div>
-    
-    {{!-- Skill Modifiers --}}
-    <div class="form-group">
-      <label>{{localize "STORYFORM.RaceSkillModifiers"}}</label>
-      <div class="array-list">
-        {{#each system.skillModifiers as |mod i|}}
-        <div class="array-row">
-          <select name="system.skillModifiers.{{i}}.skill">
-            {{selectOptions @root.skillChoices selected=mod.skill 
-            valueAttr="key" labelAttr="label"}}
-          </select>
-          <input type="number" 
-            name="system.skillModifiers.{{i}}.modifier" 
-            value="{{mod.modifier}}" 
-            step="1" 
-            data-dtype="Number"
-          />
-          <a class="array-delete" data-action="deleteSkillMod" data-index="{{i}}" title="Remove">
-            <i class="fas fa-trash"></i>
-          </a>
-        </div>
-        {{/each}}
-        <button type="button" class="array-add" data-action="addSkillMod">
-          <i class="fas fa-plus"></i> Add Skill Modifier
-        </button>
-      </div>
-    </div>
-
     {{!-- Racial Trait --}}
     <div class="form-group">
       <label>Racial Trait</label>
@@ -115,23 +66,62 @@
       </div>
     </div>
 
-    {{!-- Description --}}
-    <div class="form-group">
-      <label>Description</label>
-      <div class="prosemirror-wrapper">
-        {{#if @root.editable}}
-        {{!-- Remove the inner div; let prose-mirror use the value attribute --}}
-        <prose-mirror name="system.description" value="{{system.description}}" toggled="true" collaborative="false"">
+    <div>
+      {{!-- 1. Ability Modifiers (Required for Race) --}}
+      {{> "systems/storyform/templates/items/parts/origins/origin-modifiers.hbs"
+      label="Ability Modifiers" modList=system.abilityModifiers choices=@root.abilityChoices
+      path="system.abilityModifiers" typeKey="ability" add="addAbilityMod" delete="deleteAbilityMod"}}
+
+      <div class="toggle-section">
+        {{!-- 2. Optional Skill Modifiers --}}
+        <div class="toggle-section">
+          <label><input type="checkbox" name="system.config.hasSkills" {{checked system.config.hasSkills}}> Add Skill
+            Mods?</label>
+          {{#if system.config.hasSkills}}
+          {{> "systems/storyform/templates/items/parts/origins/origin-modifiers.hbs"
+          label="Skill Modifiers" modList=system.skillModifiers choices=@root.skillChoices
+          path="system.skillModifiers" typeKey="skill" add="addSkillMod" delete="deleteSkillMod"}}
+          {{/if}}
+        </div>
+
+        {{!-- Optional Once-Per-Turn Actions --}}
+        <div class="toggle-section">
+          <label>
+            <input type="checkbox" name="system.config.hasAction" {{checked system.config.hasAction}}>
+            Add Skill Once Per Turn?
+          </label>
+          {{#if system.config.hasAction}}
+          {{> "systems/storyform/templates/items/parts/origins/origin-actions.hbs"}}
+          {{/if}}
+        </div>
+
+        {{!-- 3. Optional Hero Dice --}}
+        <div class="toggle-section">
+          <label><input type="checkbox" name="system.config.hasHeroDice" {{checked system.config.hasHeroDice}}> Add Hero
+            Dice?</label>
+          {{#if system.config.hasHeroDice}}
+          {{> "systems/storyform/templates/items/parts/origins/origin-herodice.hbs"}}
+          {{/if}}
+        </div>
+      </div>
+
+      {{!-- Description --}}
+      <div class="form-group">
+        <label>Description</label>
+        <div class="prosemirror-wrapper">
+          {{#if @root.editable}}
+          {{!-- Remove the inner div; let prose-mirror use the value attribute --}}
+          <prose-mirror name="system.description" value="{{system.description}}" toggled="true" collaborative="false"">
           {{{enrichedDescription}}}
         </prose-mirror>
         {{else}}
         <div class=" enriched-content editor-content">
-          {{{enrichedDescription}}}
+            {{{enrichedDescription}}}
+        </div>
+        {{/if}}
       </div>
-      {{/if}}
     </div>
-</div>
 
-</section>
+  </section>
 
 </div>

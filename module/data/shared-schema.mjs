@@ -8,12 +8,12 @@
  * @param {object} options
  * @param {boolean} options.isCharacter - Whether to include PC-specific fields like Hero Dice.
  */
-export function buildAttributesSchema(fields, {isCharacter = false } = {}) {
+export function buildAttributesSchema(fields, { isCharacter = false } = {}) {
   const { NumberField, SchemaField } = fields;
 
   const schema = {
     hp: new SchemaField({
-      value: new NumberField({ required: true, integer: true, min: 0, initial: 15}),
+      value: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
       max: new NumberField({ required: true, integer: true, min: 0, initial: 15 })
     }),
     dr: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
@@ -83,10 +83,16 @@ const skillModifierPart = () => new ArrayField(new SchemaField({
 }));
 
 // Helper: Actions/Traits
-const actionPart = () => new SchemaField({
+// Cost are there for future implementaion of once per turn actions that
+// cost more than one of the characters actions to perform when in iniative. 
+const actionPart = () => new ArrayField(new SchemaField({
   name: new StringField({ initial: "" }),
+  cost: new NumberField({ required: false, integer: true, min: 0, initial: 0 }),
   description: new StringField({ initial: "" })
-});
+}),
+  { initial: [] }
+);
+
 
 // Helper: Hero Dice Actions
 const heroDicePart = () => new ArrayField(new SchemaField({
@@ -99,11 +105,26 @@ const heroDicePart = () => new ArrayField(new SchemaField({
  * The Standardized Origin Factory
  * @param {object} options - Toggles for feature sets
  */
-export function buildOriginSchema(options = {}) {
-  const schema = {};
-  if (options.abilities)  schema.abilityModifiers  = abilityModifierPart();
-  if (options.skills)     schema.skillModifiers    = skillModifierPart();
-  if (options.actions)    schema.oncePerturn       = actionPart();
-  if (options.heroDice)   schema.heroDiceAbilities = heroDicePart();
-  return schema;
+/**
+ * Builds the schema for Origin-related data (Races, Classes, Backgrounds).
+ * * We have removed the 'options' toggles to implement an "Always-On" schema.
+ * * WHY:
+ * 1. Schema Stability: In Foundry V12, defineSchema is static. It runs once when 
+ * the class is initialized. It cannot reactively add/remove fields during play.
+ * 2. Data Persistence: By always defining these fields, we ensure that if a user 
+ * toggles 'hasSkills' off and then back on, their previous data is still there.
+ * 3. Validation: UI toggles should control visibility (the "if" in your Handlebars), 
+ * while the Schema controls the integrity of the data being saved.
+ */
+export function buildOriginSchema() {
+  return {
+    // These fields are now always present in the DataModel structure.
+    // Use system.config.hasSkills (etc.) in your .hbs templates to 
+    // decide whether to show the HTML for these fields.
+
+    abilityModifiers: abilityModifierPart(),
+    skillModifiers: skillModifierPart(),
+    oncePerturn: actionPart(),
+    heroDiceAbilities: heroDicePart()
+  };
 }

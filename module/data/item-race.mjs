@@ -16,6 +16,12 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
     } = foundry.data.fields;
 
     return {
+      config: new SchemaField({
+        hasSkills: new BooleanField({ initial: false }),
+        hasAction: new BooleanField({initial: false}),
+        hasHeroDice: new BooleanField({initial: false}),
+        
+      }),
       hpBonus: new NumberField({
         required: true, integer: true, initial: 0,
         label: "STORYFORM.RaceHpBonus"
@@ -46,10 +52,7 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
         initial: "",
         label: "STORYFORM.Description"
       }),
-      ...buildOriginSchema({ 
-        abilities: true, 
-        skills: true
-      }),
+      ...buildOriginSchema(),
 
     };
   }

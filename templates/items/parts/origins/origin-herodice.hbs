@@ -1,0 +1,26 @@
+<div class="form-group">
+  <label>{{localize "STORYFORM.RaceHeroDiceAbilities"}}</label>
+  <div class="hero-dice-list">
+    {{#each system.heroDiceAbilities as |ability i|}}
+    <div class="named-block">
+      <div class="header">
+        <input type="text" name="system.heroDiceAbilities.{{i}}.name" value="{{ability.name}}" placeholder="Name..." />
+        <input type="number" name="system.heroDiceAbilities.{{i}}.cost" value="{{ability.cost}}" min="1" />
+        <a 
+        class="array-delete"
+        data-action="deleteHDA" 
+        data-index="{{i}}">
+        <i class="fas fa-trash"></i>
+        </a>
+      </div>
+      <textarea name="system.heroDiceAbilities.{{i}}.description">{{ability.description}}</textarea>
+    </div>
+    {{/each}}
+    <button 
+    type="button" 
+    class="array-add" 
+    data-action="addHDA">
+    <i class="fas fa-plus"></i> Add
+    </button>
+  </div>
+</div>
