@@ -1,0 +1,23 @@
+<div class="config-sidebar-inner">
+  {{!-- Race-Specific Settings
+  <div class="config-section">
+    <h4>{{localize "STORYFORM.Config.RaceSettings"}}</h4>
+    
+    <div class="form-group">
+      <label>{{localize "STORYFORM.Size"}}</label>
+      <select name="system.size">
+        {{selectOptions config.sizeChoices selected=system.size localize=true}}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>{{localize "STORYFORM.HPBonus"}}</label>
+      <input type="number" name="system.hpBonus" value="{{system.hpBonus}}">
+    </div>
+  </div>
+
+  <hr> --}}
+
+  {{!-- Call the Shared Toggles --}}
+  {{> "systems/storyform/templates/items/parts/config/common-toggles.hbs"}}
+</div>

@@ -1,13 +1,14 @@
 {{! templates/items/race-sheet.hbs }}
 
 <div class="storyform sheet item race">
-
   {{!-- Header --}}
-  <header class="item-header">
-    <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
-    <div class="item-header-fields">
-      <input class="item-name" type="text" name="name" value="{{item.name}}" placeholder="Race Name" />
-      <div class="item-subtitle">
+  {{> "systems/storyform/templates/items/parts/item-header.hbs"}}
+
+  {{!-- Body --}}
+  <section>
+    <div >
+      <label>Size</label>
+      <div>
         <select name="system.size">
           <option value="tiny" {{#if (eq system.size "tiny" )}}selected{{/if}}>Tiny</option>
           <option value="small" {{#if (eq system.size "small" )}}selected{{/if}}>Small</option>
@@ -17,43 +18,38 @@
         </select>
       </div>
     </div>
-  </header>
-
-  {{!-- Body --}}
-  <section class="item-body">
-
     {{!-- Age --}}
-    <div class="form-group">
+    <div>
       <label>Age</label>
-      <div class="form-fields inline-pair">
-        <label class="inline-label">Maturity</label>
+      <div>
+        <label>Maturity</label>
         <input type="number" name="system.age.maturity" value="{{system.age.maturity}}" min="0" />
-        <label class="inline-label">Max</label>
+        <label>Max</label>
         <input type="number" name="system.age.max" value="{{system.age.max}}" min="1" />
       </div>
     </div>
     {{!-- HP Bonus --}}
-    <div class="form-group">
+    <div>
       <label>{{localize "STORYFORM.RaceHpBonus"}}</label>
-      <div class="form-fields">
+      <div>
         <input type="number" name="system.hpBonus" value="{{system.hpBonus}}" />
-        <span class="form-hint">Added to base HP of 15</span>
+        <span >Added to base HP of 15</span>
       </div>
     </div>
 
     {{!-- Movement --}}
-    <div class="form-group">
+    <div>
       <label>{{localize "STORYFORM.AttributeMovement"}}</label>
-      <div class="form-fields">
+      <div>
         <input type="number" name="system.movement" value="{{system.movement}}" min="1" />
-        <span class="form-hint">squares per turn</span>
+        <span>squares per turn</span>
       </div>
     </div>
     {{!-- Racial Trait --}}
-    <div class="form-group">
+    <div>
       <label>Racial Trait</label>
-      <div class="named-block">
-        <label class="checkbox-label">
+      <div>
+        <label>
           <input type="checkbox" name="system.racialTrait.hasTrait" {{#if system.racialTrait.hasTrait}}checked{{/if}} />
           Has Racial Trait
         </label>
@@ -72,9 +68,9 @@
       label="Ability Modifiers" modList=system.abilityModifiers choices=@root.abilityChoices
       path="system.abilityModifiers" typeKey="ability" add="addAbilityMod" delete="deleteAbilityMod"}}
 
-      <div class="toggle-section">
+      <div>
         {{!-- 2. Optional Skill Modifiers --}}
-        <div class="toggle-section">
+        <div>
           <label><input type="checkbox" name="system.config.hasSkills" {{checked system.config.hasSkills}}> Add Skill
             Mods?</label>
           {{#if system.config.hasSkills}}
@@ -85,7 +81,7 @@
         </div>
 
         {{!-- Optional Once-Per-Turn Actions --}}
-        <div class="toggle-section">
+        <div>
           <label>
             <input type="checkbox" name="system.config.hasAction" {{checked system.config.hasAction}}>
             Add Skill Once Per Turn?
@@ -96,7 +92,7 @@
         </div>
 
         {{!-- 3. Optional Hero Dice --}}
-        <div class="toggle-section">
+        <div>
           <label><input type="checkbox" name="system.config.hasHeroDice" {{checked system.config.hasHeroDice}}> Add Hero
             Dice?</label>
           {{#if system.config.hasHeroDice}}
@@ -106,16 +102,16 @@
       </div>
 
       {{!-- Description --}}
-      <div class="form-group">
+      <div>
         <label>Description</label>
-        <div class="prosemirror-wrapper">
+        <div>
           {{#if @root.editable}}
           {{!-- Remove the inner div; let prose-mirror use the value attribute --}}
           <prose-mirror name="system.description" value="{{system.description}}" toggled="true" collaborative="false"">
           {{{enrichedDescription}}}
         </prose-mirror>
         {{else}}
-        <div class=" enriched-content editor-content">
+        <div>
             {{{enrichedDescription}}}
         </div>
         {{/if}}

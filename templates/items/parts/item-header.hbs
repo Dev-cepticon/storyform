@@ -1,0 +1,21 @@
+<header class="item-header-v2">
+  <div class="header-left">
+    <img class="item-img" src="{{item.img}}" data-edit="img" />
+  </div>
+
+  <div class="header-center">
+    <input class="item-name" type="text" name="name" value="{{item.name}}" />
+    <div class="item-type">{{item.type}}</div>
+  </div>
+
+  <div class="header-right">
+    <div class="edit-mode-slider">
+      <span class="label">EDIT</span>
+      <label class="switch">
+        {{!-- Note the data-action is NOT needed here if name="system.config.editMode" handles it via submitOnChange --}}
+        <input type="checkbox" name="system.config.editMode" {{checked system.config.editMode}}>
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+</header>

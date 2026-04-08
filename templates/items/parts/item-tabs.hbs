@@ -1,0 +1,18 @@
+<nav class="sheet-navigation tabs" data-group="primary">
+  {{!-- Mandatory Tabs --}}
+  {{!-- We add data-action="tab" to every link --}}
+  <a class="item {{tabs.primary.description}}" data-tab="description" data-group="primary" data-action="tab">
+    <i class="fa-solid fa-file-lines"></i> {{localize "STORYFORM.Description"}}
+  </a>
+
+  <a class="item {{tabs.primary.details}}" data-tab="details" data-group="primary" data-action="tab">
+    <i class="fa-solid fa-circle-info"></i> {{localize "STORYFORM.Details"}}
+  </a>
+
+  {{!-- Dynamic Extra Tabs --}}
+  {{#each extraTabs}}
+  <a class="item {{lookup ../tabs.primary this.id}}" data-tab="{{this.id}}" data-group="primary" data-action="tab">
+    <i class="{{this.icon}}"></i> {{localize this.label}}
+  </a>
+  {{/each}}
+</nav>

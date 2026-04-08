@@ -133,6 +133,15 @@ function preloadHandlebarsTemplates() {
 
   log("Loading template partials...");
   const templatePaths = [
+    //ITEMS
+    //-------COMMON  */
+    "systems/storyform/templates/items/parts/item-header.hbs",
+    "systems/storyform/templates/items/parts/item-tabs.hbs",
+    //-------ORIGINS */
+    "systems/storyform/templates/items/item-shell.hbs",
+    "systems/storyform/templates/items/parts/config/common-toggles.hbs",
+    "systems/storyform/templates/items/parts/config/race-config.hbs",
+    "systems/storyform/templates/items/race-main.hbs",
     "systems/storyform/templates/items/parts/origins/origin-modifiers.hbs",
     "systems/storyform/templates/items/parts/origins/origin-herodice.hbs",
     "systems/storyform/templates/items/parts/origins/origin-actions.hbs"

@@ -20,8 +20,14 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
         hasSkills: new BooleanField({ initial: false }),
         hasAction: new BooleanField({initial: false}),
         hasHeroDice: new BooleanField({initial: false}),
-        
+        editMode: new BooleanField({initial: false}),
+        showSidebar: new BooleanField({initial: false})
       }),
+
+      // name: new StringField({
+      //   required: true,
+        
+      // }),
       hpBonus: new NumberField({
         required: true, integer: true, initial: 0,
         label: "STORYFORM.RaceHpBonus"

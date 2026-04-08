@@ -1,0 +1,25 @@
+<div class="config-section">
+  <h4>{{localize "STORYFORM.Config.StandardFeatures"}}</h4>
+  
+  <div class="form-group stacked">
+    <label class="checkbox">
+      <input type="checkbox" name="system.config.hasAbilities" {{checked config.hasAbilities}}>
+      {{localize "STORYFORM.Config.EnableAbilities"}}
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" name="system.config.hasSkills" {{checked config.hasSkills}}>
+      {{localize "STORYFORM.Config.EnableSkills"}}
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" name="system.config.hasAction" {{checked config.hasAction}}>
+      {{localize "STORYFORM.Config.EnableActions"}}
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" name="system.config.hasHeroDice" {{checked config.hasHeroDice}}>
+      {{localize "STORYFORM.Config.EnableHeroDice"}}
+    </label>
+  </div>
+</div>
