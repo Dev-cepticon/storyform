@@ -6,12 +6,13 @@
     flex-direction: column; 
     gap: @space-unit;
     padding: @space-unit @space-block;
-    
+
     // Explicitly remove background and the gold "bar" (border)
     background-color: transparent; 
     border-bottom: none !important; 
     
-    min-height: 120px; // Slightly taller to showcase the banner art
+    min-height: 120px;
+    // Slightly taller to showcase the banner art
     color: @color-text-bright;
     
     position: relative; 
@@ -65,10 +66,16 @@
             align-items: center;
 
             .config-button {
-                color: @color-brand-accent;
+                // CLOSED STATE: White
+                color: @color-text-bright; 
                 font-size: @font-size-lg;
                 cursor: pointer;
                 transition: transform 0.3s ease, color 0.2s;
+
+                // OPEN STATE: Gold
+                &.active {
+                    color: @color-brand-accent;
+                }
 
                 &:hover {
                     color: @color-text-bright;
@@ -87,7 +94,8 @@
         flex: 1;
 
         .header-left {
-            flex: 0 0 80px; // Slightly larger for the boxed look
+            flex: 0 0 80px;
+            // Slightly larger for the boxed look
 
             .item-img {
                 width: 80px;

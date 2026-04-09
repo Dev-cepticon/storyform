@@ -15,7 +15,9 @@
     </div>
     <div class="header-top-right">
       {{#if system.config.editMode}}
-      <a class="config-button" data-action="config" title="Configure Item">
+      {{!-- The "active" class is applied only when the sidebar is open --}}
+      <a class="config-button {{#if system.config.showSidebar}}active{{/if}}" data-action="config"
+        title="Configure Item">
         <i class="fas fa-cog"></i>
       </a>
       {{/if}}
@@ -27,20 +29,13 @@
 
     <div class="header-left">
 
-      <img class="item-img" src="{{item.img}}" 
-           {{#if system.config.editMode}}
-             data-action="editImage" 
-             data-edit="img"
-             title="Change Image"
-           {{/if}} />
+      <img class="item-img" src="{{item.img}}" {{#if system.config.editMode}} data-action="editImage" data-edit="img"
+        title="Change Image" {{/if}} />
     </div>
 
     <div class="header-center">
       {{#if system.config.editMode}}
-      <input class="item-name" 
-        type="text" 
-        name="name" 
-        value="{{item.name}}" />
+      <input class="item-name" type="text" name="name" value="{{item.name}}" />
       {{else}}
       <div class="item-name">{{item.name}}</div>
       {{/if}}
@@ -52,4 +47,3 @@
   </div>
 
 </header>
-

@@ -19,7 +19,7 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
             // Global UI Toggles
             toggleEditMode: this._onToggleEditMode,
             toggleSidebar: this._onToggleSidebar,
-            showConfig: this._onShowConfig,
+            config: this._onToggleSidebar,
 
             editImage: this._onEditImage,
 
@@ -57,6 +57,7 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
 
     static async _onToggleSidebar(event, target) {
         const isSidebarOpen = this.document.system.config.showSidebar;
+        console.log("isSidebarOpen", isSidebarOpen);
         // We only allow the sidebar if we are also in Edit Mode
         if (!this.document.system.config.editMode) {
             ui.notifications.warn("Enable Edit Mode to access configuration.");

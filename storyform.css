@@ -52,10 +52,13 @@
   align-items: center;
 }
 .item-header-v2 .header-top .header-top-right .config-button {
-  color: #c5a059;
+  color: #f8f9fa;
   font-size: 18px;
   cursor: pointer;
   transition: transform 0.3s ease, color 0.2s;
+}
+.item-header-v2 .header-top .header-top-right .config-button.active {
+  color: #c5a059;
 }
 .item-header-v2 .header-top .header-top-right .config-button:hover {
   color: #f8f9fa;
