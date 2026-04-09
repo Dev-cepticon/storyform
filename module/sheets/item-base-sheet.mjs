@@ -10,14 +10,6 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
         classes: ["storyform", "sheet", "item"],
         window: {
             resizable: true,
-            // The Gear icon now lives in the title bar globally
-            controls: [
-                {
-                    icon: "fa-solid fa-gears",
-                    label: "STORYFORM.Config",
-                    action: "toggleSidebar" // Triggers the action below
-                }
-            ]
         },
         form: {
             submitOnChange: true,
@@ -27,6 +19,9 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
             // Global UI Toggles
             toggleEditMode: this._onToggleEditMode,
             toggleSidebar: this._onToggleSidebar,
+            showConfig: this._onShowConfig,
+
+            editImage: this._onEditImage,
 
             // Generic Array Management
             addModifier: this._onAddModifier,
@@ -34,14 +29,22 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
             addAction: this._onAddAction,
             deleteAction: this._onDeleteAction,
             addHDA: this._onAddHDA,
-            deleteHDA: this._onDeleteHDA
+            deleteHDA: this._onDeleteHDA,
+            
         },
         tabGroups: {
             primary: "description"
+        },
+        position: {
+            width: 550, // Ensure the starting width is wide enough
         }
     };
 
-    // ... (rest of the prepareContext logic stays the same)
+    get title() {
+        // Returning an empty string removes the text while keeping the bar
+        return "";
+    }
+
 
     /* -------------------------------------------- */
     /* Action Handlers                             */
@@ -60,6 +63,30 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
             return;
         }
         return this.document.update({ "system.config.showSidebar": !isSidebarOpen });
+    }
+
+    /**
+     * Handle clicking the document image to swap the file.
+     * @param {PointerEvent} event      The initiating click event
+     * @param {HTMLElement} target      The element that matched the [data-action]
+     */
+    static async _onEditImage(event, target) {
+        // 'this' refers to the Sheet instance in these handlers
+        const attr = target.dataset.edit || "img";
+        const current = foundry.utils.getProperty(this.document, attr);
+
+        // Create and open the FilePicker
+        const fp = new FilePicker({
+            type: "image",
+            current: current,
+            callback: path => {
+                // Update the document with the new path
+                return this.document.update({ [attr]: path });
+            },
+            top: this.position.top + 40,
+            left: this.position.left + 10
+        });
+        return fp.browse();
     }
 
     // ── Array Manipulation Helpers ─────────────────────────────────

@@ -1,52 +1,90 @@
-//main: ./storyform.less
+// main: ./storyform.less
 
-// ─── Colors ───────────────────────────────────────────────
-@color-dark:        #3b2108;   // header bg, headings
-@color-accent:      #7b3f00;   // active states, labels
-@color-gold:        #c8a97a;   // borders, dividers
-@color-mid-gold:    #d4b896;   // card borders
-@color-bg:          #f9f6f0;   // sheet background
-@color-card:        #fff8f0;   // card / input backgrounds
-@color-stats-bar:   #ede5d8;   // stats bar background
-@color-tabs-bar:    #e8ddd0;   // tab bar background
-@color-hover:       #f0e6d6;   // row hover state
-@color-text:        #1a1a1a;   // body text
-@color-text-mid:    #5a3a1a;   // secondary text
-@color-text-muted:  #888;      // muted / placeholder
-@color-text-label:  #999;      // small labels
-@color-danger:      #c0392b;   // delete, over-budget
+// ─── 1. COLOR SEMANTICS ─────────────────────────────────────
 
-// Header-specific (light on dark background)
-@color-header-text:   #f5e6c8;
-@color-header-label:  #c8a97a;
-@color-header-border: #7b5a2a;
+// BRAND & ACCENT
+@color-brand-primary:    #08457e;   // Cerulean Blue (Header/Primary)
+@color-brand-accent:     #c5a059;   // Muted Gold (Icons/Labels/Focus)
+@color-brand-glow:       #1565c0;   // Bright Blue (Interactive Tint)
 
-// ─── Typography ───────────────────────────────────────────
-@font-serif:     "Georgia", serif;
-@font-base-size: 13px;
+// SURFACE (Z-Layering)
+@color-surface-base:     #0f1113;   // Level 0: The Sheet Background
+@color-surface-panel:    #1a1d21;   // Level 1: Content Areas (Cards)
+@color-surface-raised:   #24282d;   // Level 2: Buttons/Inputs (at rest)
+@color-surface-lifted:   #2e343a;   // Level 3: The "Lightened" state for Glow
 
-// ─── Sizing ───────────────────────────────────────────────
-@border-radius-sm: 3px;
-@border-radius-md: 4px;
-@border-radius-lg: 5px;
+// CONTENT (Ink)
+@color-text-bright:      #f8f9fa;   // Headings / High Contrast
+@color-text-body:        #ced4da;   // Main Body Text
+@color-text-muted:       #6c757d;   // De-emphasized Text
+@color-text-gold:        @color-brand-accent; // Semantic Label Color
 
-@profile-img-size: 72px;
-@stat-font-size:   18px;
-@ability-dc-size:  16px;
+// INTERFACE STATES
+@color-border-subtle:    #2d3136;   // Panel dividers
+@color-border-focus:     @color-brand-accent; // Gold focus rings
+@color-state-hover-shadow: rgba(0, 0, 0, 0.6); // The "Dark" part of the glow
+@color-state-editable-bg:  rgba(8, 69, 126, 0.15); // Edit mode tint
 
-// ─── Mixins ───────────────────────────────────────────────
+// FUNCTIONAL STATUS
+@color-status-success:   #2e7d32;   // HP Bar / Positive
+@color-status-danger:    #c62828;   // Hit Dice / Delete Hover
+@color-tag-neutral-bg:   #343a40;   // Solid Dark Gray Tags
+@color-tag-neutral-text: #f8f9fa;   // White Tag Text
 
-// Small uppercase label — used in many places
-.label-uppercase() {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+// ─── 2. TYPOGRAPHY (Analog-Modern Mix) ──────────────────────
+@font-display:   "Georgia", serif;       // Lore/Headings
+@font-body:      "Inter", sans-serif;    // Readability
+
+@font-size-xl:   24px; // Main Headings
+@font-size-lg:   18px; // Section Sub-headings
+@font-size-md:   13px; // Standard Body
+@font-size-sm:   11px; // Labels/Small Tags
+
+// ─── 3. GRID & SPACING (8px Base) ──────────────────────────
+@space-micro:    4px;  // Micro-alignment
+@space-unit:     8px;  // The Primary Grid
+@space-block:    16px; // Internal Padding
+@space-layout:   24px; // External Margins
+
+// ─── 4. SIZING & RADII ──────────────────────────────────────
+@border-radius-sm: 2px; // Sharp, modern feel
+@border-radius-md: 4px; // For larger panels
+@border-radius-pill: 20px;
+@space-micro: 4px;
+@space-unit: 8px;
+@border-width-thin: 1px;
+@border-width-thick: 2px;
+
+// ─── PILL BUTTON ──────────────────────
+@color-pill-bg:          #9e8e6f;   // The tan/khaki from your screenshot
+@color-pill-icon:        #ffffff;
+
+// ─── 4. CORE MIXINS (Reusable Logic) ────────────────────────
+
+// The "Interactive Lift" Combo
+.glow-lift() {
+    background-color: @color-surface-lifted;
+    box-shadow: 0 4px 12px @color-state-hover-shadow;
+    transition: all 0.2s ease-in-out;
 }
 
-// Card container — parchment box with gold border
-.card() {
-  background: @color-card;
-  border: 1px solid @color-mid-gold;
-  border-radius: @border-radius-lg;
-  padding: 8px 10px;
+// The Brand Icon Style
+.icon-functional() {
+    color: @color-brand-accent;
+    cursor: pointer;
+    &:hover {
+        color: lighten(@color-brand-accent, 15%);
+        filter: drop-shadow(0 0 4px rgba(197, 160, 89, 0.4));
+    }
+}
+
+// Solid Neutral Tag
+.tag-neutral() {
+    background: @color-tag-neutral-bg;
+    color: @color-tag-neutral-text;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: @font-size-sm;
+    font-weight: bold;
+    text-transform: uppercase;
 }

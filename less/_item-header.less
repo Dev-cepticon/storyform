@@ -1,0 +1,198 @@
+// main: ./storyform.less
+
+// ─── ITEM HEADER ──────────────────────────────────────────
+.item-header-v2 {
+    display: flex;
+    flex-direction: column; 
+    gap: @space-unit;
+    padding: @space-unit @space-block;
+    
+    // Explicitly remove background and the gold "bar" (border)
+    background-color: transparent; 
+    border-bottom: none !important; 
+    
+    min-height: 120px; // Slightly taller to showcase the banner art
+    color: @color-text-bright;
+    
+    position: relative; 
+    overflow: hidden; 
+
+    // ─── BANNER BACKGROUND ─────────────────────────────
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        
+        /* IMAGE ASSET: Ensure this path points to your art */
+        background-image: url('../storyform/assets/concept/items/itemtop.webp'); 
+        
+        background-size: cover;
+        background-position: center 20%; // Shifted slightly up to catch more detail
+        background-repeat: no-repeat;
+        
+        /* Brightened slightly from 0.15 to 0.30 */
+        opacity: 0.3; 
+        z-index: 0;
+
+        /* TOP-TO-BOTTOM FADE: 
+           Starts solid at the top and disappears at the bottom divider 
+        */
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+    }
+    
+    .header-top,
+    .header-main {
+        position: relative;
+        z-index: 1; // Ensures text stays above the banner art
+    }
+
+    // Row 1: Top Actions (Toggle and Config)
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding-bottom: @space-micro;
+
+        .header-top-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-top-right {
+            display: flex;
+            align-items: center;
+
+            .config-button {
+                color: @color-brand-accent;
+                font-size: @font-size-lg;
+                cursor: pointer;
+                transition: transform 0.3s ease, color 0.2s;
+
+                &:hover {
+                    color: @color-text-bright;
+                    transform: rotate(90deg);
+                    text-shadow: 0 0 5px @color-brand-glow;
+                }
+            }
+        }
+    }
+
+    // Row 2: Main Content
+    .header-main {
+        display: flex;
+        align-items: center;
+        gap: @space-block;
+        flex: 1;
+
+        .header-left {
+            flex: 0 0 80px; // Slightly larger for the boxed look
+
+            .item-img {
+                width: 80px;
+                height: 80px;
+                border: 1px solid @color-brand-accent;
+                border-radius: @border-radius-sm;
+                object-fit: cover;
+                cursor: pointer;
+                background: rgba(0, 0, 0, 0.4);
+
+                &:hover {
+                    filter: brightness(1.2);
+                    border-color: @color-brand-glow;
+                }
+            }
+        }
+
+        .header-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .item-name {
+                font-family: @font-display;
+                font-size: 2.2rem; // Larger impact for the "ELF" title
+                font-weight: bold;
+                color: @color-text-bright;
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin: 0;
+                text-transform: uppercase;
+
+                &:focus {
+                    outline: none;
+                    text-shadow: 0 0 10px @color-brand-glow;
+                }
+            }
+
+            .item-type {
+                font-family: @font-body;
+                font-size: @font-size-sm;
+                color: @color-brand-accent;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-weight: 800;
+                margin-top: -4px;
+            }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            min-width: 40px; 
+        }
+    }
+
+    // ─── EDIT MODE SLIDER (OVER IMAGE) ──────────────────
+    .edit-mode-slider {
+        display: flex;
+        align-items: center;
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 32px;
+            height: 16px;
+            cursor: pointer;
+
+            input {
+                opacity: 0; width: 0; height: 0; position: absolute;
+                &:checked + .slider {
+                    background-color: @color-brand-accent;
+                    .thumb { transform: translateX(14px); }
+                }
+            }
+
+            .slider {
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background-color: rgba(255, 255, 255, 0.1);
+                transition: 0.3s;
+                border-radius: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                z-index: 1;
+                &::before { display: none !important; content: none !important; }
+            }
+
+            .thumb {
+                position: absolute;
+                display: flex; 
+                align-items: center;
+                justify-content: center;
+                height: 12px;
+                width: 12px;
+                left: 2px; top: 1px;
+                background-color: white;
+                transition: 0.3s ease;
+                border-radius: 50%;
+                z-index: 2;
+
+                i { font-size: 8px; color: #333; }
+            }
+        }
+    }
+}

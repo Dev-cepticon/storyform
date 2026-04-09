@@ -11,15 +11,10 @@ export default class StoryformRaceSheet extends StoryformItemBaseSheet {
   /** @override */
   static DEFAULT_OPTIONS = {
     classes: ["storyform", "sheet", "item", "race"],
-    window: {
-      title: "STORYFORM.ItemRace",
-    },
     // Pointers for the Master Shell to render the correct content
     mainTemplate: "systems/storyform/templates/items/race-main.hbs",
     sidebarTemplate: "systems/storyform/templates/items/parts/config/race-config.hbs",
-    actions: {
-      tab: this._onTabClick,
-    }
+
   };
 
   /** @override */
@@ -43,7 +38,7 @@ export default class StoryformRaceSheet extends StoryformItemBaseSheet {
     // 1. Get base context (item, system, config, etc.)
     const context = await super._prepareContext(options);
 
-    context.item = this.item; 
+    context.item = this.item;
     context.system = this.item.system;
 
     // 2. Add Race-specific data for dropdowns
