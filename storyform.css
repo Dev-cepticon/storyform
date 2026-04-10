@@ -180,3 +180,329 @@
   font-size: 8px;
   color: #333;
 }
+.storyform.sheet.item form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+.storyform.sheet.item .item-body-layout {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+.storyform.sheet.item .item-config-sidebar {
+  width: 220px;
+  min-width: 0;
+  background-color: #1a1d21;
+  border-right: 1px solid transparent;
+  height: 450px;
+  visibility: hidden;
+  transition: margin-left 10s cubic-bezier(0.17, 0.67, 0.83, 0.67), opacity 10s ease-out, transform 10s cubic-bezier(0.17, 0.67, 0.83, 0.67), border-color 10s ease;
+  margin-left: -220px;
+  opacity: 0;
+  transform: translateX(-15px);
+  z-index: 5;
+  overflow: hidden;
+}
+.storyform.sheet.item .item-config-sidebar .sidebar-content {
+  width: 220px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.storyform.sheet.item .item-config-sidebar .sidebar-content h3 {
+  font-family: "Georgia", serif;
+  color: #c5a059;
+  font-size: 13px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #2d3136;
+  padding-bottom: 4px;
+  margin: 0;
+}
+.storyform.sheet.item .item-config-sidebar .sidebar-content h3 i {
+  margin-right: 8px;
+}
+.storyform.sheet.item .storyform-item-shell.sidebar-open .item-config-sidebar {
+  margin-left: 0;
+  opacity: 1;
+  transform: translateX(0);
+  border-right: 1px solid #2d3136;
+  visibility: visible;
+}
+.storyform.sheet.item .config-sidebar-inner .config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.storyform.sheet.item .config-sidebar-inner .config-section h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  color: #6c757d;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 1px;
+}
+.storyform.sheet.item .config-sidebar-inner .config-section .form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+.storyform.sheet.item .config-sidebar-inner .config-section .form-group label {
+  font-size: 11px;
+  color: #ced4da;
+}
+.storyform.sheet.item .config-sidebar-inner .config-section .form-group.stacked {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.storyform.sheet.item .config-sidebar-inner .config-section .form-group input[type="number"],
+.storyform.sheet.item .config-sidebar-inner .config-section .form-group select {
+  background: #24282d;
+  color: #f8f9fa;
+  border: 1px solid #2d3136;
+  border-radius: 2px;
+  padding: 2px 4px;
+}
+.storyform.sheet.item .config-sidebar-inner hr {
+  border: none;
+  border-top: 1px solid #2d3136;
+  margin: 8px 0;
+}
+.storyform.sheet.item .item-main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  background: #0f1113;
+  height: 450px;
+  overflow-y: scroll;
+}
+.storyform.sheet.item .item-main-content::-webkit-scrollbar {
+  width: 6px;
+}
+.storyform.sheet.item .item-main-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.storyform.sheet.item .item-main-content::-webkit-scrollbar-thumb {
+  background: #2d3136;
+  border-radius: 20px;
+}
+.storyform.sheet.item .item-main-content::-webkit-scrollbar-thumb:hover {
+  background: #c5a059;
+}
+.storyform.sheet.item .item-main-content input[type="number"],
+.storyform.sheet.item .item-main-content input[type="text"],
+.storyform.sheet.item .item-main-content textarea,
+.storyform.sheet.item .item-main-content select {
+  background: #24282d;
+  color: #f8f9fa;
+  border: 1px solid #2d3136;
+  border-radius: 2px;
+  padding: 2px 4px;
+  margin: 4px;
+}
+.storyform.sheet.item .item-main-content textarea {
+  background: #24282d;
+  color: #f8f9fa;
+  border: 1px solid #2d3136;
+  border-radius: 2px;
+  padding: 2px 4px;
+  margin: 4px;
+  width: 100%;
+  font-family: "Georgia", serif;
+}
+.storyform.sheet.item .item-main-content prose-mirror {
+  height: 425px;
+}
+/* ─── 1. SHARED COMPONENTS ─── */
+.named-block {
+  background: #1a1d21;
+  border: 1px solid #2d3136;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+.named-block .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #2d3136;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+.named-block .header input[type="text"] {
+  font-family: "Georgia", serif;
+  font-weight: bold;
+  color: #c5a059;
+}
+/* ─── 2. VIEW MODE ENHANCEMENTS ─── */
+.view-mode .action-name,
+.view-mode .name {
+  font-family: "Georgia", serif;
+  font-size: 18px;
+  color: #c5a059;
+  text-transform: capitalize;
+}
+.view-mode .description-text {
+  font-size: 13px;
+  color: #ced4da;
+  line-height: 1.4;
+}
+/* ─── 3. PHYSICAL TRAITS & DASHBOARD GRID ─── */
+.details-traits {
+  border: 1px solid #2d3136;
+  background: #0f1113;
+  padding: 16px;
+  border-radius: 4px;
+  /* Physical Stat Grid */
+  /* Racial Trait Card */
+}
+.details-traits legend {
+  font-family: "Georgia", serif;
+  color: #f8f9fa;
+  padding: 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.details-traits .physical-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.details-traits .physical-grid .stat-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.details-traits .physical-grid .stat-group label {
+  font-size: 11px;
+  color: #c5a059;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+.details-traits .physical-grid .stat-group .value-container {
+  width: 100%;
+}
+.details-traits .physical-grid .stat-group .value-container .value-text {
+  font-size: 18px;
+  color: #f8f9fa;
+  font-family: "Georgia", serif;
+}
+.details-traits .physical-grid .stat-group .value-container .value-text.highlight {
+  color: #c5a059;
+}
+.details-traits .physical-grid .stat-group .value-container .input-with-unit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.details-traits .physical-grid .stat-group .value-container .input-with-unit .unit-label {
+  font-size: 11px;
+  color: #6c757d;
+}
+.details-traits .racial-trait-card {
+  background: #1a1d21;
+  border: 1px solid #2d3136;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.details-traits .racial-trait-card .card-header {
+  background: #24282d;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid #2d3136;
+}
+.details-traits .racial-trait-card .card-header i {
+  color: #c5a059;
+  cursor: pointer;
+}
+.details-traits .racial-trait-card .card-header i:hover {
+  color: #d9c092;
+  filter: drop-shadow(0 0 4px rgba(197, 160, 89, 0.4));
+}
+.details-traits .racial-trait-card .card-header .trait-name {
+  font-family: "Georgia", serif;
+  color: #c5a059;
+  font-weight: bold;
+  font-size: 13px;
+}
+.details-traits .racial-trait-card .card-header input {
+  background: transparent;
+  border: none;
+  color: #f8f9fa;
+  font-weight: bold;
+}
+.details-traits .racial-trait-card .card-header input:focus {
+  box-shadow: none;
+}
+.details-traits .racial-trait-card .card-body {
+  padding: 8px;
+}
+.details-traits .racial-trait-card .card-body .description-text {
+  font-size: 13px;
+  color: #ced4da;
+  line-height: 1.5;
+  margin: 0;
+}
+.details-traits .racial-trait-card .card-body textarea {
+  min-height: 80px;
+  background: #0f1113;
+}
+.details-traits .racial-trait-card.view-mode {
+  border-left: 3px solid #c5a059;
+}
+/* ─── 4. MODIFIERS & TAGS ─── */
+.bonus-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.bonus-display .bonus-tag {
+  background: #343a40;
+  color: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: #24282d;
+  border: 1px solid #c5a059;
+  display: flex;
+  gap: 4px;
+}
+.bonus-display .bonus-tag .modifier {
+  color: #c5a059;
+}
+.bonus-display .bonus-tag .label {
+  color: #f8f9fa;
+}
+/* ─── 5. STATUS & ICONS ─── */
+.cost-tag {
+  color: #c5a059;
+  cursor: pointer;
+  background: #0f1113;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+.cost-tag:hover {
+  color: #d9c092;
+  filter: drop-shadow(0 0 4px rgba(197, 160, 89, 0.4));
+}
+.gold-text {
+  color: #c5a059;
+  font-weight: bold;
+}

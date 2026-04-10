@@ -1,25 +1,36 @@
 <div class="config-section">
-  <h4>{{localize "STORYFORM.Config.StandardFeatures"}}</h4>
-  
+  <h4>{{localize "STORYFORM.Origin.Actions"}}</h4>
+
+
   <div class="form-group stacked">
-    <label class="checkbox">
-      <input type="checkbox" name="system.config.hasAbilities" {{checked config.hasAbilities}}>
-      {{localize "STORYFORM.Config.EnableAbilities"}}
-    </label>
 
+    {{#if optional.abilities}}
     <label class="checkbox">
-      <input type="checkbox" name="system.config.hasSkills" {{checked config.hasSkills}}>
-      {{localize "STORYFORM.Config.EnableSkills"}}
+      <input type="checkbox" name="system.config.hasAbilities" {{checked system.config.hasAbilities}}>
+      {{localize "STORYFORM.AbilityModifiers"}}
     </label>
+    {{/if}}
 
+    {{#if optional.skills}}
     <label class="checkbox">
-      <input type="checkbox" name="system.config.hasAction" {{checked config.hasAction}}>
-      {{localize "STORYFORM.Config.EnableActions"}}
+      <input type="checkbox" name="system.config.hasSkills" {{checked system.config.hasSkills}}>
+      {{localize "STORYFORM.SkillModifiers"}}
     </label>
+    {{/if}}
 
+    {{#if optional.oncePerTurn}}
     <label class="checkbox">
-      <input type="checkbox" name="system.config.hasHeroDice" {{checked config.hasHeroDice}}>
-      {{localize "STORYFORM.Config.EnableHeroDice"}}
+      <input type="checkbox" name="system.config.hasAction" {{checked system.config.hasAction}}>
+      {{localize "STORYFORM.OncePerturn"}}
     </label>
+    {{/if}}
+
+    {{#if optional.heroDiceAbilities}}
+    <label class="checkbox">
+      <input type="checkbox" name="system.config.hasHeroDice" {{checked system.config.hasHeroDice}}>
+      {{localize "STORYFORM.HeroDiceAbilities"}}
+    </label>
+    {{/if}}
+
   </div>
 </div>

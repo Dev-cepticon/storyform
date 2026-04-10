@@ -14,7 +14,10 @@ export default class StoryformRaceSheet extends StoryformItemBaseSheet {
     // Pointers for the Master Shell to render the correct content
     mainTemplate: "systems/storyform/templates/items/race-main.hbs",
     sidebarTemplate: "systems/storyform/templates/items/parts/config/race-config.hbs",
-
+    position: {
+            width: 580,
+            height: 686
+        }
   };
 
   /** @override */
@@ -38,8 +41,20 @@ export default class StoryformRaceSheet extends StoryformItemBaseSheet {
     // 1. Get base context (item, system, config, etc.)
     const context = await super._prepareContext(options);
 
+    // Explicitly define the behavior for toggles
+    // 'optional' means the user CAN toggle it. 
+    // If a key is not in 'optional', it is considered mandatory/hidden from config.
+    context.optional = {
+      abilities: false, // Mandatory for Races
+      skills: true,
+      skills: true,
+      oncePerTurn: true,
+      heroDiceAbilities: true
+    }
+
     context.item = this.item;
     context.system = this.item.system;
+    log("system.config", context.system.config);
 
     // 2. Add Race-specific data for dropdowns
     context.abilityChoices = CONFIG.STORYFORM.abilities;
@@ -68,11 +83,4 @@ export default class StoryformRaceSheet extends StoryformItemBaseSheet {
     return context;
   }
 
-  static _onTabClick(event, target) {
-    console.log("clicked");
-    // const group = target.dataset.group;
-    // const tab = target.dataset.tab;
-    // this.tabGroups[group] = tab;
-    // this.render();
-  }
 }

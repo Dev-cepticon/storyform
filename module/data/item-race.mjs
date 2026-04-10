@@ -17,6 +17,7 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
 
     return {
       config: new SchemaField({
+        hasAbilities: new BooleanField({ initial: true }),
         hasSkills: new BooleanField({ initial: false }),
         hasAction: new BooleanField({initial: false}),
         hasHeroDice: new BooleanField({initial: false}),

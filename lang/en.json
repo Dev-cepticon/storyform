@@ -68,8 +68,21 @@
   "STORYFORM.ClassSkillBonuses": "Skill Modifier",
   "STORYFORM.ClassHeroDiceAbilities": "Hero Dice Abilities",
 
+  "STORYFORM.AbilityModifiers":"Ability Modifiers",
+  "STORYFORM.SkillModifiers":"Skill Modifiers",
+  "STORYFORM.OncePerturn":"Once-Per-Turn Action",
+  "STORYFORM.HeroDiceAbilities":"Hero Dice Action",
+
+
   "STORYFORM.RaceSize": "Size",
+  "STORYFORM.Race.PhysicalTraits": "Physical Traits",
+  "STORYFORM.Race.Age": "Age",
+  "STORYFORM.Race.Maturity": "Maturity",
+  "STORYFORM.Race.LifeSpan": "Life Span",
+  "STORYFORM.Race.Movement": "Movement",
   "STORYFORM.RaceHpBonus": "HP Bonus",
+  "STORYFORM.RacialTrait.RacicalTrait" : "Racial Trait",
+  "STORYFORM.RacialTrait.HasRacialTrait": "Has Racial Trait",
   "STORYFORM.RaceAbilityModifiers": "Ability Modifiers",
   "STORYFORM.RaceSkillModifiers": "Skill Modifiers",
   "STORYFORM.RaceOncePerturn": "Once Per Turn",
@@ -103,6 +116,7 @@
   "STORYFORM.CombatInteract": "Interact",
   "STORYFORM.CombatSpecial": "Special",
 
+  "STORYFORM.Size":"Size",
   "STORYFORM.SizeTiny": "Tiny",
   "STORYFORM.SizeSmall": "Small",
   "STORYFORM.SizeMedium": "Medium",
@@ -112,6 +126,15 @@
   "STORYFORM.StanceFriendly":"Friendly",
   "STORYFORM.StanceNeutral":"Neutral",
   "STORYFORM.StanceHostile":"Hostile",
+
+  "STORYFORM.Config.Config": "Config",
+  "STORYFORM.Config.RaceSettings": "Race Settings",
+  "STORYFORM.Config.ClassSettings": "Class Settings",
+  "STORYFORM.Origin.Actions": "Origin Actions",
+  "STORYFORM.Origin.Modifiers": "Origin Modifiers",
+  "STORYFORM.Distance.Square":"Square",
+  "STORYFORM.None":"None",
+
  
 
   "TYPES.Actor.character": "Character",

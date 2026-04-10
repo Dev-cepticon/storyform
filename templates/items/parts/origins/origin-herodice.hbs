@@ -1,6 +1,8 @@
 <div class="form-group">
   <label>{{localize "STORYFORM.RaceHeroDiceAbilities"}}</label>
   <div class="hero-dice-list">
+
+    {{#if system.config.editMode}}
     {{#each system.heroDiceAbilities as |ability i|}}
     <div class="named-block">
       <div class="header">
@@ -23,4 +25,29 @@
     <i class="fas fa-plus"></i> Add
     </button>
   </div>
+  {{else}}
+  {{!-- VIEW MODE --}}
+  <div class="hero-dice-list view-mode">
+    {{#each system.heroDiceAbilities as |ability|}}
+    <div class="named-block">
+      <div class="header">
+        {{!-- Ability Name --}}
+        <span class="name">{{ability.name}}</span>
+        
+        {{!-- Ability Cost --}}
+        <span class="cost-tag">
+          <i class="fa-solid fa-dice-d6"></i> {{ability.cost}}
+        </span>
+      </div>
+      
+      {{!-- Description --}}
+      <div class="description-text">
+        {{ability.description}}
+      </div>
+    </div>
+    {{else}}
+    <span class="none-text">{{localize "STORYFORM.None"}}</span>
+    {{/each}}
+  </div>
+  {{/if}}
 </div>

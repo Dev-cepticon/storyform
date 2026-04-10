@@ -7,10 +7,12 @@ Params:
 @delete: "deleteSkillMod"
 --}}
 <div class="form-group">
-  <label>{{label}}</label>
-  <div class="array-list">
+  <label>{{localize label}}</label>
+  <div class="">
+    {{#if system.config.editMode}}
+
     {{#each modList as |mod i|}}
-    <div class="array-row">
+    <div class="bonus-display">
       {{!-- Force the path to exist for this index --}}
       <select name="{{../path}}.{{i}}.{{../typeKey}}">
         {{#each ../choices as |c|}}
@@ -33,4 +35,31 @@ Params:
       <i class="fas fa-plus"></i> Add
     </button>
   </div>
+  {{else}}
+  {{!-- VIEW MODE: Clean Labels --}}
+  <div class="bonus-display">
+    {{#each modList as |mod|}}
+    <span class="bonus-tag">
+      {{!-- 1. The Value (e.g., +2) --}}
+      <span class="modifier">{{#if (gt mod.modifier 0)}}+{{/if}}{{mod.modifier}}</span>
+
+      {{!-- 2. The Label (Handles both Object and Array structures) --}}
+      <span class="label">
+        {{#each ../choices as |value key|}}
+          {{!-- 
+            Check if we are matching an Array of Objects (c.key) 
+            or a standard Object key (key) 
+          --}}
+          {{#if (or (eq value.key (lookup mod ../../typeKey)) (eq key (lookup mod ../../typeKey)))}}
+            {{!-- Localize the result: handles "Athletics" or "STORYFORM.SkillAthletics" --}}
+            {{localize (ifThen value.label value.label value)}}
+          {{/if}}
+        {{/each}}
+      </span>
+    </span>
+    {{else}}
+    <span class="none-text">{{localize "STORYFORM.None"}}</span>
+    {{/each}}
+  </div>
+  {{/if}}
 </div>

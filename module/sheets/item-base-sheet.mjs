@@ -30,13 +30,10 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
             deleteAction: this._onDeleteAction,
             addHDA: this._onAddHDA,
             deleteHDA: this._onDeleteHDA,
-            
+
         },
         tabGroups: {
             primary: "description"
-        },
-        position: {
-            width: 550, // Ensure the starting width is wide enough
         }
     };
 
@@ -44,6 +41,7 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
         // Returning an empty string removes the text while keeping the bar
         return "";
     }
+
 
 
     /* -------------------------------------------- */
@@ -57,7 +55,7 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
 
     static async _onToggleSidebar(event, target) {
         const isSidebarOpen = this.document.system.config.showSidebar;
-        console.log("isSidebarOpen", isSidebarOpen);
+
         // We only allow the sidebar if we are also in Edit Mode
         if (!this.document.system.config.editMode) {
             ui.notifications.warn("Enable Edit Mode to access configuration.");
@@ -95,7 +93,7 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
     async _updateArray(path, updateFn) {
         const current = foundry.utils.getProperty(this.document, path) || [];
         const newArray = foundry.utils.deepClone(current);
-        console.log("newArray", newArray);
+
         updateFn(newArray);
         return this.document.update({ [path]: newArray });
     }
@@ -118,7 +116,7 @@ export default class StoryformItemBaseSheet extends HandlebarsApplicationMixin(I
 
     static async _onAddAction(event, target) {
         // 'this' in an action handler is the Sheet instance
-        console.log("ADDING");
+
         return this._updateArray("system.oncePerturn", arr =>
             arr.push({ name: "New Ability", description: "" }));
     }

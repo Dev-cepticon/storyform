@@ -1,28 +1,41 @@
-
-
-
 <div class="form-group">
   <label>{{localize "STORYFORM.RaceOncePerturn"}}</label>
+
+
+  {{#if system.config.editMode}}
   <div class="array-list">
     {{#each system.oncePerturn as |action i|}}
     <div class="named-block">
       <div class="header">
         <input type="text" name="system.oncePerturn.{{i}}.name" value="{{action.name}}" placeholder="Action name..." />
-        <a 
-        class="array-delete" 
-        data-action="deleteAction" 
-        data-index="{{i}}">
+        <a class="array-delete" data-action="deleteAction" data-index="{{i}}">
           <i class="fas fa-trash"></i>
         </a>
       </div>
-      <textarea name="system.oncePerturn.{{i}}.description" placeholder="Description...">{{action.description}}</textarea>
+      <textarea name="system.oncePerturn.{{i}}.description"
+        placeholder="Description...">{{action.description}}</textarea>
     </div>
     {{/each}}
-    <button 
-    type="button" 
-    class="array-add" 
-    data-action="addAction">
+    <button type="button" class="array-add" data-action="addAction">
       <i class="fas fa-plus"></i> Add
     </button>
   </div>
+  {{else}}
+  {{!-- VIEW MODE --}}
+  <div class="array-list view-mode">
+    {{#each system.oncePerturn as |action|}}
+    <div class="named-block">
+      <div class="header">
+        <span class="action-name">{{action.name}}</span>
+      </div>
+      <div class="description-text">
+        {{action.description}}
+      </div>
+    </div>
+    {{else}}
+    <span class="none-text">{{localize "STORYFORM.None"}}</span>
+    {{/each}}
+  </div>
+  {{/if}}
+
 </div>
