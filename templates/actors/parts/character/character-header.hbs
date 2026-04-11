@@ -6,7 +6,7 @@
 
   <header class="sheet-header">
 
-    <img class="profile-img" src="{{actor.img}}"
+    <img class="" style="heigth: 30px; width: 30px;" src="{{actor.img}}"
          data-edit="img" title="{{actor.name}}" />
 
     <div class="header-fields">
@@ -18,19 +18,20 @@
       <div class="identity-row">
         <div class="identity-field">
           <label>{{localize "STORYFORM.DetailsRace"}}</label>
-          <input type="text" name="system.details.race"
+          <input type="text" 
                  value="{{system.details.race}}"
+                 placeholder="No Race"
                  readonly />
         </div>
         <div class="identity-field">
           <label>{{localize "STORYFORM.DetailsClass"}}</label>
-          <input type="text" name="system.details.class"
+          <input type="text"
                  value="{{system.details.class}}" 
                  readonly/>
         </div>
         <div class="identity-field">
           <label>{{localize "STORYFORM.DetailsBackground"}}</label>
-          <input type="text" name="system.details.background"
+          <input type="text" 
                  value="{{system.details.background}}" 
                  readonly/>
         </div>
@@ -48,8 +49,10 @@
         <input type="number" name="system.attributes.hp.value"
                value="{{system.attributes.hp.value}}" min="0" />
         <span class="stat-sep">/</span>
-        <input type="number" name="system.attributes.hp.tempMax"
-               value="{{system.attributes.hp.tempMax}}" min="0" />
+        <input type="number" 
+               value="{{system.attributes.hp.tempMax}}" min="0" 
+               readonly
+               />
       </div>
     </div>
 
@@ -69,7 +72,7 @@
     <div class="stat-block">
       <label>{{localize "STORYFORM.AttributeMovement"}}</label>
       <div class="stat-value">
-        <input type="number" name="system.attributes.movement"
+        <input type="number" 
                value="{{system.attributes.movement}}" min="0" />
       </div>
     </div>
