@@ -17,11 +17,7 @@ export default class ClassData extends foundry.abstract.TypeDataModel {
       // Class role description shown on the sheet
       role: new StringField({ initial: "" }),
       description: new HTMLField({ initial: "" }),
-      ...buildOriginSchema({ 
-        skills: true, 
-        actions: true, 
-        heroDice: true 
-      })
+      ...buildOriginSchema(),
     };
   }
 }

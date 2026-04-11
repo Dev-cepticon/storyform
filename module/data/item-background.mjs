@@ -15,9 +15,7 @@ export default class BackgroundData extends foundry.abstract.TypeDataModel {
     return {
       roleplaying: new StringField({ initial: "" }),
       description: new HTMLField({ initial: "" }),
-      ...buildOriginSchema({ 
-              skills: true, 
-            }),
+      ...buildOriginSchema(),
     };
   }
 }
