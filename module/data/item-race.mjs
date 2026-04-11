@@ -59,6 +59,7 @@ export default class RaceData extends foundry.abstract.TypeDataModel {
         initial: "",
         label: "STORYFORM.Description"
       }),
+      //build out all mods and actions so that GMs can toggle custom origins that defy the rules.
       ...buildOriginSchema(),
 
     };
