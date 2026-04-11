@@ -12,6 +12,8 @@ export function buildAttributesSchema(fields, { isCharacter = false } = {}) {
   const { NumberField, SchemaField } = fields;
 
   const schema = {
+    //NPC and Characters start with same intial hp. For npc it assumed that the gm will all most always
+    //be changing the value, so it intial value is inconsequential.
     hp: new SchemaField({
       value: new NumberField({ required: true, integer: true, min: 0, initial: 15 }),
       max: new NumberField({ required: true, integer: true, min: 0, initial: 15 })
