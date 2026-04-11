@@ -48,6 +48,21 @@ export function registerSystemConfig() {
       { key: "haggle",     label: "STORYFORM.SkillHaggle"     }
     ]
   };
+  // ── Actor Sizes ────────────────────────────────────────────
+  const sizes = [
+    { key: "tiny",       label: "STORYFORM.SizeTiny" },
+    { key: "small",      label: "STORYFORM.SizeSmall" },
+    { key: "medium",     label: "STORYFORM.SizeMedium" },
+    { key: "large",      label: "STORYFORM.SizeLarge" },
+    { key: "huge",       label: "STORYFORM.SizeHuge" },
+  ];
+
+  // ── NPC Stances ────────────────────────────────────────────
+  const stances = [
+    { key: "friendly", label: "STORYFORM.StanceFriendly" },
+    { key: "neutral",  label: "STORYFORM.StanceNeutral" },
+    { key: "hostile",  label: "STORYFORM.StanceHostile" }
+  ];
 
   // Flat skill list — used by sheets that need a dropdown of all skills.
   // Derived from skillsByAbility so ordering is always consistent and
@@ -76,6 +91,8 @@ export function registerSystemConfig() {
         skillList.map(s => ({ ...s, label: localize(s.label) }))
       ])
     ),
-    skillAbilityMap // plain string→string, no localization needed
+    skillAbilityMap,// plain string→string, no localization needed
+    sizes: sizes.map(s => ({ ...s, label: localize(s.label) })),
+    stances:    stances.map(s => ({ ...s, label: localize(s.label) }))
   };
 }

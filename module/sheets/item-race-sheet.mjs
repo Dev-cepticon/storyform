@@ -54,12 +54,14 @@ export default class StoryformRaceSheet extends StoryformItemBaseSheet {
 
     context.item = this.item;
     context.system = this.item.system;
-    log("system.config", context.system.config);
 
     // 2. Add Race-specific data for dropdowns
     context.abilityChoices = CONFIG.STORYFORM.abilities;
     context.skillChoices = CONFIG.STORYFORM.skills;
 
+    context.sizeChoices = CONFIG.STORYFORM.sizes;
+    console.log("context.sizeChoices", context.sizeChoices);
+  
     const activeTab = this.tabGroups.primary || "description";
 
     // 2. Build the tabs object for Handlebars

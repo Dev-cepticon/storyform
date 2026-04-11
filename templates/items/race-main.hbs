@@ -32,11 +32,12 @@
         <div class="value-container">
           {{#if system.config.editMode}}
           <select name="system.size">
-            <option value="tiny" {{#if (eq system.size "tiny" )}}selected{{/if}}>Tiny</option>
-            <option value="small" {{#if (eq system.size "small" )}}selected{{/if}}>Small</option>
-            <option value="medium" {{#if (eq system.size "medium" )}}selected{{/if}}>Medium</option>
-            <option value="large" {{#if (eq system.size "large" )}}selected{{/if}}>Large</option>
-            <option value="huge" {{#if (eq system.size "huge" )}}selected{{/if}}>Huge</option>
+            {{#each sizeChoices as |c|}}
+            {{!-- In an array loop: 'c' is the object, so we must access properties --}}
+            <option value="{{c.key}}" {{#if (eq ../system.size c.key)}}selected{{/if}}>
+              {{c.label}}
+            </option>
+            {{/each}}
           </select>
           {{else}}
           <span class="value-text">{{capitalize system.size}}</span>
@@ -74,7 +75,7 @@
       {{!-- Movement --}}
       <div class="physical-grid">
         <label>{{localize "STORYFORM.AttributeMovement"}} ({{localize
-          "STORYFORM.Distance.Square"}}s) </label> 
+          "STORYFORM.Distance.Square"}}s) </label>
         <div class="value-container">
           {{#if system.config.editMode}}
           <input type="number" name="system.movement" value="{{system.movement}}">
@@ -86,25 +87,27 @@
       </div>
     </div>
     {{#if system.racialTrait.hasTrait}}
-  <div class="racial-trait-card {{ifThen system.config.editMode 'edit-mode' 'view-mode'}}">
-    <div class="card-header">
-      <i class="fa-solid fa-dna"></i>
-      {{#if system.config.editMode}}
-      <input type="text" name="system.racialTrait.name" value="{{system.racialTrait.name}}" placeholder="Trait name..." />
-      {{else}}
-      <span class="trait-name">{{system.racialTrait.name}}</span>
-      {{/if}}
+    <div class="racial-trait-card {{ifThen system.config.editMode 'edit-mode' 'view-mode'}}">
+      <div class="card-header">
+        <i class="fa-solid fa-dna"></i>
+        {{#if system.config.editMode}}
+        <input type="text" name="system.racialTrait.name" value="{{system.racialTrait.name}}"
+          placeholder="Trait name..." />
+        {{else}}
+        <span class="trait-name">{{system.racialTrait.name}}</span>
+        {{/if}}
+      </div>
+
+      <div class="card-body">
+        {{#if system.config.editMode}}
+        <textarea name="system.racialTrait.description"
+          placeholder="Trait description...">{{system.racialTrait.description}}</textarea>
+        {{else}}
+        <p class="description-text">{{system.racialTrait.description}}</p>
+        {{/if}}
+      </div>
     </div>
-    
-    <div class="card-body">
-      {{#if system.config.editMode}}
-      <textarea name="system.racialTrait.description" placeholder="Trait description...">{{system.racialTrait.description}}</textarea>
-      {{else}}
-      <p class="description-text">{{system.racialTrait.description}}</p>
-      {{/if}}
-    </div>
-  </div>
-  {{/if}}
+    {{/if}}
 
   </fieldset>
 
