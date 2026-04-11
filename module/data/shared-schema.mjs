@@ -32,6 +32,7 @@ export function buildAttributesSchema(fields, { isCharacter = false } = {}) {
       value: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 5 }),
       max: new NumberField({ required: true, integer: true, min: 0, max: 5, initial: 0 })
     });
+    schema.movement= new NumberField({ required: true, integer: true, min: 0, initial: 3 })
   }
 
   return new SchemaField(schema);
