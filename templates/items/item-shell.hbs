@@ -1,4 +1,4 @@
-<div class="storyform-item-shell {{#if system.config.editMode}}{{#if system.config.showSidebar}}sidebar-open{{/if}}{{/if}}">
+<div class="storyform sheet item">
 
   {{!-- 1. Global Header --}}
   {{> "systems/storyform/templates/items/parts/item-header.hbs"}}
@@ -8,8 +8,8 @@
 
   <section class="item-body-layout">
     {{!-- 3. Slide-out Sidebar (Config) --}}
-    <aside class="item-config-sidebar">
-      <div class="sidebar-content">
+    <aside class="sf-sheet-sidebar-drawer {{#if system.config.editMode}}{{#if system.config.showSidebar}}is-active{{/if}}{{/if}}">
+      <div class="drawer-content">
         <h3><i class="fa-solid fa-gears"></i> {{localize "STORYFORM.Config.Config"}}</h3>
         {{> (lookup . 'sidebarTemplate')}}
       </div>

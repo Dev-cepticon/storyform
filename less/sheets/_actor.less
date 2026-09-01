@@ -1,0 +1,24 @@
+// main: ../storyform.less
+
+.storyform.sheet.actor {
+    // Specific Grid for the "Details" tab
+    .abilities-skills {
+        display: grid;
+        grid-template-columns: 1fr 1fr; // Two-column layout
+        gap: @space-layout;
+
+        @media (max-width: 600px) {
+            grid-template-columns: 1fr; // Stack on small windows
+        }
+    }
+
+    // Character specific stat bar overrides
+    .core-stats {
+        background: @color-surface-panel;
+        padding: @space-unit;
+        border-radius: @border-radius-md;
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: @space-unit;
+    }
+}

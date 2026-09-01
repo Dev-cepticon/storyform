@@ -40,6 +40,7 @@ export default class StoryformRaceSheet extends StoryformItemBaseSheet {
     log(`Preparing context for Race: ${this.item.name}`);
     // 1. Get base context (item, system, config, etc.)
     const context = await super._prepareContext(options);
+    context.sheetStyle = `--sheet-banner: url('${this.item?.img || '../storyform/assets/concept/items/itemtop.webp'}')`;
 
     // Explicitly define the behavior for toggles
     // 'optional' means the user CAN toggle it. 

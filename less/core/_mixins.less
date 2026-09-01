@@ -1,0 +1,39 @@
+// main: ../storyform.less
+
+// ─── INTERACTION ──────────────────────────────────────────
+.sf-glow-lift() {
+    background-color: @color-surface-lifted;
+    box-shadow: 0 4px 12px @color-state-hover-shadow;
+    transition: all 0.2s ease-in-out;
+}
+
+.sf-icon-functional() {
+    color: @color-brand-accent;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    &:hover { transform: scale(1.1); }
+}
+
+// ─── LAYOUT HELPERS ───────────────────────────────────────
+.sf-flex-center() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sf-flex-between() {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// ─── V13 SCROLLBAR ────────────────────────────────────────
+.sf-scrollbar() {
+    &::-webkit-scrollbar { width: 6px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb {
+        background: @color-border-subtle;
+        border-radius: @border-radius-pill;
+        &:hover { background: @color-brand-accent; }
+    }
+}

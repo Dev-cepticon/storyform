@@ -1,0 +1,40 @@
+// main: ../storyform.less
+
+.sf-switch {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 16px;
+    cursor: pointer;
+
+    input {
+        opacity: 0; width: 0; height: 0; position: absolute;
+        
+        &:checked + .sf-slider {
+            background-color: @color-brand-accent;
+            &::before { transform: translateX(14px); }
+        }
+    }
+
+    .sf-slider {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: @color-surface-raised;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: @border-radius-pill;
+        border: 1px solid @color-border-subtle;
+
+        &::before {
+            content: "";
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            left: 2px;
+            bottom: 1px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+    }
+}

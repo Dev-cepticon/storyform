@@ -1,0 +1,21 @@
+
+// main: ../storyform.less
+
+.storyform.sheet {
+    // Hide edit-only elements when not in edit mode
+    &:not(.is-editable) {
+        .edit-only { display: none !important; }
+        
+        input, textarea, select {
+            border-color: transparent !important;
+            background: transparent !important;
+            pointer-events: none;
+        }
+    }
+
+    // View-mode specific styling
+    .view-mode-accent {
+        border-left: 3px solid @color-brand-accent;
+        padding-left: @space-unit;
+    }
+}

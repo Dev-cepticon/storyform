@@ -5,8 +5,8 @@
   {{#if system.config.editMode}}
   <div class="array-list">
     {{#each system.oncePerturn as |action i|}}
-    <div class="named-block">
-      <div class="header">
+    <div class="sf-card">
+      <div class=" sf-card-header">
         <input type="text" name="system.oncePerturn.{{i}}.name" value="{{action.name}}" placeholder="Action name..." />
         <a class="array-delete" data-action="deleteAction" data-index="{{i}}">
           <i class="fas fa-trash"></i>
@@ -24,8 +24,8 @@
   {{!-- VIEW MODE --}}
   <div class="array-list view-mode">
     {{#each system.oncePerturn as |action|}}
-    <div class="named-block">
-      <div class="header">
+    <div class="sf-card">
+      <div class=" sf-card-header">
         <span class="action-name">{{action.name}}</span>
       </div>
       <div class="description-text">

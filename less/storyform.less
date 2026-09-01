@@ -2,22 +2,31 @@
 // Compiled by Easy LESS on save → storyform.css
 
 // ── Foundation ────────────────────────────────────────────
-@import "_variables";
+// ── CORE ────────────────────────────────────────────
+@import "core/_variables";
+@import "core/_mixins";
+@import "core/_reset";
+@import "core/_typography";
+// ── LAYOUT ──────────────────────────────────────────
+@import "layout/_sheet.less";
+@import "layout/_grid.less";
+@import "layout/_sections.less";
+@import "layout/_sidebar.less";
+// ── COMPONENTS ───────────────────────────────────────
+@import "components/_badges.less";
+@import "components/_cards.less";
+@import "components/_forms.less";
+@import "components/_states.less";
 
-
+// ── Sheet ─────────────────────────────────────────────────
+@import "sheets/_base-sheet";
 // ── Actor sheet ───────────────────────────────────────────
-
-
-// ── Item sheets (shared base) ─────────────────────────────
-@import "_item-header";
-@import "_item-config";
-@import "_item-body";
-
-
-
-// ── Item sheets (per type) ────────────────────────────────
-
-
+@import "sheets/_actor.less";
+// ── Item sheets  ──────────────────────────────────────────
+//@import "_item-header";
+//@import "_item-config";
+//@import "_item-body";
+@import "sheets/_item.less";
 // ── Utilities ─────────────────────────────────────────────
 
 

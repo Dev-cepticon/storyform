@@ -12,7 +12,7 @@ Params:
     {{#if system.config.editMode}}
 
     {{#each modList as |mod i|}}
-    <div class="bonus-display">
+    <div class="sf-grid-row">
       {{!-- Force the path to exist for this index --}}
       <select name="{{../path}}.{{i}}.{{../typeKey}}">
         {{#each ../choices as |c|}}
@@ -39,7 +39,7 @@ Params:
   {{!-- VIEW MODE: Clean Labels --}}
   <div class="bonus-display">
     {{#each modList as |mod|}}
-    <span class="bonus-tag">
+    <span class="sf-badge is-bonus">
       {{!-- 1. The Value (e.g., +2) --}}
       <span class="modifier">{{#if (gt mod.modifier 0)}}+{{/if}}{{mod.modifier}}</span>
 

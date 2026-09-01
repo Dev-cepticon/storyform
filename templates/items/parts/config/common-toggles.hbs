@@ -5,28 +5,28 @@
   <div class="form-group stacked">
 
     {{#if optional.abilities}}
-    <label class="checkbox">
+    <label class="sf-checkbox-label">
       <input type="checkbox" name="system.config.hasAbilities" {{checked system.config.hasAbilities}}>
       {{localize "STORYFORM.AbilityModifiers"}}
     </label>
     {{/if}}
 
     {{#if optional.skills}}
-    <label class="checkbox">
+    <label class="sf-checkbox-label">
       <input type="checkbox" name="system.config.hasSkills" {{checked system.config.hasSkills}}>
       {{localize "STORYFORM.SkillModifiers"}}
     </label>
     {{/if}}
 
     {{#if optional.oncePerTurn}}
-    <label class="checkbox">
+    <label class="sf-checkbox-label">
       <input type="checkbox" name="system.config.hasAction" {{checked system.config.hasAction}}>
       {{localize "STORYFORM.OncePerturn"}}
     </label>
     {{/if}}
 
     {{#if optional.heroDiceAbilities}}
-    <label class="checkbox">
+    <label class="sf-checkbox-label">
       <input type="checkbox" name="system.config.hasHeroDice" {{checked system.config.hasHeroDice}}>
       {{localize "STORYFORM.HeroDiceAbilities"}}
     </label>

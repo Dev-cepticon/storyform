@@ -1,9 +1,9 @@
-<header class="item-header-v2">
+<header class="sf-sheet-header-wrapper sf-banner-art">
   {{!-- New Top Row for Global Actions --}}
-  <div class="header-top">
+  <div class="sf-header-content">
     <div class="header-top-left">
-      <div class="edit-mode-slider">
-        <label class="switch">
+      <div class="sf-switch">
+        <label class="sf-slider">
           <input type="checkbox" name="system.config.editMode" {{checked system.config.editMode}}>
           <span class="slider round">
             <span class="thumb">
@@ -25,11 +25,11 @@
   </div>
 
   {{!-- Existing Header Content --}}
-  <div class="header-main">
+  <div class="sf-header-content">
 
     <div class="header-left">
 
-      <img class="item-img" src="{{item.img}}" {{#if system.config.editMode}} data-action="editImage" data-edit="img"
+      <img class="profile-img" src="{{item.img}}" {{#if system.config.editMode}} data-action="editImage" data-edit="img"
         title="Change Image" {{/if}} />
     </div>
 

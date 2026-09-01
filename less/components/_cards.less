@@ -1,0 +1,48 @@
+// main: ../storyform.less
+
+
+.sf-card {
+    background: @color-surface-panel; 
+    border: 1px solid @color-border-subtle; 
+    border-radius: @border-radius-md; 
+    margin-bottom: @space-unit; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+
+    .sf-card-header {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        background: rgba(0, 0, 0, 0.2); // Subtle tint
+        padding: @space-micro @space-unit;
+        border-bottom: 1px solid @color-border-subtle;
+
+        h3, h4, input[type="text"] {
+            margin: 0;
+            font-family: @font-display; 
+            font-weight: bold; 
+            color: @color-brand-accent;
+            background: transparent;
+            border: none;
+            &:focus { box-shadow: none; }
+        }
+    }
+
+    .sf-card-body {
+        padding: @space-unit;
+        
+        // Handle nested lists inside cards (like modifiers)
+        .sf-badge-group {
+            margin-top: @space-micro;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+    }
+
+    // Hover state for interactive cards (like in inventory)
+    &.is-clickable:hover {
+        .glow-lift();
+        cursor: pointer;
+    }
+}

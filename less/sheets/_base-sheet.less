@@ -1,0 +1,32 @@
+// main: ../storyform.less
+
+.storyform.sheet {
+    // V13 Resizing Engine Support
+    form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden; // Critical for V13 window resizing
+    }
+
+    .sheet-header-wrapper {
+        flex: 0 0 auto; // Header never shrinks or grows
+    }
+
+    .sheet-tabs {
+        flex: 0 0 auto;
+    }
+
+    .sheet-body {
+        flex: 1 1 auto; // Body takes up all remaining space
+        overflow-y: auto; // Content scrolls here, not on the form
+        padding: @space-block;
+        
+        // Ensure tabs actually hide/show
+        .tab {
+            height: 100%;
+            &[style*="display: none"] { display: none !important; }
+            &[style*="display: block"] { display: flex; flex-direction: column; }
+        }
+    }
+}

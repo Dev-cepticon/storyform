@@ -2,7 +2,10 @@
 <div class="tab {{tabs.primary.description}}" data-tab="description" data-group="primary">
 
 
-  <div class="editor-container">
+  <div class=" sf-section-card">
+    <div class="sf-card-header">
+      <label>{{localize "STORYFORM.Description"}}</label>
+    </div>
     {{#if system.config.editMode}}
     {{!-- EDIT MODE: Editor is always active (toggled="true") --}}
     <prose-mirror name="system.description" value="{{system.description}}" collaborative="false">
@@ -23,11 +26,14 @@
 <div class="tab {{tabs.primary.details}}" data-tab="details" data-group="primary">
 
   {{!-- Physical Basics --}}
-  <fieldset class="details-traits">
-    <legend>{{localize "STORYFORM.Race.PhysicalTraits"}}</legend>
-    {{!-- Size --}}
-    <div "physical-grid">
-      <div class="physical-grid">
+  <section class="sf-section-card">
+    <div class="sf-card-header">
+      <label>{{localize "STORYFORM.Race.PhysicalTraits"}}</label>
+    </div>
+
+    <div class="sf-grid-columns cols-2 sf-card-body">
+      {{!-- Size --}}
+      <div class="sf-grid-row">
         <label>{{localize "STORYFORM.Size"}}:</label>
         <div class="value-container">
           {{#if system.config.editMode}}
@@ -45,8 +51,8 @@
         </div>
       </div>
       {{!-- Age --}}
-      <div class="physical-grid">
-        <label>{{localize "STORYFORM.Race.Age"}}</label>
+      <div class="sf-grid-row">
+        <label>{{localize "STORYFORM.Race.Age"}}:</label>
         <div class="value-container">
           {{#if system.config.editMode}}
           <span>{{localize "STORYFORM.Race.Maturity"}}</span>
@@ -62,8 +68,8 @@
         </div>
       </div>
       {{!-- Hit Points --}}
-      <div class="physical-grid">
-        <label>{{localize "STORYFORM.RaceHpBonus"}}(Added to base)</label>
+      <div class="sf-grid-row">
+        <label>{{localize "STORYFORM.RaceHpBonus"}}:</label>
         <div class="value-container">
           {{#if system.config.editMode}}
           <input type="number" name="system.hpBonus" value="{{system.hpBonus}}" />
@@ -73,9 +79,9 @@
         </div>
       </div>
       {{!-- Movement --}}
-      <div class="physical-grid">
+      <div class="sf-grid-row">
         <label>{{localize "STORYFORM.AttributeMovement"}} ({{localize
-          "STORYFORM.Distance.Square"}}s) </label>
+          "STORYFORM.Distance.Square"}}s): </label>
         <div class="value-container">
           {{#if system.config.editMode}}
           <input type="number" name="system.movement" value="{{system.movement}}">
@@ -86,9 +92,11 @@
         </div>
       </div>
     </div>
+
+
     {{#if system.racialTrait.hasTrait}}
-    <div class="racial-trait-card {{ifThen system.config.editMode 'edit-mode' 'view-mode'}}">
-      <div class="card-header">
+    <div class="sf-card {{ifThen system.config.editMode 'edit-mode' 'view-mode'}}">
+      <div class="sf-card-header">
         <i class="fa-solid fa-dna"></i>
         {{#if system.config.editMode}}
         <input type="text" name="system.racialTrait.name" value="{{system.racialTrait.name}}"
@@ -98,7 +106,7 @@
         {{/if}}
       </div>
 
-      <div class="card-body">
+      <div class="sf-card-body">
         {{#if system.config.editMode}}
         <textarea name="system.racialTrait.description"
           placeholder="Trait description...">{{system.racialTrait.description}}</textarea>
@@ -109,24 +117,27 @@
     </div>
     {{/if}}
 
-  </fieldset>
+  </section>
 
   {{!-- Dynamic Sections (Toggled via Config Sidebar) --}}
-  <fieldset class="details-traits">
-    <legend>{{localize "STORYFORM.Origin.Modifiers"}}</legend>
+
+  <section class="sf-section-card">
+    <div class="sf-card-header">
+      <label>{{localize "STORYFORM.Origin.Modifiers"}}</label>
+    </div>
     <div class="origin-sections">
 
-      <div class="origin-section">
-        {{#if system.config.hasAbilities}}
-        {{> "systems/storyform/templates/items/parts/origins/origin-modifiers.hbs"
-        label= (localize "STORYFORM.AbilityModifiers")
-        modList=system.abilityModifiers
-        choices=abilityChoices
-        path="system.abilityModifiers"
-        typeKey="ability"}}
-        {{/if}}
 
-      </div>
+      {{#if system.config.hasAbilities}}
+      {{> "systems/storyform/templates/items/parts/origins/origin-modifiers.hbs"
+      label= (localize "STORYFORM.AbilityModifiers")
+      modList=system.abilityModifiers
+      choices=abilityChoices
+      path="system.abilityModifiers"
+      typeKey="ability"}}
+      {{/if}}
+
+
 
       {{#if system.config.hasSkills}}
       {{> "systems/storyform/templates/items/parts/origins/origin-modifiers.hbs"
@@ -146,5 +157,5 @@
       {{/if}}
 
     </div>
-  </fieldset>
+  </section>
 </div>

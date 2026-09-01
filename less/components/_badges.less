@@ -1,0 +1,29 @@
+// main: ../storyform.less
+
+.sf-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: @border-radius-pill;
+    font-size: @font-size-sm;
+    font-weight: bold;
+    white-space: nowrap;
+    border: 1px solid transparent;
+
+    // The "Bonus Tag" variant
+    &.is-bonus {
+        background: @color-surface-raised; 
+        border-color: @color-brand-accent;
+        color: @color-text-bright;
+
+        .modifier { color: @color-brand-accent; }
+    }
+
+    // The "Cost Tag" variant (e.g. Hero Dice cost)
+    &.is-cost {
+        background: @color-brand-primary;
+        color: white;
+        border-color: lighten(@color-brand-primary, 10%);
+    }
+}

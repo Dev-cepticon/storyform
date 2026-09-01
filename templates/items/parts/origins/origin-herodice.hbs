@@ -4,8 +4,8 @@
 
     {{#if system.config.editMode}}
     {{#each system.heroDiceAbilities as |ability i|}}
-    <div class="named-block">
-      <div class="header">
+    <div class="sf-card">
+      <div class="sf-card-header">
         <input type="text" name="system.heroDiceAbilities.{{i}}.name" value="{{ability.name}}" placeholder="Name..." />
         <input type="number" name="system.heroDiceAbilities.{{i}}.cost" value="{{ability.cost}}" min="1" />
         <a 
@@ -29,13 +29,13 @@
   {{!-- VIEW MODE --}}
   <div class="hero-dice-list view-mode">
     {{#each system.heroDiceAbilities as |ability|}}
-    <div class="named-block">
-      <div class="header">
+    <div class="sf-card">
+      <div class="sf-card-header">
         {{!-- Ability Name --}}
         <span class="name">{{ability.name}}</span>
         
         {{!-- Ability Cost --}}
-        <span class="cost-tag">
+        <span class="sf-badge is-cost">
           <i class="fa-solid fa-dice-d6"></i> {{ability.cost}}
         </span>
       </div>

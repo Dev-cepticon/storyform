@@ -1,0 +1,21 @@
+// main: ../storyform.less
+
+.sf-grid-row {
+    display: flex;
+    gap: @space-block;
+    align-items: center;
+    width: 100%;
+
+    &.stack { flex-direction: column; align-items: flex-start; }
+    &.between { justify-content: space-around; }
+}
+
+// Standardized 2 and 3 column grids for stats
+.sf-grid-columns {
+    display: grid;
+    gap: @space-micro;
+    
+    &.cols-2 { grid-template-columns: repeat(2, 1x); }
+    &.cols-3 { grid-template-columns: repeat(3, 1x); }
+    &.cols-4 { grid-template-columns: repeat(4, 1x); }
+}

@@ -1,0 +1,39 @@
+// main: ../storyform.less
+
+.storyform.sheet.item {
+    // Unique Item Layout: Sidebar + Content
+    .item-body-layout {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        gap: 0;
+
+        .item-config-sidebar {
+            width: 220px;
+            background: @color-surface-panel;
+            border-right: 1px solid @color-border-subtle;
+            // Sidebar animation logic remains here as it's an Item-only feature
+            &.is-collapsed { margin-left: -220px; opacity: 0; }
+        }
+
+        .item-main-content {
+            flex: 1;
+            padding: @space-block;
+            overflow-y: auto;
+        }
+    }
+
+    // Unique Item Decor: The Weapon/Gear Property list
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: @space-micro;
+        margin-top: @space-unit;
+    }
+
+    prose-mirror{
+        height: 425px;
+    }
+}
+
+

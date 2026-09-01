@@ -1,0 +1,21 @@
+// main: ../storyform.less
+
+.sf-section-card {
+    background: @color-surface-panel;
+    border: 1px solid @color-border-subtle;
+    border-radius: @border-radius-md;
+    margin-bottom: @space-unit;
+
+    .sf-card-header {
+        .sf-flex-between();
+        padding: @space-micro @space-unit;
+        border-bottom: 1px solid @color-border-subtle;
+        background: fade(@color-brand-primary, 10%);
+        
+        h3 { font-size: @font-size-sm; }
+    }
+
+    .sf-card-body {
+        padding: @space-unit;
+    }
+}

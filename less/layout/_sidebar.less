@@ -1,0 +1,40 @@
+// main: ../storyform.less
+
+// The container that holds both the sidebar and the main content
+.sf-sheet-body-container {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+}
+
+.sf-sheet-sidebar-drawer {
+    width: 220px;
+    min-width: 0;
+    background-color: @color-surface-panel;
+    border-right: 1px solid @color-border-subtle;
+    height: 100%;
+    
+    // THE PUSH LOGIC
+    margin-left: -220px; 
+    opacity: 0;
+    visibility: hidden;
+    
+    // Snappy 0.4s transition (Standard for UI)
+    transition: 
+        margin-left 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67),
+        opacity 0.3s ease-out;
+
+    // ACTIVE STATE
+    &.is-active {
+        margin-left: 0;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .drawer-content {
+        padding: @space-block;
+        width: 220px; // Lock width to prevent squishing during animation
+    }
+}
